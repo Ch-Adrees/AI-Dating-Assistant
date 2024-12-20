@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "129983133589",
+    "project_id": "rizzhub-b4c93",
+    "storage_bucket": "rizzhub-b4c93.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129983133589:android:b2162571b3dfeeb91a689c",
+        "android_client_info": {
+          "package_name": "com.example.rizzhub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLf2Eyxor1bSdeO_nfsQ7vce85Agg6x7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
