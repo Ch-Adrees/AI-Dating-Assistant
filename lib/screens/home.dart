@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:rizzhub/components/custom_app_bar.dart';
+import 'package:rizzhub/components/custom_button.dart';
+import 'package:rizzhub/screens/ice_first_message.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,21 +15,42 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-      leading: IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.menu),
-      ),
-      centerTitle: true,
-      title: IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.visibility_sharp),
-      ),
-      actions: [
-        IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.arrow_back_ios_new_outlined))
-      ],
-    ));
+      appBar: const CustomAppBar(),
+      body: SafeArea(
+          child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            CustomButton(
+              text: "Generate Your First Message",
+              onTap: () {
+                Get.to(
+                  () => const IceAndFirstMessage(toScreen: "first"),
+                );
+              },
+            ),
+            CustomButton(
+              text: "Need Assistance ?",
+              onTap: () {},
+            ),
+            CustomButton(
+              text: "Ice Breaker",
+              onTap: () {
+                Get.to(
+                  () => const IceAndFirstMessage(toScreen: "ice"),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+          ],
+        ),
+      )),
+    );
   }
 }
