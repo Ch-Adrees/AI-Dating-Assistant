@@ -10,12 +10,16 @@ class CustomIconButton extends StatelessWidget {
       this.radius,
       this.width,
       required this.onTap,
-      this.icon});
+      this.icon,
+      this.containerInnerColor
+
+      });
   final double? height, width, fontSize;
   final String? centerItem;
   final Icon? icon;
   final VoidCallback onTap;
   final double? radius;
+  final Color? containerInnerColor;
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +27,11 @@ class CustomIconButton extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         height: height,
         width: width,
+
         decoration: BoxDecoration(
           border: Border.all(width: 1.5, color: Constants.primaryColor),
           borderRadius: BorderRadius.circular(radius ?? 100),
+          color: containerInnerColor,
         ),
         child: InkWell(
           onTap: onTap,

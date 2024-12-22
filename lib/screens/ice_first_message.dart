@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
+import 'package:rizzhub/components/custom_textField.dart';
 
 class IceAndFirstMessage extends StatefulWidget {
   const IceAndFirstMessage({super.key, required this.toScreen});
@@ -16,7 +18,11 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: CustomAppBar(
+        onTap: () {
+          Get.back();
+        },
+      ),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -29,16 +35,10 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                   IntrinsicHeight(
                     child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.75,
-                        child: TextFormField(
+                        child: const CustomTextfield(
+                          label: "Response",
+                          hintText: "Random Generated Response",
                           maxLines: 5,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.all(9),
-                          ),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontFamily: "Poppins",
-                          ),
                         )),
                   ),
                   const SizedBox(
@@ -60,6 +60,9 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                 height: 20,
               ),
               CustomButton(onTap: () {}, text: "Random Generator"),
+              const SizedBox(
+                height: 20,
+              )
             ],
           ),
         ),
