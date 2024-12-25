@@ -21,12 +21,12 @@ class ThemeOfApp {
       )),
       enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-        color: Colors.white,
+        color: Colors.white70,
       )),
       focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-        color: Colors.white,
-      ),
+        borderSide: BorderSide(
+          color: Colors.white,
+        ),
       ),
     ),
     textTheme: const TextTheme(
