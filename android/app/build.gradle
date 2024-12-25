@@ -45,7 +45,7 @@ android {
         applicationId "com.example.rizzhub"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -64,4 +64,17 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+       implementation ('com.appodeal.ads:sdk:3.3.3.0') {
+        exclude group: 'com.appodeal.ads.sdk.services', module: 'adjust'
+        exclude group: 'com.appodeal.ads.sdk.services', module: 'appsflyer'
+        exclude group: 'com.appodeal.ads.sdk.services', module: 'firebase'
+        exclude group: 'com.appodeal.ads.sdk.services', module: 'facebook_analytics'
+    }
+    implementation ('com.bigossp:bigo-ads:5.1.0') {
+    exclude group: 'com.android.support', module: 'support-annotations'
+}
+    dependencies {
+    implementation 'com.google.android.gms:play-services-ads:23.6.0'
+}
+}

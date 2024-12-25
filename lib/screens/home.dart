@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
+import 'package:rizzhub/Ads.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,8 +13,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  
   @override
   Widget build(BuildContext context) {
+     final adManager = AdManager(context);
     return Scaffold(
       appBar: const CustomAppBar(),
       body: SafeArea(
@@ -48,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 10,
             ),
+             TextButton(
+                onPressed: () => adManager.showBanner(), child: Text('Show Bnner')),
           ],
         ),
       )),
