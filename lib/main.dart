@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rizzhub/components/theme.dart';
@@ -8,6 +9,10 @@ import 'package:rizzhub/screens/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(InternetController());
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   runApp(const MyApp());
 }
 
