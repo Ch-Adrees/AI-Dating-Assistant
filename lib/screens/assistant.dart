@@ -4,7 +4,7 @@ import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
-import 'package:rizzhub/components/custom_textField.dart';
+import 'package:rizzhub/components/custom_text_field.dart';
 import 'package:rizzhub/controllers/views/assistant_screen_controller.dart';
 import 'package:rizzhub/widgets/custom_emojies_row.dart';
 
@@ -71,7 +71,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                 const SizedBox(
                   height: 15,
                 ),
-                CustomEmojiesRow(),
+                const CustomEmojiesRow(),
                 const SizedBox(
                   height: 15,
                 ),

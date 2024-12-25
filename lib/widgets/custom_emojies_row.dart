@@ -4,7 +4,7 @@ import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/controllers/views/assistant_screen_controller.dart';
 
 class CustomEmojiesRow extends StatelessWidget {
-  CustomEmojiesRow({super.key});
+ const  CustomEmojiesRow({super.key});
   
 
   @override

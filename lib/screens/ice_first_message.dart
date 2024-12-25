@@ -4,7 +4,7 @@ import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
-import 'package:rizzhub/components/custom_textField.dart';
+import 'package:rizzhub/components/custom_text_field.dart';
 
 class IceAndFirstMessage extends StatefulWidget {
   const IceAndFirstMessage({super.key, required this.toScreen});

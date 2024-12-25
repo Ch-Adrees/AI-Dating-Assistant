@@ -14,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,9 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Scaffold.of(context).openDrawer();
                 });
           })),
-      drawer: const CustomDrawer(
-        
-      ),
+      drawer: const CustomDrawer(),
       body: SafeArea(
           child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
