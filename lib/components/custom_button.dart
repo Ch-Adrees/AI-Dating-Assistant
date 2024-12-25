@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:rizzhub/components/constants.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.onTap, required this.text});
+  const CustomButton(
+      {super.key, required this.onTap, required this.text, this.color});
   final String text;
   final VoidCallback onTap;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Constants.buttonBgColor,
+          backgroundColor: color ?? Constants.buttonBgColor,
           minimumSize: Size(MediaQuery.of(context).size.width, 50),
         ),
         onPressed: onTap,
