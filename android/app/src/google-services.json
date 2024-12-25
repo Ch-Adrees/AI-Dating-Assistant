@@ -43,12 +43,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1066647473944:android:6d10350072cd8c5e3dd86d",
+        "mobilesdk_app_id": "1:1066647473944:android:aa187987075de47a3dd86d",
         "android_client_info": {
-          "package_name": "com.example.rizzhub"
+          "package_name": "com.kerdemsah.conversationbooster"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1066647473944-pi8caq86l9undv01sthvk6tu2amim9jp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kerdemsah.conversationbooster",
+            "certificate_hash": "53cf317b78069c8760c873bd2d1d106535486782"
+          }
+        },
         {
           "client_id": "1066647473944-0mfdc3htem9e7m2vsrvstfk87igeatnp.apps.googleusercontent.com",
           "client_type": 3
@@ -79,20 +87,12 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1066647473944:android:aa187987075de47a3dd86d",
+        "mobilesdk_app_id": "1:1066647473944:android:08f9c34e4891cae33dd86d",
         "android_client_info": {
-          "package_name": "com.kerdemsah.conversationbooster"
+          "package_name": "com.woo.rizz"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "1066647473944-pi8caq86l9undv01sthvk6tu2amim9jp.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.kerdemsah.conversationbooster",
-            "certificate_hash": "53cf317b78069c8760c873bd2d1d106535486782"
-          }
-        },
         {
           "client_id": "1066647473944-0mfdc3htem9e7m2vsrvstfk87igeatnp.apps.googleusercontent.com",
           "client_type": 3

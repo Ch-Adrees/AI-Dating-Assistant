@@ -6,17 +6,27 @@ import 'package:rizzhub/controllers/internet_controller.dart';
 import 'package:rizzhub/screens/home.dart';
 
 
+late FirebaseApp convoApp;  // Global variable for the primary Firebase app
+late FirebaseApp rizzhubApp;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(InternetController());
-import 'firebase_options.dart';
 
-Future<void> main() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  await Firebase.initializeApp(
+    name: 'Woorizz',
+    options: const FirebaseOptions(
+      apiKey: "AIzaSyDtoQDSe8qWtgs0llxAOPt4wQ4NSPRWGlE",
+      appId: "1:1066647473944:android:08f9c34e4891cae33dd86d",
+      messagingSenderId: "1066647473944",
+      projectId: "conversation-questions-finder",
+    ),
+  );
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget{
+
   const MyApp({super.key});
 
   // This widget is the root of your application.
@@ -24,7 +34,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Woo Rizz',
         theme: ThemeOfApp.appTheme,
         home:const  HomeScreen());
   }
