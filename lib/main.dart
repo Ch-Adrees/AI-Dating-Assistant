@@ -6,9 +6,6 @@ import 'package:rizzhub/controllers/internet_controller.dart';
 import 'package:rizzhub/screens/home.dart';
 
 
-late FirebaseApp convoApp;  // Global variable for the primary Firebase app
-late FirebaseApp rizzhubApp;
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(InternetController());

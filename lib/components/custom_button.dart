@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:rizzhub/components/constants.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton(
+  CustomButton(
       {super.key, required this.onTap, required this.text, this.color});
   final String text;
   final VoidCallback onTap;
   final Color? color;
+
+
 
   @override
   Widget build(BuildContext context) {
