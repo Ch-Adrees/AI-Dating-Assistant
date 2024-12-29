@@ -12,6 +12,8 @@ import 'package:rizzhub/controllers/views/assistant_screen_controller.dart';
 import 'package:rizzhub/widgets/custom_emojies_row.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 
+import '../ads/ads_manager.dart';
+
 class AssistantScreen extends StatefulWidget {
   const AssistantScreen({super.key});
 
@@ -143,14 +145,16 @@ class _AssistantScreenState extends State<AssistantScreen> {
                 ),
                 //CustomButton(onTap: () {}, text: "Submit"),
                 CustomButton(
-                  onTap: () {
+                  onTap: () async {
+                    final AdManager adManager = AdManager(context);
+                    await adManager.showRewardedAd();
                     if (_recognizedText.isNotEmpty) {
                       print(
                           "Using Recognized Text for Response: $_recognizedText");
                       // Call your response generation logic here
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                             content: Text(
                                 "No text recognized. Please upload an image.")),
                       );

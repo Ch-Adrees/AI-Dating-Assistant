@@ -4,11 +4,17 @@ import 'package:get/get.dart';
 import 'package:rizzhub/components/theme.dart';
 import 'package:rizzhub/controllers/internet_controller.dart';
 import 'package:rizzhub/screens/home.dart';
-
+import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Get.put(InternetController());
+
+  await Appodeal.initialize(
+    appKey: 'edf0eeb97ff2d940bd1fc71234dc74d80f3eb7d06d96bf97',
+      adTypes: [Appodeal.INTERSTITIAL, Appodeal.REWARDED_VIDEO, Appodeal.BANNER],
+          //onInitializationFinished: (errors) => {}
+  );
 
   await Firebase.initializeApp(
     name: 'Woorizz',

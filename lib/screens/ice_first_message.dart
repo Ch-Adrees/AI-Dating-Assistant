@@ -12,6 +12,8 @@ import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
 
+import '../ads/ads_manager.dart';
+
 class IceAndFirstMessage extends StatefulWidget {
   const IceAndFirstMessage({super.key, required this.toScreen});
   final String toScreen;
@@ -58,7 +60,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
         final data = randomDoc.data() as Map<String, dynamic>?;
         String question = data?['question'] ?? 'No question available';
         String translatedText =
-            await translateText(question, TranslateLanguage.spanish);
+            await translateText(question, TranslateLanguage.turkish);
 
         setState(() {
           _responseController.text = translatedText;
@@ -118,9 +120,9 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                         child: CustomTextfield(
                           readOnly: true,
                           maxLines: 5,
-                          //hintText: 'Randomly Generated Response',
+                          hintText: 'Randomly Generated Response',
                           label: 'Response',
-                          controller: _responseController.text,
+                          controller: _responseController,
                         )),
                   ),
                   const SizedBox(
@@ -152,7 +154,11 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                 height: 20,
               ),
               CustomButton(
-                onTap: fetchRandomDocument,
+                onTap: ()async{
+                  final AdManager adManager = AdManager(context);
+                  await adManager.showRewardedAd();
+                  fetchRandomDocument();
+                },
                 text: "Random Generator",
               ),
               const SizedBox(

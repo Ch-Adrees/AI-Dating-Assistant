@@ -50,6 +50,13 @@ flutter {
 
 dependencies {
     implementation 'com.google.mlkit:translate:17.0.3'
+
+    implementation ('com.appodeal.ads:sdk:3.3.3.0') {
+        exclude group: 'com.appodeal.ads.sdk.services', module: 'adjust'
+        exclude group: 'com.appodeal.ads.sdk.services', module: 'appsflyer'
+        exclude group: 'com.appodeal.ads.sdk.services', module: 'firebase'
+        exclude group: 'com.appodeal.ads.sdk.services', module: 'facebook_analytics'
+    }
 }
 
 

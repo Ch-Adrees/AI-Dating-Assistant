@@ -15,7 +15,7 @@ class CustomTextfield extends StatefulWidget {
   final int maxLines;
   final String? hintText;
   final String label;
-  final String? controller;
+  final TextEditingController? controller;
 
   @override
   State<CustomTextfield> createState() => _CustomTextfieldState();
@@ -25,6 +25,7 @@ class _CustomTextfieldState extends State<CustomTextfield> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: widget.controller,
       readOnly: widget.readOnly,
       cursorColor: Constants.primaryColor,
       maxLines: widget.maxLines,
