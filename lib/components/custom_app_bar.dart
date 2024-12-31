@@ -1,26 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 
-class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key, this.whichScreen, required this.onTap, this.widgetContext});
+  final String? whichScreen;
+  final VoidCallback onTap;
+  final BuildContext? widgetContext;
 
-  @override
-  State<CustomAppBar> createState() => _CustomAppBarState();
-
-  @override
-  Size get preferredSize => const Size.fromHeight(50.0);
-}
-
-class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        onPressed: () {},
+        onPressed: onTap,
         icon: Icon(
-          Icons.menu,
+          whichScreen != null && whichScreen == "home"
+              ? Icons.menu
+              : Icons.arrow_back_ios_rounded,
           color: Constants.primaryColor,
           size: 30,
         ),
@@ -37,7 +34,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           child: CustomIconButton(
             onTap: () {},
             icon: Icon(
-              CupertinoIcons.arrow_up_left,
+              Icons.share,
               color: Constants.primaryColor,
             ),
             height: 38,
@@ -47,4 +44,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       ],
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(50.0);
 }

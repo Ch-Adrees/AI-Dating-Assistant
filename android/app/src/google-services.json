@@ -1,0 +1,126 @@
+{
+  "project_info": {
+    "project_number": "1066647473944",
+    "project_id": "conversation-questions-finder",
+    "storage_bucket": "conversation-questions-finder.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066647473944:android:14d159206280a4a23dd86d",
+        "android_client_info": {
+          "package_name": "com.conversationbooster.conversationstarterandicebreaker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1066647473944-0mfdc3htem9e7m2vsrvstfk87igeatnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtoQDSe8qWtgs0llxAOPt4wQ4NSPRWGlE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1066647473944-0mfdc3htem9e7m2vsrvstfk87igeatnp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1066647473944-39l115ec6nf52d2vh33f8d2fl29gi84q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sentenceGenerator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066647473944:android:aa187987075de47a3dd86d",
+        "android_client_info": {
+          "package_name": "com.kerdemsah.conversationbooster"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1066647473944-pi8caq86l9undv01sthvk6tu2amim9jp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kerdemsah.conversationbooster",
+            "certificate_hash": "53cf317b78069c8760c873bd2d1d106535486782"
+          }
+        },
+        {
+          "client_id": "1066647473944-0mfdc3htem9e7m2vsrvstfk87igeatnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtoQDSe8qWtgs0llxAOPt4wQ4NSPRWGlE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1066647473944-0mfdc3htem9e7m2vsrvstfk87igeatnp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1066647473944-39l115ec6nf52d2vh33f8d2fl29gi84q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sentenceGenerator"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066647473944:android:08f9c34e4891cae33dd86d",
+        "android_client_info": {
+          "package_name": "com.woo.rizz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1066647473944-0mfdc3htem9e7m2vsrvstfk87igeatnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtoQDSe8qWtgs0llxAOPt4wQ4NSPRWGlE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1066647473944-0mfdc3htem9e7m2vsrvstfk87igeatnp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1066647473944-39l115ec6nf52d2vh33f8d2fl29gi84q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.sentenceGenerator"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

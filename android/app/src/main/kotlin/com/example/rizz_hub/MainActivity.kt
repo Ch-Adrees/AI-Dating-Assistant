@@ -1,4 +1,4 @@
-package com.example.rizzhub
+package com.example.rizz_hub
 
 import io.flutter.embedding.android.FlutterActivity
 
