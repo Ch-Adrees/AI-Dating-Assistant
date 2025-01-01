@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -67,6 +70,62 @@ class _AssistantScreenState extends State<AssistantScreen> {
     }
   }
 
+  String _responseMessage = ''; // To store the ChatGPT response
+  final TextEditingController _inputController = TextEditingController();
+
+  Future<void> _generateResponse() async {
+    String userInput =
+        _recognizedText.isNotEmpty ? _recognizedText : _inputController.text;
+
+    if (userInput.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please provide an input.")),
+      );
+      return;
+    }
+
+    String selectedMood = _assistantScreenController.modeValue;
+    String prompt =
+        "Respond to this message in a $selectedMood tone: \"$userInput\" and don't use emojis";
+
+    try {
+      // API Key
+      const String apiKey =
+          "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";
+      final response = await http.post(
+        Uri.parse("https://api.openai.com/v1/chat/completions"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $apiKey",
+        },
+        body: jsonEncode({
+          "model": "gpt-4o-mini-2024-07-18", // Replace with the model you want to use
+          "messages": [
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt},
+          ],
+          "max_tokens": 100,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        setState(() {
+          _responseMessage = responseData['choices'][0]['message']['content'];
+          _responseMessage = _responseMessage.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Failed to generate response.  ${response.body}")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error: $e")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,10 +190,11 @@ class _AssistantScreenState extends State<AssistantScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const CustomTextfield(
+                CustomTextfield(
+                  controller: _inputController,
                   hintText: "Paste Your Message Here",
                   label: "Input Message",
-                  maxLines: 3,
+                  maxLines: 5,
                 ),
                 const SizedBox(
                   height: 15,
@@ -143,35 +203,25 @@ class _AssistantScreenState extends State<AssistantScreen> {
                 const SizedBox(
                   height: 15,
                 ),
-                //CustomButton(onTap: () {}, text: "Submit"),
                 CustomButton(
                   onTap: () async {
                     final AdManager adManager = AdManager(context);
                     await adManager.showRewardedAd();
-                    if (_recognizedText.isNotEmpty) {
-                      print(
-                          "Using Recognized Text for Response: $_recognizedText");
-                      // Call your response generation logic here
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text(
-                                "No text recognized. Please upload an image.")),
-                      );
-                    }
+                    _generateResponse();
                   },
                   text: "Submit",
                 ),
-
                 const SizedBox(
-                  height: 15,
+                  height: 25,
                 ),
                 Row(
                   children: [
-                    const Expanded(
+                    Expanded(
                         child: CustomTextfield(
+                            controller:
+                                TextEditingController(text: _responseMessage),
                             label: "Response Message",
-                            //hintText: "Response Of Your Input",
+                            hintText: "Response Of Your Input",
                             maxLines: 3,
                             readOnly: true)),
                     const SizedBox(
@@ -180,7 +230,18 @@ class _AssistantScreenState extends State<AssistantScreen> {
                     CustomIconButton(
                       height: 55,
                       width: 55,
-                      onTap: () {},
+                      onTap: () {
+                        if (_responseMessage.isNotEmpty) {
+                          Clipboard.setData(
+                            ClipboardData(text: _responseMessage),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    "Copied: Response copied to clipboard")),
+                          );
+                        }
+                      },
                       icon: Icon(
                         Icons.copy,
                         color: Constants.primaryColor,

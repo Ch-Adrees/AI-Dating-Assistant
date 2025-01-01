@@ -151,7 +151,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                 ],
               ),
               const SizedBox(
-                height: 20,
+                height: 50,
               ),
               CustomButton(
                 onTap: ()async{
@@ -159,8 +159,10 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                   await adManager.showRewardedAd();
                   fetchRandomDocument();
                 },
-                text: "Random Generator",
+                text: "Random Grenerator",
               ),
+
+
               const SizedBox(
                 height: 20,
               )
