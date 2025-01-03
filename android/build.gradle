@@ -1,5 +1,7 @@
 allprojects {
     repositories {
+        jcenter()
+        maven { url "https://artifactory.appodeal.com/appodeal" }
         google()
         mavenCentral()
     }
