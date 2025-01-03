@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:share_plus/share_plus.dart';
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 
@@ -32,7 +32,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         Padding(
           padding: const EdgeInsets.only(right: 10),
           child: CustomIconButton(
-            onTap: () {},
+            onTap: () {
+              Share.share(
+                'https://play.google.com/store/apps/details?id=com.rizzlabs.rizz',
+              );
+            },
             icon: Icon(
               Icons.share,
               color: Constants.primaryColor,
