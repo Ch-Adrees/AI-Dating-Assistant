@@ -6,16 +6,27 @@ class AdManager {
 
   AdManager(this.context);
 
+  void preloadBannerAd() async {
+  Appodeal.cache(Appodeal.BANNER);
+}
+
   // Show Banner Ads
   Future<void> showBannerAd() async {
-    bool isReady = await Appodeal.isLoaded(Appodeal.BANNER_BOTTOM);
-    if (isReady) {
-      Appodeal.show(Appodeal.BANNER_BOTTOM);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
+    bool isReady = await Appodeal.isLoaded(Appodeal.BANNER);
+    if (!isReady) {
+       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Banner ads not ready')),
       );
+      return;
+    } else {
+      Appodeal.show(Appodeal.BANNER,'BannerAds1');
     }
+
+     // Retry after a delay
+    // Future.delayed(const Duration(seconds: 5), () {
+    //   showBannerAd(); // Retry showing the ad
+    //   });
+
   }
 
 
@@ -23,7 +34,7 @@ class AdManager {
   Future<void> showInterstitial() async {
     bool isReady = await Appodeal.isLoaded(Appodeal.INTERSTITIAL);
     if (isReady) {
-      Appodeal.show(Appodeal.INTERSTITIAL);
+      Appodeal.show(Appodeal.INTERSTITIAL,'InterstitialAds1');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Interstitial ads not ready')),
@@ -35,7 +46,7 @@ class AdManager {
   Future<void> showRewardedAd() async {
     bool isReady = await Appodeal.isLoaded(Appodeal.REWARDED_VIDEO);
     if (isReady) {
-      Appodeal.show(Appodeal.REWARDED_VIDEO);
+      Appodeal.show(Appodeal.REWARDED_VIDEO, 'RewardsAds1');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Rewarded ads not ready')),

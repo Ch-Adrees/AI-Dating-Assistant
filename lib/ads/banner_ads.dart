@@ -25,11 +25,9 @@ class BannerAd extends StatelessWidget {
           ),
           // Display banner ad at the bottom
           Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 50, // Set the height of the banner ad
-              //child: AppodealBannerSize(width: 50, height: 50) // Banner Ad
-            ),
+           // alignment: Alignment.bottomCenter,
+            child:
+            AppodealBanner(adSize: AppodealBannerSize.BANNER, placement: "BannerAds1"),
           ),
         ],
       ),

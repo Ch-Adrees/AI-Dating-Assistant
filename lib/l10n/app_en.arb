@@ -1,0 +1,102 @@
+{
+    "drag_drop": "Drag n Drop or Pick an Image",
+    "@drag_drop": {
+      "description": "Prompt to drag and drop or pick an image."
+    },
+    "paste_message": "Paste Your Message Here",
+    "@paste_message": {
+      "description": "Instruction to paste a message in the text field."
+    },
+    "input_message": "Input Message",
+    "@input_message": {
+      "description": "Label for the input message field."
+    },
+    "submit": "Submit",
+    "@submit": {
+      "description": "Button text for submitting data."
+    },
+    "response_message": "Response Message",
+    "@response_message": {
+      "description": "Label for the response message field."
+    },
+    "response_of_input": "Response Of Your Input",
+    "@response_of_input": {
+      "description": "Title for the user's input response display."
+    },
+    "copied": "Copied: Response copied to clipboard",
+    "@copied": {
+      "description": "Notification that the response was copied."
+    },
+    "generate_first_message": "Generate Your First Message",
+    "@generate_first_message": {
+      "description": "Prompt to generate the first user message."
+    },
+    "need_assistance": "Need Assistance ?",
+    "@need_assistance": {
+      "description": "Prompt asking if the user needs help."
+    },
+    "ice_breaker": "Ice Breaker",
+    "@ice_breaker": {
+      "description": "Label for ice-breaking content or features."
+    },
+    "random_response": "Randomly Generated Response",
+    "@random_response": {
+      "description": "Label for responses generated randomly."
+    },
+    "response": "Response",
+    "@response": {
+      "description": "Generic label for a response."
+    },
+    "random_generator": "Random Generator",
+    "@random_generator": {
+      "description": "Label for the random generator feature."
+    },
+    "privacy_policy_error": "Could not open Privacy Policy link",
+    "@privacy_policy_error": {
+      "description": "Error message when the privacy policy link fails to open."
+    },
+    "privacy_policy": "Privacy Policy",
+    "@privacy_policy": {
+      "description": "Label for the privacy policy section or link."
+    },
+    "play_store_error": "Could not open the Play Store link",
+    "@play_store_error": {
+      "description": "Error message when the Play Store link fails to open."
+    },
+    "app_rating": "App Rating",
+    "@app_rating": {
+      "description": "Label for the app rating feature."
+    },
+    "google_form_error": "Could not open Google Form",
+    "@google_form_error": {
+      "description": "Error message when the Google Form link fails to open."
+    },
+    "delete_data_request": "Delete Data Request",
+    "@delete_data_request": {
+      "description": "Label for the delete data request feature."
+    },
+    "vip": "VIP",
+    "@vip": {
+      "description": "Label for VIP features or content."
+    },
+    "language": "Language",
+    "@language": {
+      "description": "Label for selecting the app's language."
+    },
+    "no_internet": "No Internet Connection",
+    "@no_internet": {
+      "description": "Notification about no internet connectivity."
+    },
+    "connection_lost": "Your connection has been lost. Please check your internet connection and try again.",
+    "@connection_lost": {
+      "description": "Error message when internet connection is lost."
+    },
+    "okay": "Okay",
+    "@okay": {
+      "description": "Confirmation or acknowledgment button text."
+    },
+    "retry": "Retry",
+    "@retry": {
+      "description": "Button text to retry an action."
+    }
+}

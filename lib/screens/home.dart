@@ -7,6 +7,7 @@ import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/screens/assistant.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
 import 'package:rizzhub/widgets/drawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../ads/ads_manager.dart';
 
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               CustomButton(
-                text: "Generate Your First Message",
+                text: AppLocalizations.of(context)!.generate_first_message,
                 onTap: () async {
                   final AdManager adManager = AdManager(context);
                   await adManager.showInterstitial();
