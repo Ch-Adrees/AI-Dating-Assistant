@@ -98,5 +98,101 @@
     "retry": "Retry",
     "@retry": {
       "description": "Button text to retry an action."
+    },
+    "welcome_to_chat_assistant": "Welcome to Chat Assistant",
+    "@welcome_to_chat_assistant": {
+      "description": "Welcome message for the chat assistant."
+    },
+    "enter_your_age": "Enter your age",
+    "@enter_your_age": {
+      "description": "Prompt to enter the user's age."
+    },
+    "woo_rizz": "Woo Rizz!",
+    "@woo_rizz": {
+      "description": "Playful phrase for the chat assistant."
+    },
+    "yours_age": "Your's age",
+    "@yours_age": {
+      "description": "Label for the user's age field."
+    },
+    "select_gender": "Select Gender",
+    "@select_gender": {
+      "description": "Prompt to select gender."
+    },
+    "select_language": "Select Language",
+    "@select_language": {
+      "description": "Prompt to select the language."
+    },
+    "lets_start_messaging": "Let's Start Messaging",
+    "@lets_start_messaging": {
+      "description": "Prompt to start messaging."
+    },
+    "ai_assistant_rizz": "AI Assistant Rizz.",
+    "@ai_assistant_rizz": {
+      "description": "Label for AI assistant Rizz."
+    },
+    "current_language": "Current Language:",
+    "@current_language": {
+      "description": "Label to display the current language."
+    },
+    "language_changed_to": "Language changed to",
+    "@language_changed_to": {
+      "description": "Notification when the language is changed."
+    },
+    "english": "English",
+    "@english": {
+      "description": "English language name."
+    },
+    "arabic": "Arabic",
+    "@arabic": {
+      "description": "Arabic language name."
+    },
+    "hindi": "Hindi",
+    "@hindi": {
+      "description": "Hindi language name."
+    },
+    "spanish": "Spanish",
+    "@spanish": {
+      "description": "Spanish language name."
+    },
+    "german": "German",
+    "@german": {
+      "description": "German language name."
+    },
+    "french": "French",
+    "@french": {
+      "description": "French language name."
+    },
+    "russian": "Russian",
+    "@russian": {
+      "description": "Russian language name."
+    },
+    "portuguese": "Portuguese",
+    "@portuguese": {
+      "description": "Portuguese language name."
+    },
+    "turkish": "Turkish",
+    "@turkish": {
+      "description": "Turkish language name."
+    },
+    "greek": "Greek",
+    "@greek": {
+      "description": "Greek language name."
+    },
+    "dutch": "Dutch",
+    "@dutch": {
+      "description": "Dutch language name."
+    },
+    "italian": "Italian",
+    "@italian": {
+      "description": "Italian language name."
+    },
+    "chinese": "Chinese",
+    "@chinese": {
+      "description": "Chinese language name."
+    },
+    "unknown": "Unknown",
+    "@unknown": {
+      "description": "Label for unknown language."
     }
 }

@@ -8,5 +8,7 @@ class Constants {
     Colors.red,
     Colors.blueAccent,
   ];
-  
+
+  static const entitlementID = "hanan";
+  static const googlePlayApi = "goog_lTDQFwqDJzbxUrzLXQZoQexzQQN";
 }

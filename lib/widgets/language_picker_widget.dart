@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/l10n/l10n.dart';
 import 'package:rizzhub/provider/locale_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:rizzhub/components/custom_tile.dart';
 
 class LanguagePickerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<LocaleProvider>(context);
-    final locale = provider.locale ?? Locale('en');
+    final locale = provider.locale ?? const Locale('en');
     final flag = L10n.getFlag(locale.languageCode);
+    final currentLanguageName = L10n.getLanguageName(locale.languageCode);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select Language'),
+        title: Text(
+          'Select Language',
+          style: TextStyle(
+            color: Constants.whiteSecondaryColor,
+          ),
+        ),
         centerTitle: true,
+        backgroundColor: Constants.buttonBgColor,
+        iconTheme: IconThemeData(color: Constants.whiteSecondaryColor),
       ),
       body: Column(
         children: [
@@ -25,16 +35,23 @@ class LanguagePickerScreen extends StatelessWidget {
               children: [
                 Text(
                   'Current Language: ',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Constants.primaryColor,
+                  ),
                 ),
                 Text(
-                  flag,
-                  style: TextStyle(fontSize: 24),
+                  '$flag $currentLanguageName',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Constants.primaryColor,
+                  ),
                 ),
               ],
             ),
           ),
-          Divider(),
+          const Divider(color: Colors.white54),
           // List of Available Languages
           Expanded(
             child: ListView.builder(
@@ -42,29 +59,27 @@ class LanguagePickerScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final locale = L10n.all[index];
                 final flag = L10n.getFlag(locale.languageCode);
+                final languageName = L10n.getLanguageName(locale.languageCode);
 
-                return ListTile(
-                  leading: Text(
-                    locale.languageCode.toUpperCase(),
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  trailing: Text(
+                return CustomListTile(
+                  onTap: () {
+                    provider.setLocale(locale);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Language changed to $languageName',
+                          style: TextStyle(color: Constants.primaryColor),
+                        ),
+                        backgroundColor: Constants.buttonBgColor,
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  },
+                  icon: Text(
                     flag,
-                    style: TextStyle(fontSize: 24),
+                    style: const TextStyle(fontSize: 24),
                   ),
-                 onTap: () async {
-  //final provider = Provider.of<LocaleProvider>(context, listen: false);
-  provider.setLocale(locale);
-
-  // Optionally show a confirmation message
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text('Language changed to ${L10n.getLanguageName(locale.languageCode)}')),
-  );
-
-  // Close the screen after selection
-  Navigator.of(context).pop();
-},
-
+                  title: languageName,
                 );
               },
             ),

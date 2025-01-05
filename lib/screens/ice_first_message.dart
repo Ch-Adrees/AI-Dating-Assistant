@@ -1,18 +1,20 @@
 import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:provider/provider.dart';
 
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rizzhub/l10n/l10n.dart';
 import '../ads/ads_manager.dart';
+import '../provider/locale_provider.dart';
 
 class IceAndFirstMessage extends StatefulWidget {
   const IceAndFirstMessage({super.key, required this.toScreen});
@@ -26,50 +28,69 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _responseController = TextEditingController();
   List<String> _seenDocIds = [];
-  final TranslateLanguage sourceLanguage = TranslateLanguage.english;
 
-  Future<void> fetchRandomDocument() async {
+  // Get the user's selected language code
+  Future<String> _getUserSelectedLanguage(BuildContext context) async {
+    final locale = context.watch<LocaleProvider>().locale;
+    return locale?.languageCode ?? 'en'; // Default to English
+  }
+
+  // Map language codes to TranslateLanguage
+  TranslateLanguage getTranslateLanguage(String userSelectedLanguage) {
+    switch (userSelectedLanguage.toLowerCase()) {
+      case 'tr': // Turkish
+        return TranslateLanguage.turkish;
+      case 'es': // Spanish
+        return TranslateLanguage.spanish;
+      case 'fr': // French
+        return TranslateLanguage.french;
+      case 'de': // German
+        return TranslateLanguage.german;
+      case 'ar': // Arabic
+        return TranslateLanguage.arabic;
+      case 'zh': // Chinese
+        return TranslateLanguage.chinese;
+      default:
+        return TranslateLanguage.english; // Default to English
+    }
+  }
+
+  // Fetch a random document and translate it
+  Future<void> fetchRandomDocument(BuildContext context) async {
     try {
-      // Determine the collection based on the toScreen value
-      String collectionName =
-          widget.toScreen == 'first' ? 'conversationstarter' : 'randomtopic';
+      String userSelectedLanguage = await _getUserSelectedLanguage(context);
+      String collectionName = widget.toScreen == 'first'
+          ? 'conversationstarter'
+          : 'randomtopic';
 
       QuerySnapshot querySnapshot =
           await _firestore.collection(collectionName).get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // Filter out already seen documents
-        List<DocumentSnapshot> unseenDocs = querySnapshot.docs
-            .where((doc) => !_seenDocIds.contains(doc.id))
-            .toList();
+        List<DocumentSnapshot> unseenDocs =
+            querySnapshot.docs.where((doc) => !_seenDocIds.contains(doc.id)).toList();
 
         if (unseenDocs.isEmpty) {
-          // Reset if all documents have been seen
           _seenDocIds.clear();
           unseenDocs = querySnapshot.docs;
           Get.snackbar('Information', 'All documents seen, starting over.');
         }
 
-        // Get a random document from the unseen documents
         int randomIndex = Random().nextInt(unseenDocs.length);
         DocumentSnapshot randomDoc = unseenDocs[randomIndex];
-
-        // Add the document ID to the seen list
         _seenDocIds.add(randomDoc.id);
 
         final data = randomDoc.data() as Map<String, dynamic>?;
         String question = data?['question'] ?? 'No question available';
-        String translatedText =
-            await translateText(question, TranslateLanguage.turkish);
+
+        String translatedText = await translateText(question, userSelectedLanguage);
 
         setState(() {
           _responseController.text = translatedText;
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text(
-                  'No documents found in the $collectionName collection.')),
+          SnackBar(content: Text('No documents found in the $collectionName collection.')),
         );
       }
     } catch (e) {
@@ -79,10 +100,13 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
     }
   }
 
-  Future<String> translateText(
-      String text, TranslateLanguage targetLanguage) async {
+  // Translate text using MLKit
+  Future<String> translateText(String text, String userSelectedLanguage) async {
+    final TranslateLanguage targetLanguage = getTranslateLanguage(userSelectedLanguage);
     final onDeviceTranslator = OnDeviceTranslator(
-        sourceLanguage: sourceLanguage, targetLanguage: targetLanguage);
+      sourceLanguage: TranslateLanguage.english,
+      targetLanguage: targetLanguage,
+    );
 
     try {
       final String translated = await onDeviceTranslator.translateText(text);
@@ -106,70 +130,64 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
         },
       ),
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  IntrinsicHeight(
-                    child: SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    IntrinsicHeight(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.75,
                         child: CustomTextfield(
                           readOnly: true,
                           maxLines: 5,
-                          hintText: 'Randomly Generated Response',
-                          label: 'Response',
+                          hintText: AppLocalizations.of(context)!.random_response,
+                          label: AppLocalizations.of(context)!.response,
                           controller: _responseController,
-                        )),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  CustomIconButton(
-                    onTap: () {
-                      if (_responseController.text.isNotEmpty) {
-                        Clipboard.setData(
-                            ClipboardData(text: _responseController.text));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content:
-                                  Text('Copied: Response copied to clipboard')),
-                        );
-                      }
-                    },
-                    height: 55,
-                    width: 55,
-                    icon: Icon(
-                      Icons.content_copy,
-                      color: Constants.primaryColor,
-                      size: 25,
+                        ),
+                      ),
                     ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              CustomButton(
-                onTap: ()async{
-                  final AdManager adManager = AdManager(context);
-                  await adManager.showRewardedAd();
-                  fetchRandomDocument();
-                },
-                text: "Random Grenerator",
-              ),
-
-
-              const SizedBox(
-                height: 20,
-              )
-            ],
+                    const SizedBox(width: 10),
+                    CustomIconButton(
+                      onTap: () {
+                        if (_responseController.text.isNotEmpty) {
+                          Clipboard.setData(
+                              ClipboardData(text: _responseController.text));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(AppLocalizations.of(context)!.copied),
+                            ),
+                          );
+                        }
+                      },
+                      height: 55,
+                      width: 55,
+                      icon: Icon(
+                        Icons.content_copy,
+                        color: Constants.primaryColor,
+                        size: 25,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 50),
+                CustomButton(
+                  onTap: () async {
+                    final AdManager adManager = AdManager(context);
+                    await adManager.showRewardedAd();
+                    fetchRandomDocument(context);
+                  },
+                  text: AppLocalizations.of(context)!.random_generator,
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
-      )),
+      ),
     );
   }
 }

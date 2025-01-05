@@ -8,7 +8,7 @@ class CustomListTile extends StatelessWidget {
       required this.icon,
       required this.title});
   final VoidCallback onTap;
-  final Icon icon;
+  final Widget icon;
   final String title;
 
   @override

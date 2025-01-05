@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -167,7 +168,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                                   color: Constants.buttonBgColor,
                                   size: 60,
                                 ),
-                                Text("Drag n Drop or Pick an Image",
+                                Text(AppLocalizations.of(context)!.drag_drop,
                                     style: TextStyle(
                                         color: Constants.primaryColor))
                               ],
@@ -182,7 +183,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text("OR",
+                Text(AppLocalizations.of(context)!.generate_first_message,
                     style: TextStyle(
                         color: Constants.primaryColor,
                         fontWeight: FontWeight.bold,
@@ -192,8 +193,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
                 ),
                 CustomTextfield(
                   controller: _inputController,
-                  hintText: "Paste Your Message Here",
-                  label: "Input Message",
+                  hintText: AppLocalizations.of(context)!.paste_message,
+                  label: AppLocalizations.of(context)!.input_message,
                   maxLines: 5,
                 ),
                 const SizedBox(
@@ -209,7 +210,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                     await adManager.showRewardedAd();
                     _generateResponse();
                   },
-                  text: "Submit",
+                  text: AppLocalizations.of(context)!.submit,
                 ),
                 const SizedBox(
                   height: 25,
@@ -220,8 +221,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
                         child: CustomTextfield(
                             controller:
                                 TextEditingController(text: _responseMessage),
-                            label: "Response Message",
-                            hintText: "Response Of Your Input",
+                            label: AppLocalizations.of(context)!.response_message,
+                            hintText: AppLocalizations.of(context)!.response_of_input,
                             maxLines: 3,
                             readOnly: true)),
                     const SizedBox(
@@ -236,9 +237,9 @@ class _AssistantScreenState extends State<AssistantScreen> {
                             ClipboardData(text: _responseMessage),
                           );
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                                 content: Text(
-                                    "Copied: Response copied to clipboard")),
+                                    AppLocalizations.of(context)!.copied)),
                           );
                         }
                       },

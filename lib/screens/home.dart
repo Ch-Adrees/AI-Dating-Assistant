@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               CustomButton(
-                text: "Need Assistance ?",
+                text: AppLocalizations.of(context)!.need_assistance,
                 onTap: () async {
                   final AdManager adManager = AdManager(context);
                   await adManager.showInterstitial();
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               CustomButton(
-                text: "Ice Breaker",
+                text: AppLocalizations.of(context)!.ice_breaker,
                 onTap: () async {
                   final AdManager adManager = AdManager(context);
                   await adManager.showInterstitial();

@@ -5,6 +5,7 @@ import 'package:rizzhub/components/custom_tile.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
 import 'package:rizzhub/widgets/language_picker_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../ads/ads_manager.dart';
 
@@ -51,14 +52,14 @@ class CustomDrawer extends StatelessWidget {
                           mode: LaunchMode.externalApplication);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                        SnackBar(
                             content:
-                                Text("Could not open Privacy Policy link")),
+                                Text(AppLocalizations.of(context)!.privacy_policy_error)),
                       );
                     }
                   },
                   icon: const Icon(Icons.privacy_tip_outlined),
-                  title: "Privacy Policy"),
+                  title:AppLocalizations.of(context)!.privacy_policy),
               const SizedBox(
                 height: 10,
               ),
@@ -71,14 +72,14 @@ class CustomDrawer extends StatelessWidget {
                           mode: LaunchMode.externalApplication);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                         SnackBar(
                             content:
-                                Text("Could not open the Play Store link")),
+                                Text(AppLocalizations.of(context)!.play_store_error)),
                       );
                     }
                   },
                   icon: const Icon(Icons.star_border),
-                  title: "App Rating"),
+                  title: AppLocalizations.of(context)!.app_rating),
               const SizedBox(
                 height: 10,
               ),
@@ -92,14 +93,14 @@ class CustomDrawer extends StatelessWidget {
                           mode: LaunchMode.externalApplication);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                         SnackBar(
                             content:
-                            Text("Could not open Google Form")),
+                            Text(AppLocalizations.of(context)!.google_form_error)),
                       );
                     }
                   },
                   icon: const Icon(Icons.delete_outline),
-                  title: "Delete Data Request"),
+                  title: AppLocalizations.of(context)!.delete_data_request),
               const SizedBox(
                 height: 10,
               ),
@@ -109,7 +110,7 @@ class CustomDrawer extends StatelessWidget {
                     await adManager.showInterstitial();
                   },
                   icon: const Icon(Icons.notification_important),
-                  title: "VIP"),
+                  title: AppLocalizations.of(context)!.vip),
               const SizedBox(
                 height: 10,
               ),
@@ -122,7 +123,7 @@ class CustomDrawer extends StatelessWidget {
                   );
                   },
                   icon: const Icon(Icons.language),
-                  title: "Language "),
+                  title: AppLocalizations.of(context)!.language),
             ],
           ),
         ),
