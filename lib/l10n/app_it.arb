@@ -33,7 +33,6 @@
     "lets_start_messaging": "Iniziamo a inviare messaggi",
     "ai_assistant_rizz": "AI Assistant Rizz.",
     "current_language": "Lingua attuale:",
-    "language_changed_to": "Lingua cambiata in",
     "english": "Inglese",
     "arabic": "Arabo",
     "hindi": "Hindi",
@@ -47,5 +46,11 @@
     "dutch": "Olandese",
     "italian": "Italiano",
     "chinese": "Cinese",
-    "unknown": "Sconosciuto"
+    "unknown": "Sconosciuto",
+    "or": "o",
+  "male": "Maschio",
+  "female": "Femmina",
+  "other": "Altro",
+  "language_selected": "{languageName} selezionato",
+  "language_changed_to": "Lingua cambiata in {languageChangedto}"
 }

@@ -4,6 +4,7 @@ import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/l10n/l10n.dart';
 import 'package:rizzhub/provider/locale_provider.dart';
 import 'package:rizzhub/components/custom_tile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LanguagePickerScreen extends StatelessWidget {
   @override
@@ -13,10 +14,14 @@ class LanguagePickerScreen extends StatelessWidget {
     final flag = L10n.getFlag(locale.languageCode);
     final currentLanguageName = L10n.getLanguageName(locale.languageCode);
 
+
+String languageChangedMessage = AppLocalizations.of(context)!.language_changed_to(currentLanguageName);
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Select Language',
+          AppLocalizations.of(context)!.select_language,
           style: TextStyle(
             color: Constants.whiteSecondaryColor,
           ),
@@ -34,7 +39,7 @@ class LanguagePickerScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Current Language: ',
+                  AppLocalizations.of(context)!.current_language,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -67,7 +72,7 @@ class LanguagePickerScreen extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          'Language changed to $languageName',
+                          languageChangedMessage,
                           style: TextStyle(color: Constants.primaryColor),
                         ),
                         backgroundColor: Constants.buttonBgColor,

@@ -33,7 +33,6 @@
     "lets_start_messaging": "开始发送消息",
     "ai_assistant_rizz": "AI助手Rizz。",
     "current_language": "当前语言：",
-    "language_changed_to": "语言已更改为",
     "english": "英语",
     "arabic": "阿拉伯语",
     "hindi": "印地语",
@@ -47,5 +46,12 @@
     "dutch": "荷兰语",
     "italian": "意大利语",
     "chinese": "中文",
-    "unknown": "未知"
+    "unknown": "未知",
+
+     "or": "或",
+  "male": "男性",
+  "female": "女性",
+  "other": "其他",
+  "language_selected": "{languageName} 已选择",
+  "language_changed_to": "语言更改为 {languageChangedto}"
 }

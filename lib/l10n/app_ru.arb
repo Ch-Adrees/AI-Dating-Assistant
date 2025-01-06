@@ -33,7 +33,6 @@
     "lets_start_messaging": "Давайте начнем общаться",
     "ai_assistant_rizz": "AI Ассистент Ризз.",
     "current_language": "Текущий язык:",
-    "language_changed_to": "Язык изменен на",
     "english": "Английский",
     "arabic": "Арабский",
     "hindi": "Хинди",
@@ -47,5 +46,12 @@
     "dutch": "Голландский",
     "italian": "Итальянский",
     "chinese": "Китайский",
-    "unknown": "Неизвестный"
+    "unknown": "Неизвестный",
+
+     "or": "или",
+  "male": "Мужской",
+  "female": "Женский",
+  "other": "Другое",
+  "language_selected": "{languageName} выбрано",
+  "language_changed_to": "Язык изменен на {languageChangedto}"
 }

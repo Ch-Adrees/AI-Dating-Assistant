@@ -9,11 +9,12 @@ import 'package:rizzhub/screens/home.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DataBoardingScreen extends StatelessWidget {
-  const DataBoardingScreen({super.key});
-  final List<String> dropDownValues = const ["Male", "Female", "Other"];
+   DataBoardingScreen({super.key});
+ 
 
   @override
   Widget build(BuildContext context) {
+     final List<String> dropDownValues =  [AppLocalizations.of(context)!.male, AppLocalizations.of(context)!.female, AppLocalizations.of(context)!.other];
     return Scaffold(
         appBar: AppBar(),
         body: SafeArea(
@@ -138,6 +139,11 @@ class LanguageDropdown extends StatelessWidget {
     final provider = Provider.of<LocaleProvider>(context);
     final currentLocale = provider.locale ?? const Locale('en');
 
+    
+
+// String LanguageSelectionMessage = AppLocalizations.of(context)!.language_selected(selectedLanguage);
+
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: DropdownMenu(
@@ -167,12 +173,15 @@ class LanguageDropdown extends StatelessWidget {
         onSelected: (Locale? selectedLocale) {
           if (selectedLocale != null) {
             provider.setLocale(selectedLocale);
+            String selectedLanguage = L10n.getLanguageName(selectedLocale.languageCode);
+            String LanguageSelectionMessage = AppLocalizations.of(context)!.language_selected(selectedLanguage);
 
             // Confirmation SnackBar
             ScaffoldMessenger.of(context).showSnackBar(
+              
               SnackBar(
                 content: Text(
-                  '${L10n.getLanguageName(selectedLocale.languageCode)} selected',
+                  LanguageSelectionMessage,
                   style: const TextStyle(fontFamily: "Poppins"),
                 ),
                 backgroundColor: Constants.buttonBgColor,

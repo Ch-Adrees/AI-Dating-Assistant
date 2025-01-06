@@ -33,7 +33,6 @@
     "lets_start_messaging": "आइए संदेश भेजना शुरू करें",
     "ai_assistant_rizz": "एआई सहायक रिज़।",
     "current_language": "वर्तमान भाषा:",
-    "language_changed_to": "भाषा बदलकर हो गई",
     "english": "अंग्रेज़ी",
     "arabic": "अरबी",
     "hindi": "हिंदी",
@@ -47,5 +46,12 @@
     "dutch": "डच",
     "italian": "इतालवी",
     "chinese": "चीनी",
-    "unknown": "अज्ञात"
+    "unknown": "अज्ञात",
+
+    "or": "या",
+  "male": "पुरुष",
+  "female": "महिला",
+  "other": "अन्य",
+  "language_selected": "{languageName} चयनित",
+  "language_changed_to": "भाषा {languageChangedto} में बदल गई"
 }

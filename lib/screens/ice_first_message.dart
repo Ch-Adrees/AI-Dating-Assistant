@@ -30,24 +30,36 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   List<String> _seenDocIds = [];
 
   // Get the user's selected language code
-  Future<String> _getUserSelectedLanguage(BuildContext context) async {
-    final locale = context.watch<LocaleProvider>().locale;
-    return locale?.languageCode ?? 'en'; // Default to English
-  }
+ Future<String> _getUserSelectedLanguage(BuildContext context) async {
+  final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
+  return locale?.languageCode ?? 'en'; // Default to English
+}
 
   // Map language codes to TranslateLanguage
   TranslateLanguage getTranslateLanguage(String userSelectedLanguage) {
     switch (userSelectedLanguage.toLowerCase()) {
-      case 'tr': // Turkish
-        return TranslateLanguage.turkish;
+      case 'ar': // Arabic
+        return TranslateLanguage.arabic;
+      case 'de': // German
+        return TranslateLanguage.german;
+      case 'el': // Turkish
+        return TranslateLanguage.greek;
       case 'es': // Spanish
         return TranslateLanguage.spanish;
       case 'fr': // French
         return TranslateLanguage.french;
-      case 'de': // German
-        return TranslateLanguage.german;
-      case 'ar': // Arabic
-        return TranslateLanguage.arabic;
+      case 'hi': // Hindi
+        return TranslateLanguage.hindi;
+      case 'it': // Italian
+        return TranslateLanguage.italian;
+      case 'nl': // Dutch
+        return TranslateLanguage.dutch;
+      case 'pt': // Portuguese
+        return TranslateLanguage.portuguese;
+      case 'ru': // Russian
+        return TranslateLanguage.russian;
+      case 'tr': // Turkish
+        return TranslateLanguage.turkish;
       case 'zh': // Chinese
         return TranslateLanguage.chinese;
       default:
@@ -56,7 +68,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   }
 
   // Fetch a random document and translate it
-  Future<void> fetchRandomDocument(BuildContext context) async {
+  Future<void> fetchRandomDocument() async {
     try {
       String userSelectedLanguage = await _getUserSelectedLanguage(context);
       String collectionName = widget.toScreen == 'first'
@@ -123,7 +135,10 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Consumer<LocaleProvider>(
+      builder: (context, localeProvider, child) {
+       // String userSelectedLanguage = localeProvider.locale?.languageCode ?? 'en';
+        return Scaffold(
       appBar: CustomAppBar(
         onTap: () {
           Get.back();
@@ -178,7 +193,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                   onTap: () async {
                     final AdManager adManager = AdManager(context);
                     await adManager.showRewardedAd();
-                    fetchRandomDocument(context);
+                    fetchRandomDocument();
                   },
                   text: AppLocalizations.of(context)!.random_generator,
                 ),
@@ -189,5 +204,8 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
         ),
       ),
     );
+    
   }
+    );
+}
 }

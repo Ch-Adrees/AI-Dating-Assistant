@@ -33,7 +33,7 @@
     "lets_start_messaging": "Laten we beginnen met berichten versturen",
     "ai_assistant_rizz": "AI Assistent Rizz.",
     "current_language": "Huidige taal:",
-    "language_changed_to": "Taal veranderd naar",
+
     "english": "Engels",
     "arabic": "Arabisch",
     "hindi": "Hindi",
@@ -47,5 +47,12 @@
     "dutch": "Nederlands",
     "italian": "Italiaans",
     "chinese": "Chinees",
-    "unknown": "Onbekend"
+    "unknown": "Onbekend",
+
+     "or": "of",
+  "male": "Man",
+  "female": "Vrouw",
+  "other": "Anders",
+  "language_selected": "{languageName} geselecteerd",
+  "language_changed_to": "Taal gewijzigd naar {languageChangedto}"
 }

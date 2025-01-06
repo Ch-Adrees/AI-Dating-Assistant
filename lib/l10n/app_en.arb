@@ -3,6 +3,7 @@
     "@drag_drop": {
       "description": "Prompt to drag and drop or pick an image."
     },
+
     "paste_message": "Paste Your Message Here",
     "@paste_message": {
       "description": "Instruction to paste a message in the text field."
@@ -135,10 +136,6 @@
     "@current_language": {
       "description": "Label to display the current language."
     },
-    "language_changed_to": "Language changed to",
-    "@language_changed_to": {
-      "description": "Notification when the language is changed."
-    },
     "english": "English",
     "@english": {
       "description": "English language name."
@@ -194,5 +191,45 @@
     "unknown": "Unknown",
     "@unknown": {
       "description": "Label for unknown language."
+    },
+
+     "or": "or",
+  "@or": {
+    "description": "Label for 'or' option between choices."
+  },
+  "male": "Male",
+  "@male": {
+    "description": "Label for selecting the male gender."
+  },
+  "female": "Female",
+  "@female": {
+    "description": "Label for selecting the female gender."
+  },
+  "other": "Other",
+  "@other": {
+    "description": "Label for selecting other genders."
+  },
+
+  "language_selected": "{languageName} selected",
+  "@language_selected": {
+    "description": "Message indicating the selected language dynamically.",
+    "placeholders": {
+      "languageName": {
+        "type": "String",
+        "description": "Name of the selected language."
+      }
     }
+  },
+
+  "language_changed_to": "Language changed to {languageChangedto}",
+  "@language_changed_to": {
+    "description": "Message indicating the selected language dynamically.",
+    "placeholders": {
+      "languageChangedto": {
+        "type": "String",
+        "description": "Name of the selected language."
+      }
+    }
+  }
+ 
 }

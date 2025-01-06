@@ -33,7 +33,6 @@
     "lets_start_messaging": "Ας ξεκινήσουμε την αποστολή μηνυμάτων",
     "ai_assistant_rizz": "AI Assistant Rizz.",
     "current_language": "Τρέχουσα γλώσσα:",
-    "language_changed_to": "Η γλώσσα άλλαξε σε",
     "english": "Αγγλικά",
     "arabic": "Αραβικά",
     "hindi": "Χίντι",
@@ -47,5 +46,12 @@
     "dutch": "Ολλανδικά",
     "italian": "Ιταλικά",
     "chinese": "Κινέζικα",
-    "unknown": "Άγνωστο"
+    "unknown": "Άγνωστο",
+
+    "or": "ή",
+  "male": "Άνδρας",
+  "female": "Γυναίκα",
+  "other": "Άλλο",
+  "language_selected": "Επιλέχθηκε {languageName}",
+  "language_changed_to": "Η γλώσσα άλλαξε σε {languageChangedto}"
 }

@@ -33,7 +33,6 @@
     "lets_start_messaging": "لنبدأ المراسلة",
     "ai_assistant_rizz": "مساعد الذكاء الاصطناعي ريز.",
     "current_language": "اللغة الحالية:",
-    "language_changed_to": "تم تغيير اللغة إلى",
     "english": "الإنجليزية",
     "arabic": "العربية",
     "hindi": "الهندية",
@@ -47,5 +46,12 @@
     "dutch": "الهولندية",
     "italian": "الإيطالية",
     "chinese": "الصينية",
-    "unknown": "غير معروف"
+    "unknown": "غير معروف",
+
+    "or": "أو",
+  "male": "ذكر",
+  "female": "أنثى",
+  "other": "آخر",
+  "language_selected": "تم اختيار {languageName}",
+  "language_changed_to": "تم تغيير اللغة إلى {languageChangedto}"
 }

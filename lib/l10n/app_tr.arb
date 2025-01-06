@@ -33,7 +33,7 @@
     "lets_start_messaging": "Mesajlaşmaya Başlayalım",
     "ai_assistant_rizz": "AI Yardımcısı Rizz.",
     "current_language": "Geçerli Dil:",
-    "language_changed_to": "Dil şuna değiştirildi:",
+
     "english": "İngilizce",
     "arabic": "Arapça",
     "hindi": "Hintçe",
@@ -47,5 +47,12 @@
     "dutch": "Flemenkçe",
     "italian": "İtalyanca",
     "chinese": "Çince",
-    "unknown": "Bilinmeyen"
+    "unknown": "Bilinmeyen",
+
+    "or": "veya",
+  "male": "Erkek",
+  "female": "Kadın",
+  "other": "Diğer",
+  "language_selected": "{languageName} seçildi",
+  "language_changed_to": "Dil {languageChangedto} olarak değiştirildi"
 }
