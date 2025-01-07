@@ -97,9 +97,6 @@ class _AssistantScreenState extends State<AssistantScreen> {
         _recognizedText = recognizedText.text;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Recognized Text: $_recognizedText")),
-      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to recognize text: $e")),

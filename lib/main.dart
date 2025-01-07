@@ -18,30 +18,37 @@ import 'package:provider/provider.dart';
 import 'package:rizzhub/screens/onbaording.dart';
 import 'components/constants.dart';
 import 'provider/counter_provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Get.put(InternetController());
+  await Future.delayed(Duration(seconds: 3));
+    Get.put(InternetController());
 
-  await Appodeal.initialize(
-    appKey: 'edf0eeb97ff2d940bd1fc71234dc74d80f3eb7d06d96bf97' ,
-    adTypes: [Appodeal.INTERSTITIAL, Appodeal.REWARDED_VIDEO, Appodeal.BANNER],
-    onInitializationFinished: (errors) {},
-  );
+    await Appodeal.initialize(
+      appKey: 'edf0eeb97ff2d940bd1fc71234dc74d80f3eb7d06d96bf97',
+      adTypes: [
+        Appodeal.INTERSTITIAL,
+        Appodeal.REWARDED_VIDEO,
+        Appodeal.BANNER
+      ],
+      onInitializationFinished: (errors) {},
+    );
 
-  await Firebase.initializeApp(
-    name: 'Woorizz',
-    options: FirebaseOptions(
-      apiKey: 'AIzaSyDtoQDSe8qWtgs0llxAOPt4wQ4NSPRWGlE',
-      appId: "1:1066647473944:android:08f9c34e4891cae33dd86d",
-      messagingSenderId: "1066647473944",
-      projectId: "conversation-questions-finder",
-    ),
-  );
+    await Firebase.initializeApp(
+      name: 'Woorizz',
+      options: FirebaseOptions(
+        apiKey: 'AIzaSyDtoQDSe8qWtgs0llxAOPt4wQ4NSPRWGlE',
+        appId: "1:1066647473944:android:08f9c34e4891cae33dd86d",
+        messagingSenderId: "1066647473944",
+        projectId: "conversation-questions-finder",
+      ),
+    );
 
-  Utils.configureRevenueCatWithApp();
+  FlutterNativeSplash.remove();
+    Utils.configureRevenueCatWithApp();
 
   runApp(
     ChangeNotifierProvider(

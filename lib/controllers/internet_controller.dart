@@ -76,42 +76,26 @@ class InternetController extends GetxController {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomButton(
+                Expanded(
+                    child: CustomButton(
                         onTap: () {
+                          bool isConnected = false;
                           Get.back();
+                          Get.dialog(const LoadingDialog());
+                          Future.delayed(const Duration(seconds: 3),
+                              () async {
+                            isConnected = await pingServer();
+                            if (isConnected) {
+                              message.value = "connected";
+                              Get.back();
+                            } else {
+                              Get.back();
+                              showDialog(Get.context!);
+                            }
+                          });
                         },
                         color: Colors.black45,
-                        text: AppLocalizations.of(context)!.okay,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                        child: CustomButton(
-                            onTap: () {
-                              bool isConnected = false;
-                              Get.back();
-                              Get.dialog(const LoadingDialog());
-                              Future.delayed(const Duration(seconds: 3),
-                                  () async {
-                                isConnected = await pingServer();
-                                if (isConnected) {
-                                  message.value = "connected";
-                                  Get.back();
-                                } else {
-                                  Get.back();
-                                  showDialog(Get.context!);
-                                }
-                              });
-                            },
-                            color: Colors.black45,
-                            text: AppLocalizations.of(context)!.retry)),
-                  ],
-                ),
+                        text: AppLocalizations.of(context)!.retry)),
               ],
             ),
           ),

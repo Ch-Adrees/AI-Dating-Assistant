@@ -36,7 +36,7 @@ class AdManager {
       bool isBannerLoaded = await Appodeal.isLoaded(Appodeal.BANNER_BOTTOM);
       Appodeal.cache(Appodeal.BANNER_BOTTOM);
       if (isBannerLoaded) {
-        Appodeal.show(Appodeal.BANNER_BOTTOM);
+        Appodeal.show(Appodeal.BANNER_BOTTOM, 'BannerAds1');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Banner ads not ready, Retrying...')),
