@@ -31,6 +31,7 @@ class AdManager {
 
   // Show Banner Ads
   Future<void> showBannerAd() async {
+    await checkAndBlockAds();
     if(_isAdsBlocked) return;
     try {
       bool isBannerLoaded = await Appodeal.isLoaded(Appodeal.BANNER_BOTTOM);
@@ -39,7 +40,7 @@ class AdManager {
         Appodeal.show(Appodeal.BANNER_BOTTOM, 'BannerAds1');
       } else {
 
-        Future.delayed(const Duration(seconds: 30), () {
+        Future.delayed(const Duration(minutes: 1), () {
           showBannerAd();
         });
       }
@@ -52,6 +53,7 @@ class AdManager {
 
   // Show Interstitial Ads
   Future<void> showInterstitial() async {
+    await checkAndBlockAds();
     if(_isAdsBlocked) return;
     bool isReady = await Appodeal.isLoaded(Appodeal.INTERSTITIAL);
     if (isReady) {
@@ -61,6 +63,7 @@ class AdManager {
 
   // Show Reward Ads
   Future<void> showRewardedAd() async {
+    await checkAndBlockAds();
     if(_isAdsBlocked) return;
     bool isReady = await Appodeal.isLoaded(Appodeal.REWARDED_VIDEO);
     if (isReady) {
