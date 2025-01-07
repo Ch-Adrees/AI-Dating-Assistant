@@ -38,11 +38,8 @@ class AdManager {
       if (isBannerLoaded) {
         Appodeal.show(Appodeal.BANNER_BOTTOM, 'BannerAds1');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Banner ads not ready, Retrying...')),
-        );
 
-        Future.delayed(const Duration(minutes: 1), () {
+        Future.delayed(const Duration(seconds: 30), () {
           showBannerAd();
         });
       }
@@ -59,10 +56,6 @@ class AdManager {
     bool isReady = await Appodeal.isLoaded(Appodeal.INTERSTITIAL);
     if (isReady) {
       Appodeal.show(Appodeal.INTERSTITIAL, 'InterstitialAds1');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Interstitial ads not ready')),
-      );
     }
   }
 
@@ -72,10 +65,6 @@ class AdManager {
     bool isReady = await Appodeal.isLoaded(Appodeal.REWARDED_VIDEO);
     if (isReady) {
       Appodeal.show(Appodeal.REWARDED_VIDEO, 'RewardsAds1');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Rewarded ads not ready')),
-      );
     }
   }
 }
