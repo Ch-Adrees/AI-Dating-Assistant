@@ -230,6 +230,19 @@
         "description": "Name of the selected language."
       }
     }
+  },
+
+   "woo_rizz_premium_subscriptions": "✨Woo Rizz Premium Subscriptions",
+  "@woo_rizz_premium_subscriptions": {
+    "description": "Title for the premium subscription section in the Woo Rizz app."
+  },
+  "rizz_subscription_catalog": "Rizz's Subscription Catalog",
+  "@rizz_subscription_catalog": {
+    "description": "Heading for the subscription catalog in the Woo Rizz app."
+  },
+  "woo_rizz_offering_subscriptions": "Woo Rizz offering a variety of subscriptions. Buy according to your choice and get rid of the ads.",
+  "@woo_rizz_offering_subscriptions": {
+    "description": "Message describing the subscription offerings in the Woo Rizz app."
   }
  
 }

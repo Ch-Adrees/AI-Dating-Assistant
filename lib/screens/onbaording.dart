@@ -28,7 +28,7 @@ class OnboardingScreen extends StatelessWidget {
                   padding: EdgeInsets.all(10.0),
                   child: Center(
                     child: Text(
-                      "AI Assistant Rizz.",
+                      "AI Assistant Rizz",
                       style: TextStyle(
                         color: Colors.white,
                         fontFamily: "Poppins",
@@ -67,13 +67,17 @@ class OnboardingScreen extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            controller.onboardingData[controller.selectedIndex]
-                                ['rowText']!,
-                            style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontFamily: "Poppins"),
+                          Expanded(
+                            child: Text(
+                              controller.onboardingData[controller.selectedIndex]
+                                  ['rowText']!,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontFamily: "Poppins"),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                           const Icon(
                             Icons.arrow_circle_right,

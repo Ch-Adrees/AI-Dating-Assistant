@@ -6,7 +6,7 @@ import 'package:rizzhub/controllers/views/data_boarding_controller.dart';
 import 'package:rizzhub/l10n/l10n.dart';
 import 'package:rizzhub/provider/locale_provider.dart';
 import 'package:rizzhub/screens/home.dart';
-import '../components/constants.dart';
+
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DataBoardingScreen extends StatelessWidget {
@@ -126,13 +126,17 @@ class DataBoardingScreen extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                AppLocalizations.of(context)!
-                                    .lets_start_messaging,
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontFamily: "Poppins"),
+                              Expanded(
+                                child: Text(
+                                  AppLocalizations.of(context)!
+                                      .lets_start_messaging,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontFamily: "Poppins"),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                               const Icon(
                                 Icons.arrow_circle_right,

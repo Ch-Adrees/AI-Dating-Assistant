@@ -53,5 +53,10 @@
   "female": "महिला",
   "other": "अन्य",
   "language_selected": "{languageName} चयनित",
-  "language_changed_to": "भाषा {languageChangedto} में बदल गई"
+  "language_changed_to": "भाषा {languageChangedto} में बदल गई",
+
+  "woo_rizz_premium_subscriptions": "✨वू रिज़ प्रीमियम सदस्यताएँ",
+  "rizz_subscription_catalog": "रिज़ की सदस्यता सूची",
+  "woo_rizz_offering_subscriptions": "वू रिज़ विभिन्न सदस्यताएँ प्रदान करता है। अपनी पसंद के अनुसार खरीदें और विज्ञापनों से छुटकारा पाएं।"
+
 }

@@ -53,5 +53,11 @@
   "female": "Γυναίκα",
   "other": "Άλλο",
   "language_selected": "Επιλέχθηκε {languageName}",
-  "language_changed_to": "Η γλώσσα άλλαξε σε {languageChangedto}"
+  "language_changed_to": "Η γλώσσα άλλαξε σε {languageChangedto}",
+
+
+  "woo_rizz_premium_subscriptions": "✨Premium Συνδρομές Woo Rizz",
+  "rizz_subscription_catalog": "Κατάλογος Συνδρομών Rizz",
+  "woo_rizz_offering_subscriptions": "Το Woo Rizz προσφέρει μια ποικιλία συνδρομών. Αγοράστε σύμφωνα με την επιλογή σας και απαλλαγείτε από τις διαφημίσεις."
+
 }

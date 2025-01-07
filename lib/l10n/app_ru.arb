@@ -53,5 +53,11 @@
   "female": "Женский",
   "other": "Другое",
   "language_selected": "{languageName} выбрано",
-  "language_changed_to": "Язык изменен на {languageChangedto}"
+  "language_changed_to": "Язык изменен на {languageChangedto}",
+
+
+  "woo_rizz_premium_subscriptions": "✨Премиум подписки Woo Rizz",
+  "rizz_subscription_catalog": "Каталог подписок Rizz",
+  "woo_rizz_offering_subscriptions": "Woo Rizz предлагает разнообразные подписки. Выбирайте по своему вкусу и избавляйтесь от рекламы."
+
 }

@@ -52,5 +52,11 @@
   "female": "Femmina",
   "other": "Altro",
   "language_selected": "{languageName} selezionato",
-  "language_changed_to": "Lingua cambiata in {languageChangedto}"
+  "language_changed_to": "Lingua cambiata in {languageChangedto}",
+
+  
+  "woo_rizz_premium_subscriptions": "✨Abbonamenti Premium di Woo Rizz",
+  "rizz_subscription_catalog": "Catalogo abbonamenti di Rizz",
+  "woo_rizz_offering_subscriptions": "Woo Rizz offre una varietà di abbonamenti. Acquista secondo la tua scelta e dì addio agli annunci."
+
 }
