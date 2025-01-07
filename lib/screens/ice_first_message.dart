@@ -14,6 +14,9 @@ import 'package:rizzhub/components/custom_text_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rizzhub/l10n/l10n.dart';
 import '../ads/ads_manager.dart';
+
+import '../provider/counter_provider.dart';
+
 import '../provider/locale_provider.dart';
 
 class IceAndFirstMessage extends StatefulWidget {
@@ -71,16 +74,16 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   Future<void> fetchRandomDocument() async {
     try {
       String userSelectedLanguage = await _getUserSelectedLanguage(context);
-      String collectionName = widget.toScreen == 'first'
-          ? 'conversationstarter'
-          : 'randomtopic';
+      String collectionName =
+          widget.toScreen == 'first' ? 'conversationstarter' : 'randomtopic';
 
       QuerySnapshot querySnapshot =
           await _firestore.collection(collectionName).get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        List<DocumentSnapshot> unseenDocs =
-            querySnapshot.docs.where((doc) => !_seenDocIds.contains(doc.id)).toList();
+        List<DocumentSnapshot> unseenDocs = querySnapshot.docs
+            .where((doc) => !_seenDocIds.contains(doc.id))
+            .toList();
 
         if (unseenDocs.isEmpty) {
           _seenDocIds.clear();
@@ -95,14 +98,17 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
         final data = randomDoc.data() as Map<String, dynamic>?;
         String question = data?['question'] ?? 'No question available';
 
-        String translatedText = await translateText(question, userSelectedLanguage);
+        String translatedText =
+            await translateText(question, userSelectedLanguage);
 
         setState(() {
           _responseController.text = translatedText;
         });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No documents found in the $collectionName collection.')),
+          SnackBar(
+              content: Text(
+                  'No documents found in the $collectionName collection.')),
         );
       }
     } catch (e) {
@@ -114,7 +120,8 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
 
   // Translate text using MLKit
   Future<String> translateText(String text, String userSelectedLanguage) async {
-    final TranslateLanguage targetLanguage = getTranslateLanguage(userSelectedLanguage);
+    final TranslateLanguage targetLanguage =
+        getTranslateLanguage(userSelectedLanguage);
     final onDeviceTranslator = OnDeviceTranslator(
       sourceLanguage: TranslateLanguage.english,
       targetLanguage: targetLanguage,
@@ -125,7 +132,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
       return translated;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Translation error: $e')),
+        SnackBar(content: Text('Translation error: Try Again Later')),
       );
       return 'Translation Failed';
     } finally {
@@ -135,6 +142,9 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final counterProvider = Provider.of<CounterProvider>(context);
+
     return Consumer<LocaleProvider>(
       builder: (context, localeProvider, child) {
        // String userSelectedLanguage = localeProvider.locale?.languageCode ?? 'en';
@@ -151,53 +161,57 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    IntrinsicHeight(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.75,
-                        child: CustomTextfield(
-                          readOnly: true,
-                          maxLines: 5,
-                          hintText: AppLocalizations.of(context)!.random_response,
-                          label: AppLocalizations.of(context)!.response,
-                          controller: _responseController,
-                        ),
+                Row(children: [
+                  IntrinsicHeight(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: CustomTextfield(
+                        readOnly: true,
+                        maxLines: 5,
+                        hintText: AppLocalizations.of(context)!.random_response,
+                        label: AppLocalizations.of(context)!.response,
+                        controller: _responseController,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    CustomIconButton(
-                      onTap: () {
-                        if (_responseController.text.isNotEmpty) {
-                          Clipboard.setData(
-                              ClipboardData(text: _responseController.text));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(AppLocalizations.of(context)!.copied),
-                            ),
-                          );
-                        }
-                      },
-                      height: 55,
-                      width: 55,
-                      icon: Icon(
-                        Icons.content_copy,
-                        color: Constants.primaryColor,
-                        size: 25,
-                      ),
-                    )
-                  ],
-                ),
+                  ),
+                  const SizedBox(width: 10),
+                  CustomIconButton(
+                    onTap: () {
+                      if (_responseController.text.isNotEmpty) {
+                        Clipboard.setData(
+                            ClipboardData(text: _responseController.text));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(AppLocalizations.of(context)!.copied),
+                          ),
+                        );
+                      }
+                    },
+                    height: 55,
+                    width: 55,
+                    icon: Icon(
+                      Icons.content_copy,
+                      color: Constants.primaryColor,
+                      size: 25,
+                    ),
+                  ),
+                ]),
                 const SizedBox(height: 50),
                 CustomButton(
                   onTap: () async {
-                    final AdManager adManager = AdManager(context);
-                    await adManager.showRewardedAd();
-                    fetchRandomDocument();
+
+                    await counterProvider
+                        .incrementCounter(); // Increment counter
+                    if (counterProvider.counter >= counterProvider.threshold) {
+                      final AdManager adManager = AdManager(context);
+                      await adManager.showRewardedAd();
+                      counterProvider
+                          .resetCounter(); // Reset counter after showing the ad
+                    }
+                    await fetchRandomDocument();
                   },
                   text: AppLocalizations.of(context)!.random_generator,
                 ),
-                const SizedBox(height: 20),
               ],
             ),
           ),

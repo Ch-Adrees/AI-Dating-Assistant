@@ -6,6 +6,7 @@ import 'package:rizzhub/controllers/views/data_boarding_controller.dart';
 import 'package:rizzhub/l10n/l10n.dart';
 import 'package:rizzhub/provider/locale_provider.dart';
 import 'package:rizzhub/screens/home.dart';
+import '../components/constants.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DataBoardingScreen extends StatelessWidget {
@@ -65,12 +66,17 @@ class DataBoardingScreen extends StatelessWidget {
                         ),
                       ),
                     ),
+                    style: const TextStyle(
+                      color: Colors.white, // Text input color
+                      fontFamily: "Poppins",
+                    ),
+                    keyboardType: TextInputType.number,
                   ),
                   DropdownMenu(
                     label: Text(
                       AppLocalizations.of(context)!.select_gender,
-                      style:
-                          const TextStyle(color: Colors.white, fontFamily: "Poppins"),
+                      style: const TextStyle(
+                          color: Colors.white, fontFamily: "Poppins"),
                     ),
                     textStyle: const TextStyle(
                         color: Colors.white,
@@ -80,8 +86,12 @@ class DataBoardingScreen extends StatelessWidget {
                     dropdownMenuEntries: dropDownValues.map((String gender) {
                       return DropdownMenuEntry(value: gender, label: gender);
                     }).toList(),
+                    onSelected: (value) {
+                      controller.selectedGender =
+                          value; // Update selected gender
+                    },
                   ),
-                 LanguageDropdown(),
+                  LanguageDropdown(),
                   Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
@@ -92,13 +102,33 @@ class DataBoardingScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(10.0),
                         child: InkWell(
                           onTap: () {
+                            if (controller.ageController.text.isEmpty) {
+                              Get.snackbar(
+                                "Error",
+                                "Age is required.",
+                                backgroundColor: Constants.buttonBgColor,
+                                colorText: Colors.white,
+                              );
+                              return;
+                            }
+
+                            if (controller.selectedGender == null) {
+                              Get.snackbar(
+                                "Error",
+                                "Gender is required.",
+                                backgroundColor: Constants.buttonBgColor,
+                                colorText: Colors.white,
+                              );
+                              return;
+                            }
                             Get.to(() => const HomeScreen());
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                AppLocalizations.of(context)!.lets_start_messaging,
+                                AppLocalizations.of(context)!
+                                    .lets_start_messaging,
                                 style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -121,14 +151,23 @@ class DataBoardingScreen extends StatelessWidget {
   }
 }
 
+class DataBoardingController extends GetxController {
+  // Controller for the age input field
+  TextEditingController ageController = TextEditingController();
+
+  // Variables to store selected gender and language
+  String? selectedGender;
+  String? selectedLanguage;
+
+  // Lifecycle management: Dispose of the ageController when done
+  @override
+  void onClose() {
+    ageController.dispose();
+    super.onClose();
+  }
+}
 
 // // Import necessary packages at the top
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:rizzhub/l10n/l10n.dart';
-// import 'package:rizzhub/provider/locale_provider.dart';
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-// import 'package:rizzhub/components/constants.dart';
 
 // Add this code in the appropriate place in your data boarding screen
 class LanguageDropdown extends StatelessWidget {

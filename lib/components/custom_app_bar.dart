@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_icon.dart';
+
+import '../controllers/views/offering_controller.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key, this.whichScreen, required this.onTap, this.widgetContext});
@@ -11,6 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final OfferingController _offeringController = Get.put(OfferingController());
     return AppBar(
       leading: IconButton(
         onPressed: onTap,
@@ -24,7 +29,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       title: CustomIconButton(
-        onTap: () {},
+        onTap: () {
+          _offeringController.checkOfferings(context);
+        },
         centerItem: "VIP",
         width: 50,
       ),
@@ -34,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           child: CustomIconButton(
             onTap: () {
               Share.share(
-                'https://play.google.com/store/apps/details?id=com.rizzlabs.rizz',
+                'https://play.google.com/store/apps/details?id=com.woo.rizz',
               );
             },
             icon: Icon(

@@ -8,6 +8,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+
+import 'package:image_cropper/image_cropper.dart';
+
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 
 import '../ads/ads_manager.dart';
@@ -19,6 +22,7 @@ import '../components/custom_text_field.dart';
 import '../controllers/views/assistant_screen_controller.dart';
 import '../provider/locale_provider.dart';
 import '../widgets/custom_emojies_row.dart';
+//import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AssistantScreen extends StatefulWidget {
   const AssistantScreen({super.key});
@@ -41,10 +45,43 @@ class _AssistantScreenState extends State<AssistantScreen> {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      setState(() {
-        _selectedImage = File(pickedFile.path);
-      });
-      await _recognizeText(_selectedImage!);
+      final croppedFile = await _cropImage(pickedFile.path);
+      if (croppedFile != null) {
+        setState(() {
+          _selectedImage = File(croppedFile.path);
+        });
+        await _recognizeText(_selectedImage!);
+      }
+    }
+  }
+
+  Future<CroppedFile?> _cropImage(String filePath) async {
+    try {
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: filePath,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Image',
+            toolbarColor: Constants.buttonBgColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
+            aspectRatioPresets: [
+              CropAspectRatioPreset.square,
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.ratio4x3,
+              CropAspectRatioPreset.ratio16x9,
+            ],
+          ),
+        ],
+      );
+      return croppedFile;
+    } catch (e) {
+      print("Error cropping image: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to crop image: $e")),
+      );
+      return null;
     }
   }
 
@@ -137,12 +174,17 @@ class _AssistantScreenState extends State<AssistantScreen> {
     }
 
     String selectedMood = _assistantScreenController.modeValue;
+    if (selectedMood.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please Select the Mood")),
+      );
+    }
     String prompt =
         "Respond to this message in a $selectedMood tone: \"$userInput\" and don't use emojis";
 
     try {
-      const String apiKey =
-          "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";
+      String apiKey =
+          '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';
       final response = await http.post(
         Uri.parse("https://api.openai.com/v1/chat/completions"),
         headers: {
@@ -150,12 +192,14 @@ class _AssistantScreenState extends State<AssistantScreen> {
           "Authorization": "Bearer $apiKey",
         },
         body: jsonEncode({
-          "model": "gpt-4o-mini-2024-07-18",
+          "model":
+              "gpt-4o-mini-2024-07-18", // Replace with the model you want to use
+
           "messages": [
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
           ],
-          "max_tokens": 100,
+          "max_tokens": 20,
         }),
       );
 
@@ -169,11 +213,22 @@ class _AssistantScreenState extends State<AssistantScreen> {
             await translateText(generatedResponse, userSelectedLanguage);
 
         setState(() {
+          _responseMessage = responseData['choices'][0]['message']['content'];
+          _responseMessage =
+              _responseMessage.replaceAll(RegExp(r'[^\x00-\x7F]'), '');
+
           _responseMessage = translatedResponse;
         });
+        if (_selectedImage != null) {
+          await _selectedImage!.delete();
+          setState(() {
+            _selectedImage = null; // Clear the image reference
+          });
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to generate response. ${response.body}")),
+          SnackBar(
+              content: Text("Failed to generate response.  ${response.body}")),
         );
       }
     } catch (e) {
@@ -234,45 +289,65 @@ class _AssistantScreenState extends State<AssistantScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    AppLocalizations.of(context)!.or,
-                    style: TextStyle(
-                      color: Constants.primaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+                  Text(AppLocalizations.of(context)!.or,
+                      style: TextStyle(
+                          color: Constants.primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20)),
+                  const SizedBox(
+                    height: 10,
                   ),
-                  const SizedBox(height: 10),
                   CustomTextfield(
                     controller: _inputController,
                     hintText: AppLocalizations.of(context)!.paste_message,
                     label: AppLocalizations.of(context)!.input_message,
                     maxLines: 5,
                   ),
-                  const SizedBox(height: 15),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   const CustomEmojiesRow(),
-                  const SizedBox(height: 15),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   CustomButton(
                     onTap: () async {
-                      final AdManager adManager = AdManager(context);
-                      await adManager.showRewardedAd();
-                      _generateResponse();
+                      if (_selectedImage != null &&
+                          _inputController.text.isNotEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  "Please choose either an image or text input, not both.")),
+                        );
+                      } else if (_selectedImage == null &&
+                          _inputController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text("Please provide the Input")),
+                        );
+                      } else {
+                        final AdManager adManager = AdManager(context);
+                        await adManager.showRewardedAd();
+                        await _generateResponse();
+                      }
                     },
                     text: AppLocalizations.of(context)!.submit,
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(
+                    height: 25,
+                  ),
                   Row(
                     children: [
                       Expanded(
-                        child: CustomTextfield(
-                          controller:
-                              TextEditingController(text: _responseMessage),
-                          label: AppLocalizations.of(context)!.response_message,
-                          hintText: AppLocalizations.of(context)!.response_of_input,
-                          maxLines: 3,
-                          readOnly: true,
-                        ),
-                      ),
+                          child: CustomTextfield(
+                              controller:
+                                  TextEditingController(text: _responseMessage),
+                              label: AppLocalizations.of(context)!
+                                  .response_message,
+                              hintText: AppLocalizations.of(context)!
+                                  .response_of_input,
+                              maxLines: 3,
+                              readOnly: true)),
                       const SizedBox(width: 10),
                       CustomIconButton(
                         height: 55,
@@ -284,7 +359,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
                             );
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(AppLocalizations.of(context)!.copied),
+                                content:
+                                    Text(AppLocalizations.of(context)!.copied),
                               ),
                             );
                           }

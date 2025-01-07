@@ -8,11 +8,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../ads/ads_manager.dart';
+import '../controllers/views/offering_controller.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({super.key});
   final String playStoreUrl =
-      "https://play.google.com/store/apps/details?id=com.rizzlabs.rizz";
+      "https://play.google.com/store/apps/details?id=com.woo.rizz";
 
   final String privacyPolicyUrl =
       "https://doc-hosting.flycricket.io/woo-rizz-ai-dating-assistant/cd611d47-afa8-41e1-a84f-e27093450eb4/privacy";
@@ -20,6 +21,8 @@ class CustomDrawer extends StatelessWidget {
   final String deleteDataRequestFormUrl = "https://forms.gle/7AogzANezhFCW6q9A";
   @override
   Widget build(BuildContext context) {
+    final OfferingController _offeringController = Get.put(OfferingController());
+
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.7,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -108,6 +111,7 @@ class CustomDrawer extends StatelessWidget {
                   onTap: () async {
                     final AdManager adManager = AdManager(context);
                     await adManager.showInterstitial();
+                    _offeringController.checkOfferings(context);
                   },
                   icon: const Icon(Icons.notification_important),
                   title: AppLocalizations.of(context)!.vip),
