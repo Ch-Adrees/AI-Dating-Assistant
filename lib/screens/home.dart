@@ -7,8 +7,10 @@ import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/screens/assistant.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
 import 'package:rizzhub/widgets/drawer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../ads/ads_manager.dart';
+import '../controllers/views/offering_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,7 +21,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return BannerAd(
@@ -44,17 +45,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               CustomButton(
-                text: "Generate Your First Message",
+
+                //text: "Ice Breaker",
+
+                text: AppLocalizations.of(context)!.ice_breaker,
                 onTap: () async {
                   final AdManager adManager = AdManager(context);
                   await adManager.showInterstitial();
                   Get.to(
-                    () => const IceAndFirstMessage(toScreen: "first"),
+                    () => const IceAndFirstMessage(toScreen: "ice"),
                   );
                 },
               ),
               CustomButton(
-                text: "Need Assistance ?",
+                text: AppLocalizations.of(context)!.need_assistance,
                 onTap: () async {
                   final AdManager adManager = AdManager(context);
                   await adManager.showInterstitial();
@@ -62,12 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               CustomButton(
-                text: "Ice Breaker",
+
+                text: AppLocalizations.of(context)!.generate_first_message,
                 onTap: () async {
                   final AdManager adManager = AdManager(context);
                   await adManager.showInterstitial();
                   Get.to(
-                    () => const IceAndFirstMessage(toScreen: "ice"),
+                    () => const IceAndFirstMessage(toScreen: "first"),
                   );
                 },
               ),

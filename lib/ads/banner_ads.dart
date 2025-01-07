@@ -10,8 +10,7 @@ class BannerAd extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Show the banner ad when the page is created
-    //Appodeal.show(Appodeal.BANNER_BOTTOM);
+
     final AdManager adManager = AdManager(context);
     adManager.showBannerAd();
 
@@ -27,8 +26,8 @@ class BannerAd extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              height: 50, // Set the height of the banner ad
-              //child: AppodealBannerSize(width: 50, height: 50) // Banner Ad
+              height: 100, // Set the height of the banner ad
+              //child: Appodeal.show(Appodeal.BANNER_BOTTOM);
             ),
           ),
         ],

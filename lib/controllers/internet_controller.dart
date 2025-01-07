@@ -5,6 +5,7 @@ import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/loading_dialog.dart';
 import 'package:rizzhub/services/internet_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InternetController extends GetxController {
   final Connectivity _connectivity = Connectivity();
@@ -25,7 +26,7 @@ class InternetController extends GetxController {
   void checkConnectivityChange(List<ConnectivityResult> results) async {
     message.value = await internetService!.onConnectivityChange(results);
     if (message.value == "none") {
-      showDialog();
+      showDialog(Get.context!);
     }
     debugPrint("Message Value ${message.value}");
   }
@@ -35,7 +36,7 @@ class InternetController extends GetxController {
     return await internetService!.pingServer();
   }
 
-  void showDialog() {
+  void showDialog(BuildContext context) {
     Get.dialog(
         barrierDismissible: false,
         Dialog(
@@ -55,8 +56,8 @@ class InternetController extends GetxController {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'No Internet Connection',
+                 Text(
+                  AppLocalizations.of(context)!.no_internet,
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontSize: 23,
@@ -66,8 +67,8 @@ class InternetController extends GetxController {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  ' Your connection has been lost. Please check your internet connection and try again.',
+                 Text(
+                  AppLocalizations.of(context)!.connection_lost,
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontFamily: "Poppins",
@@ -83,7 +84,7 @@ class InternetController extends GetxController {
                           Get.back();
                         },
                         color: Colors.black45,
-                        text: "Okay",
+                        text: AppLocalizations.of(context)!.okay,
                       ),
                     ),
                     const SizedBox(
@@ -103,12 +104,12 @@ class InternetController extends GetxController {
                                   Get.back();
                                 } else {
                                   Get.back();
-                                  showDialog();
+                                  showDialog(Get.context!);
                                 }
                               });
                             },
                             color: Colors.black45,
-                            text: "Retry")),
+                            text: AppLocalizations.of(context)!.retry)),
                   ],
                 ),
               ],

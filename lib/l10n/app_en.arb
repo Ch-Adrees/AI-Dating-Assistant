@@ -1,0 +1,235 @@
+{
+    "drag_drop": "Drag n Drop or Pick an Image",
+    "@drag_drop": {
+      "description": "Prompt to drag and drop or pick an image."
+    },
+
+    "paste_message": "Paste Your Message Here",
+    "@paste_message": {
+      "description": "Instruction to paste a message in the text field."
+    },
+    "input_message": "Input Message",
+    "@input_message": {
+      "description": "Label for the input message field."
+    },
+    "submit": "Submit",
+    "@submit": {
+      "description": "Button text for submitting data."
+    },
+    "response_message": "Response Message",
+    "@response_message": {
+      "description": "Label for the response message field."
+    },
+    "response_of_input": "Response Of Your Input",
+    "@response_of_input": {
+      "description": "Title for the user's input response display."
+    },
+    "copied": "Copied: Response copied to clipboard",
+    "@copied": {
+      "description": "Notification that the response was copied."
+    },
+    "generate_first_message": "Generate Your First Message",
+    "@generate_first_message": {
+      "description": "Prompt to generate the first user message."
+    },
+    "need_assistance": "Need Assistance ?",
+    "@need_assistance": {
+      "description": "Prompt asking if the user needs help."
+    },
+    "ice_breaker": "Ice Breaker",
+    "@ice_breaker": {
+      "description": "Label for ice-breaking content or features."
+    },
+    "random_response": "Randomly Generated Response",
+    "@random_response": {
+      "description": "Label for responses generated randomly."
+    },
+    "response": "Response",
+    "@response": {
+      "description": "Generic label for a response."
+    },
+    "random_generator": "Random Generator",
+    "@random_generator": {
+      "description": "Label for the random generator feature."
+    },
+    "privacy_policy_error": "Could not open Privacy Policy link",
+    "@privacy_policy_error": {
+      "description": "Error message when the privacy policy link fails to open."
+    },
+    "privacy_policy": "Privacy Policy",
+    "@privacy_policy": {
+      "description": "Label for the privacy policy section or link."
+    },
+    "play_store_error": "Could not open the Play Store link",
+    "@play_store_error": {
+      "description": "Error message when the Play Store link fails to open."
+    },
+    "app_rating": "App Rating",
+    "@app_rating": {
+      "description": "Label for the app rating feature."
+    },
+    "google_form_error": "Could not open Google Form",
+    "@google_form_error": {
+      "description": "Error message when the Google Form link fails to open."
+    },
+    "delete_data_request": "Delete Data Request",
+    "@delete_data_request": {
+      "description": "Label for the delete data request feature."
+    },
+    "vip": "VIP",
+    "@vip": {
+      "description": "Label for VIP features or content."
+    },
+    "language": "Language",
+    "@language": {
+      "description": "Label for selecting the app's language."
+    },
+    "no_internet": "No Internet Connection",
+    "@no_internet": {
+      "description": "Notification about no internet connectivity."
+    },
+    "connection_lost": "Your connection has been lost. Please check your internet connection and try again.",
+    "@connection_lost": {
+      "description": "Error message when internet connection is lost."
+    },
+    "okay": "Okay",
+    "@okay": {
+      "description": "Confirmation or acknowledgment button text."
+    },
+    "retry": "Retry",
+    "@retry": {
+      "description": "Button text to retry an action."
+    },
+    "welcome_to_chat_assistant": "Welcome to Chat Assistant",
+    "@welcome_to_chat_assistant": {
+      "description": "Welcome message for the chat assistant."
+    },
+    "enter_your_age": "Enter your age",
+    "@enter_your_age": {
+      "description": "Prompt to enter the user's age."
+    },
+    "woo_rizz": "Woo Rizz!",
+    "@woo_rizz": {
+      "description": "Playful phrase for the chat assistant."
+    },
+    "yours_age": "Your's age",
+    "@yours_age": {
+      "description": "Label for the user's age field."
+    },
+    "select_gender": "Select Gender",
+    "@select_gender": {
+      "description": "Prompt to select gender."
+    },
+    "select_language": "Select Language",
+    "@select_language": {
+      "description": "Prompt to select the language."
+    },
+    "lets_start_messaging": "Let's Start Messaging",
+    "@lets_start_messaging": {
+      "description": "Prompt to start messaging."
+    },
+    "ai_assistant_rizz": "AI Assistant Rizz.",
+    "@ai_assistant_rizz": {
+      "description": "Label for AI assistant Rizz."
+    },
+    "current_language": "Current Language:",
+    "@current_language": {
+      "description": "Label to display the current language."
+    },
+    "english": "English",
+    "@english": {
+      "description": "English language name."
+    },
+    "arabic": "Arabic",
+    "@arabic": {
+      "description": "Arabic language name."
+    },
+    "hindi": "Hindi",
+    "@hindi": {
+      "description": "Hindi language name."
+    },
+    "spanish": "Spanish",
+    "@spanish": {
+      "description": "Spanish language name."
+    },
+    "german": "German",
+    "@german": {
+      "description": "German language name."
+    },
+    "french": "French",
+    "@french": {
+      "description": "French language name."
+    },
+    "russian": "Russian",
+    "@russian": {
+      "description": "Russian language name."
+    },
+    "portuguese": "Portuguese",
+    "@portuguese": {
+      "description": "Portuguese language name."
+    },
+    "turkish": "Turkish",
+    "@turkish": {
+      "description": "Turkish language name."
+    },
+    "greek": "Greek",
+    "@greek": {
+      "description": "Greek language name."
+    },
+    "dutch": "Dutch",
+    "@dutch": {
+      "description": "Dutch language name."
+    },
+    "italian": "Italian",
+    "@italian": {
+      "description": "Italian language name."
+    },
+    "chinese": "Chinese",
+    "@chinese": {
+      "description": "Chinese language name."
+    },
+    "unknown": "Unknown",
+    "@unknown": {
+      "description": "Label for unknown language."
+    },
+
+     "or": "or",
+  "@or": {
+    "description": "Label for 'or' option between choices."
+  },
+  "male": "Male",
+  "@male": {
+    "description": "Label for selecting the male gender."
+  },
+  "female": "Female",
+  "@female": {
+    "description": "Label for selecting the female gender."
+  },
+  "other": "Other",
+  "@other": {
+    "description": "Label for selecting other genders."
+  },
+
+  "language_selected": "{languageName} selected",
+  "@language_selected": {
+    "description": "Message indicating the selected language dynamically.",
+    "placeholders": {
+      "languageName": {
+        "type": "String",
+        "description": "Name of the selected language."
+      }
+    }
+  },
+
+  "language_changed_to": "Language changed to {languageChangedto}",
+  "@language_changed_to": {
+    "description": "Message indicating the selected language dynamically.",
+    "placeholders": {
+      "languageChangedto": {
+        "type": "String",
+        "description": "Name of the selected language."
+      }
+    }
+  }
+ 
+}
