@@ -106,10 +106,11 @@ class _AssistantScreenState extends State<AssistantScreen> {
     }
   }
 
-  Future<String> _getUserSelectedLanguage(BuildContext context) async {
-    final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
-    return locale?.languageCode ?? 'en'; // Default to English
-  }
+  Future<String> _getUserSelectedLanguage() async {
+  final locale = Get.find<LocaleController>().currentLocale;
+  return locale.value.languageCode; // Return the current language code
+}
+
 
   TranslateLanguage getTranslateLanguage(String userSelectedLanguage) {
     switch (userSelectedLanguage.toLowerCase()) {
@@ -205,7 +206,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
         String generatedResponse =
             responseData['choices'][0]['message']['content'];
 
-        String userSelectedLanguage = await _getUserSelectedLanguage(context);
+        String userSelectedLanguage = await _getUserSelectedLanguage();
         String translatedResponse =
             await translateText(generatedResponse, userSelectedLanguage);
 
@@ -272,7 +273,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                                     size: 60,
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.drag_drop,
+                                    'drag_drop'.tr,
                                     style: TextStyle(
                                         color: Constants.primaryColor),
                                   )
@@ -286,7 +287,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(AppLocalizations.of(context)!.or,
+                  Text('or'.tr,
                       style: TextStyle(
                           color: Constants.primaryColor,
                           fontWeight: FontWeight.bold,
@@ -296,8 +297,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
                   ),
                   CustomTextfield(
                     controller: _inputController,
-                    hintText: AppLocalizations.of(context)!.paste_message,
-                    label: AppLocalizations.of(context)!.input_message,
+                    hintText: 'paste_message'.tr,
+                    label: 'input_message'.tr,
                     maxLines: 5,
                   ),
                   const SizedBox(
@@ -328,7 +329,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                         await _generateResponse();
                       }
                     },
-                    text: AppLocalizations.of(context)!.submit,
+                    text: 'submit'.tr,
                   ),
                   const SizedBox(
                     height: 25,
@@ -339,10 +340,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
                           child: CustomTextfield(
                               controller:
                                   TextEditingController(text: _responseMessage),
-                              label: AppLocalizations.of(context)!
-                                  .response_message,
-                              hintText: AppLocalizations.of(context)!
-                                  .response_of_input,
+                              label: 'response_message'.tr,
+                              hintText: 'response_of_input'.tr,
                               maxLines: 3,
                               readOnly: true)),
                       const SizedBox(width: 10),
@@ -357,7 +356,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content:
-                                    Text(AppLocalizations.of(context)!.copied),
+                                    Text('copied'.tr),
                               ),
                             );
                           }

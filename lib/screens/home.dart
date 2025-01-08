@@ -48,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 //text: "Ice Breaker",
 
-                text: AppLocalizations.of(context)!.ice_breaker,
+                text: 'ice_breaker'.tr,
                 onTap: () async {
                   final AdManager adManager = AdManager(context);
                   await adManager.showInterstitial();
@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               CustomButton(
-                text: AppLocalizations.of(context)!.need_assistance,
+                text: 'need_assistance'.tr,
                 onTap: () async {
                   final AdManager adManager = AdManager(context);
                   await adManager.showInterstitial();
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               CustomButton(
 
-                text: AppLocalizations.of(context)!.generate_first_message,
+                text: 'generate_first_message'.tr,
                 onTap: () async {
                   final AdManager adManager = AdManager(context);
                   await adManager.showInterstitial();

@@ -15,7 +15,7 @@ class DataBoardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final List<String> dropDownValues =  [AppLocalizations.of(context)!.male, AppLocalizations.of(context)!.female, AppLocalizations.of(context)!.other];
+     final List<String> dropDownValues =  ['male'.tr, 'female'.tr, 'other'.tr];
     return Scaffold(
         appBar: AppBar(),
         body: SafeArea(
@@ -31,7 +31,7 @@ class DataBoardingScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.welcome_to_chat_assistant,
+                        'welcome_to_chat_assistant'.tr,
                         style: const TextStyle(
                           color: Colors.white,
                           fontFamily: "Poppins",
@@ -43,7 +43,7 @@ class DataBoardingScreen extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        AppLocalizations.of(context)!.woo_rizz,
+                        'woo_rizz'.tr,
                         style: const TextStyle(
                           color: Colors.red,
                           fontFamily: "Poppins",
@@ -57,9 +57,9 @@ class DataBoardingScreen extends StatelessWidget {
                     controller: controller.ageController,
                     decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(18.0),
-                      hintText: AppLocalizations.of(context)!.enter_your_age,
+                      hintText: 'enter_your_age'.tr,
                       label: Text(
-                        AppLocalizations.of(context)!.yours_age,
+                        'yours_age'.tr,
                         style: const TextStyle(
                           color: Colors.white,
                           fontFamily: "Poppins",
@@ -74,7 +74,7 @@ class DataBoardingScreen extends StatelessWidget {
                   ),
                   DropdownMenu(
                     label: Text(
-                      AppLocalizations.of(context)!.select_gender,
+                      'select_gender'.tr,
                       style: const TextStyle(
                           color: Colors.white, fontFamily: "Poppins"),
                     ),
@@ -128,8 +128,7 @@ class DataBoardingScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  AppLocalizations.of(context)!
-                                      .lets_start_messaging,
+                                 'lets_start_messaging'.tr,
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 18,
@@ -155,84 +154,80 @@ class DataBoardingScreen extends StatelessWidget {
   }
 }
 
-class DataBoardingController extends GetxController {
-  // Controller for the age input field
-  TextEditingController ageController = TextEditingController();
+// class DataBoardingController extends GetxController {
+//   // Controller for the age input field
+//   TextEditingController ageController = TextEditingController();
 
-  // Variables to store selected gender and language
-  String? selectedGender;
-  String? selectedLanguage;
+//   // Variables to store selected gender and language
+//   String? selectedGender;
+//   String? selectedLanguage;
 
-  // Lifecycle management: Dispose of the ageController when done
-  @override
-  void onClose() {
-    ageController.dispose();
-    super.onClose();
-  }
-}
+//   // Lifecycle management: Dispose of the ageController when done
+//   @override
+//   void onClose() {
+//     ageController.dispose();
+//     super.onClose();
+//   }
+// }
 
 // // Import necessary packages at the top
 
 // Add this code in the appropriate place in your data boarding screen
 class LanguageDropdown extends StatelessWidget {
-  const LanguageDropdown({super.key});
-
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<LocaleProvider>(context);
-    final currentLocale = provider.locale ?? const Locale('en');
-
-    
-
-// String LanguageSelectionMessage = AppLocalizations.of(context)!.language_selected(selectedLanguage);
-
+    final localeController = Get.find<LocaleController>();
+    final currentLocale = localeController.currentLocale;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: DropdownMenu(
-        label: Text(
-          AppLocalizations.of(context)!.select_language,
-          style: TextStyle(
-            color: Constants.primaryColor,
-            fontFamily: "Poppins",
-            fontSize: 16,
-          ),
-        ),
-        textStyle: TextStyle(
-          color: Constants.primaryColor,
-          fontFamily: "Poppins",
-          fontSize: 14,
-        ),
-        menuHeight: MediaQuery.of(context).size.height * 0.4,
-        width: MediaQuery.of(context).size.width * 0.9,
-        dropdownMenuEntries: L10n.all.map((locale) {
-          final languageName = L10n.getLanguageName(locale.languageCode);
-          return DropdownMenuEntry(
-            value: locale,
-            label: languageName,
-          );
-        }).toList(),
-        initialSelection: currentLocale,
-        onSelected: (Locale? selectedLocale) {
-          if (selectedLocale != null) {
-            provider.setLocale(selectedLocale);
-            String selectedLanguage = L10n.getLanguageName(selectedLocale.languageCode);
-            String LanguageSelectionMessage = AppLocalizations.of(context)!.language_selected(selectedLanguage);
+      child: DropdownMenu<Locale>(
+  label: Text(
+    'select_language'.tr,
+    style: TextStyle(
+      color: Constants.primaryColor,
+      fontFamily: "Poppins",
+      fontSize: 16,
+    ),
+  ),
+  textStyle: TextStyle(
+    color: Constants.primaryColor,
+    fontFamily: "Poppins",
+    fontSize: 14,
+  ),
+  menuHeight: MediaQuery.of(context).size.height * 0.4,
+  width: MediaQuery.of(context).size.width * 0.9,
+  dropdownMenuEntries: L10n.all.map((locale) {
+    final languageName = L10n.getLanguageName(locale.languageCode);
+    return DropdownMenuEntry<Locale>(
+      value: locale,
+      label: languageName,
+    );
+  }).toList(),
+  initialSelection: localeController.currentLocale.value, // Access the Locale value
+  onSelected: (Locale? selectedLocale) {
+    if (selectedLocale != null) {
+      Get.updateLocale(selectedLocale);
+      localeController.setLocale(selectedLocale);
 
-            // Confirmation SnackBar
-            ScaffoldMessenger.of(context).showSnackBar(
-              
-              SnackBar(
-                content: Text(
-                  LanguageSelectionMessage,
-                  style: const TextStyle(fontFamily: "Poppins"),
-                ),
-                backgroundColor: Constants.buttonBgColor,
-              ),
-            );
-          }
-        },
-      ),
+      final selectedLanguage =
+          L10n.getLanguageName(selectedLocale.languageCode);
+      final languageSelectionMessage = 'hello';
+          // AppLocalizations.of(context)!.language_selected(selectedLanguage);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            languageSelectionMessage,
+            style: const TextStyle(fontFamily: "Poppins"),
+          ),
+          backgroundColor: Constants.buttonBgColor,
+        ),
+      );
+    }
+  },
+)
+
     );
   }
 }

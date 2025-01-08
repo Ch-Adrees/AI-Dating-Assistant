@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 //import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:rizzhub/components/constants.dart';
@@ -29,7 +30,7 @@ class _PaywallState extends State<Paywall> {
                 const BorderRadius.vertical(top: Radius.circular(18.0))),
             child: Center(
                 child: Text(
-                  AppLocalizations.of(context)!.woo_rizz_premium_subscriptions,
+                  'woo_rizz_premium_subscriptions'.tr,
                   style: allTextStyle(18),
                 )),
           ),
@@ -39,7 +40,7 @@ class _PaywallState extends State<Paywall> {
             child: SizedBox(
               width: double.infinity,
               child: Text(
-                AppLocalizations.of(context)!.rizz_subscription_catalog,
+               'rizz_subscription_catalog'.tr,
                 style: allTextStyle(16),
               ),
             ),
@@ -90,7 +91,7 @@ class _PaywallState extends State<Paywall> {
               height: 40,
               width: double.infinity,
               child: Text(
-                AppLocalizations.of(context)!.woo_rizz_offering_subscriptions,
+                'woo_rizz_offering_subscriptions'.tr,
                 style: allTextStyle(14),
                 textAlign:
                 TextAlign.center, // This aligns the text to the center

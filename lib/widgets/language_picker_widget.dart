@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:rizzhub/components/constants.dart';
-import 'package:rizzhub/l10n/l10n.dart';
-import 'package:rizzhub/provider/locale_provider.dart';
 import 'package:rizzhub/components/custom_tile.dart';
+//import 'package:rizzhub/controllers/locale_controller.dart';
+import 'package:rizzhub/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rizzhub/provider/locale_provider.dart';
 
 class LanguagePickerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<LocaleProvider>(context);
-    final locale = provider.locale ?? const Locale('en');
-    final flag = L10n.getFlag(locale.languageCode);
-    final currentLanguageName = L10n.getLanguageName(locale.languageCode);
-
-
-String languageChangedMessage = AppLocalizations.of(context)!.language_changed_to(currentLanguageName);
-
+    // Access the LocaleController
+    final localeController = Get.find<LocaleController>();
+    final currentLocale = localeController.currentLocale;
+    final currentFlag = L10n.getFlag(currentLocale.value.languageCode);
+    final currentLanguageName = L10n.getLanguageName(currentLocale.value.languageCode);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context)!.select_language,
+          'select_language'.tr,
           style: TextStyle(
             color: Constants.whiteSecondaryColor,
           ),
@@ -39,15 +37,16 @@ String languageChangedMessage = AppLocalizations.of(context)!.language_changed_t
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.current_language,
+                  'current_language'.tr,
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Constants.primaryColor,
                   ),
                 ),
+                SizedBox(width: 8), // Add spacing between text and flag
                 Text(
-                  '$flag $currentLanguageName',
+                  '$currentFlag $currentLanguageName',
                   style: TextStyle(
                     fontSize: 20,
                     color: Constants.primaryColor,
@@ -68,7 +67,14 @@ String languageChangedMessage = AppLocalizations.of(context)!.language_changed_t
 
                 return CustomListTile(
                   onTap: () {
-                    provider.setLocale(locale);
+                    Get.updateLocale(locale);
+                    // Set locale using GetX controller
+                  localeController.setLocale(locale);
+
+                    // Show confirmation SnackBar
+                    final languageChangedMessage = 'hello';
+                        // AppLocalizations.of(context)!
+                        //     .language_changed_to(languageName);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
