@@ -50,8 +50,8 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.release
-            minifyEnabled true // Set to true if you want to shrink the code
-            shrinkResources true // Set to true if you want to remove unused resources
+            minifyEnabled false // Set to true if you want to shrink the code
+            shrinkResources false // Set to true if you want to remove unused resources
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -65,6 +65,7 @@ flutter {
 
 dependencies {
     implementation 'com.google.mlkit:translate:17.0.3'
+    implementation 'com.android.billingclient:billing:7.1.1'
 
     implementation ('com.appodeal.ads:sdk:3.3.3.0') {
         exclude group: 'com.appodeal.ads.sdk.services', module: 'adjust'
