@@ -190,19 +190,14 @@ class _AssistantScreenState extends State<AssistantScreen> {
             'createdAt': FieldValue.serverTimestamp(),
           });
         }
-
         // Store the prompt in the user's document (under a subcollection)
         await userDoc.collection('prompts').add({
           'prompt': prompt,
           'timestamp': FieldValue.serverTimestamp(),
         });
-
-        print("Prompt stored successfully for user ID: $userId");
-      } else {
-        print("Failed to retrieve user information.");
       }
     } catch (e) {
-      print("Error managing user and storing prompts: $e");
+      print("Error Storing Prompts: $e");
     }
   }
 
