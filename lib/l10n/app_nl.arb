@@ -54,5 +54,11 @@
   "female": "Vrouw",
   "other": "Anders",
   "language_selected": "{languageName} geselecteerd",
-  "language_changed_to": "Taal gewijzigd naar {languageChangedto}"
+  "language_changed_to": "Taal gewijzigd naar {languageChangedto}",
+
+
+  "woo_rizz_premium_subscriptions": "✨Woo Rizz Premium-abonnementen",
+  "rizz_subscription_catalog": "Rizz's Abonnementencatalogus",
+  "woo_rizz_offering_subscriptions": "Woo Rizz biedt een verscheidenheid aan abonnementen. Koop naar eigen keuze en zeg vaarwel tegen advertenties."
+
 }

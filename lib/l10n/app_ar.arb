@@ -53,5 +53,10 @@
   "female": "أنثى",
   "other": "آخر",
   "language_selected": "تم اختيار {languageName}",
-  "language_changed_to": "تم تغيير اللغة إلى {languageChangedto}"
+  "language_changed_to": "تم تغيير اللغة إلى {languageChangedto}",
+
+  "woo_rizz_premium_subscriptions": "✨اشتراكات وو ريز بريميوم",
+  "rizz_subscription_catalog": "كتالوج اشتراكات ريز",
+  "woo_rizz_offering_subscriptions": "وو ريز تقدم مجموعة متنوعة من الاشتراكات. اختر ما يناسبك وتخلص من الإعلانات."
+
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get/get.dart';
+//import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:rizzhub/components/constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Paywall extends StatefulWidget {
   final Offering offering;
@@ -28,7 +30,7 @@ class _PaywallState extends State<Paywall> {
                 const BorderRadius.vertical(top: Radius.circular(18.0))),
             child: Center(
                 child: Text(
-                  '✨Woo Rizz Premium Subscriptions',
+                  'woo_rizz_premium_subscriptions'.tr,
                   style: allTextStyle(18),
                 )),
           ),
@@ -38,7 +40,7 @@ class _PaywallState extends State<Paywall> {
             child: SizedBox(
               width: double.infinity,
               child: Text(
-                "Rizz's Subscription Catalog",
+               'rizz_subscription_catalog'.tr,
                 style: allTextStyle(16),
               ),
             ),
@@ -89,7 +91,7 @@ class _PaywallState extends State<Paywall> {
               height: 40,
               width: double.infinity,
               child: Text(
-                "Woo Rizz offering variety of the subscriptions. Buy according to own's choice and get rid of the ads.",
+                'woo_rizz_offering_subscriptions'.tr,
                 style: allTextStyle(14),
                 textAlign:
                 TextAlign.center, // This aligns the text to the center

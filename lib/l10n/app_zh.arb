@@ -53,5 +53,11 @@
   "female": "女性",
   "other": "其他",
   "language_selected": "{languageName} 已选择",
-  "language_changed_to": "语言更改为 {languageChangedto}"
+  "language_changed_to": "语言更改为 {languageChangedto}",
+
+  
+  "woo_rizz_premium_subscriptions": "✨Woo Rizz 高级订阅",
+  "rizz_subscription_catalog": "Rizz 的订阅目录",
+  "woo_rizz_offering_subscriptions": "Woo Rizz 提供多种订阅选项。根据您的选择购买，并摆脱广告。"
+
 }

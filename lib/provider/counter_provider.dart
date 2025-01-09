@@ -13,11 +13,6 @@ class CounterProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     _counter = prefs.getInt('adDisplayCounter') ?? 0;
     final isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
-
-    if (isFirstLaunch) {
-      // Set to false after the first launch
-      await prefs.setBool('isFirstLaunch', false);
-    }
     notifyListeners();
   }
 

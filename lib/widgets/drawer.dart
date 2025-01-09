@@ -62,7 +62,7 @@ class CustomDrawer extends StatelessWidget {
                     }
                   },
                   icon: const Icon(Icons.privacy_tip_outlined),
-                  title:AppLocalizations.of(context)!.privacy_policy),
+                  title:'privacy_policy'.tr),
               const SizedBox(
                 height: 10,
               ),
@@ -77,12 +77,12 @@ class CustomDrawer extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                          SnackBar(
                             content:
-                                Text(AppLocalizations.of(context)!.play_store_error)),
+                                Text('play_store_error'.tr)),
                       );
                     }
                   },
                   icon: const Icon(Icons.star_border),
-                  title: AppLocalizations.of(context)!.app_rating),
+                  title: 'app_rating'.tr),
               const SizedBox(
                 height: 10,
               ),
@@ -98,12 +98,12 @@ class CustomDrawer extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                          SnackBar(
                             content:
-                            Text(AppLocalizations.of(context)!.google_form_error)),
+                            Text('google_form_error'.tr)),
                       );
                     }
                   },
                   icon: const Icon(Icons.delete_outline),
-                  title: AppLocalizations.of(context)!.delete_data_request),
+                  title: 'delete_data_request'.tr),
               const SizedBox(
                 height: 10,
               ),
@@ -114,7 +114,7 @@ class CustomDrawer extends StatelessWidget {
                     _offeringController.checkOfferings(context);
                   },
                   icon: const Icon(Icons.notification_important),
-                  title: AppLocalizations.of(context)!.vip),
+                  title: 'vip'.tr),
               const SizedBox(
                 height: 10,
               ),
@@ -127,7 +127,7 @@ class CustomDrawer extends StatelessWidget {
                   );
                   },
                   icon: const Icon(Icons.language),
-                  title: AppLocalizations.of(context)!.language),
+                  title: 'language'.tr),
             ],
           ),
         ),

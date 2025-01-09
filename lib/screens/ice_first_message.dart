@@ -33,9 +33,9 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   List<String> _seenDocIds = [];
 
   // Get the user's selected language code
- Future<String> _getUserSelectedLanguage(BuildContext context) async {
-  final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
-  return locale?.languageCode ?? 'en'; // Default to English
+Future<String> _getUserSelectedLanguage() async {
+  final locale = Get.find<LocaleController>().currentLocale;
+  return locale.value.languageCode; // Return the current language code
 }
 
   // Map language codes to TranslateLanguage
@@ -73,7 +73,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   // Fetch a random document and translate it
   Future<void> fetchRandomDocument() async {
     try {
-      String userSelectedLanguage = await _getUserSelectedLanguage(context);
+      String userSelectedLanguage = await _getUserSelectedLanguage();
       String collectionName =
           widget.toScreen == 'first' ? 'conversationstarter' : 'randomtopic';
 
@@ -143,12 +143,11 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   @override
   Widget build(BuildContext context) {
 
-    final counterProvider = Provider.of<CounterProvider>(context);
+    final counterProvider = Provider.of<CounterProvider>(context, listen: false);
 
-    return Consumer<LocaleProvider>(
-      builder: (context, localeProvider, child) {
-       // String userSelectedLanguage = localeProvider.locale?.languageCode ?? 'en';
-        return Scaffold(
+    //return Obx(() {
+ // final userSelectedLanguage = Get.find<LocaleController>().currentLocale.value.languageCode;
+  return  Scaffold(
       appBar: CustomAppBar(
         onTap: () {
           Get.back();
@@ -168,8 +167,8 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                       child: CustomTextfield(
                         readOnly: true,
                         maxLines: 5,
-                        hintText: AppLocalizations.of(context)!.random_response,
-                        label: AppLocalizations.of(context)!.response,
+                        hintText: 'random_response'.tr,
+                        label: 'response'.tr,
                         controller: _responseController,
                       ),
                     ),
@@ -182,7 +181,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                             ClipboardData(text: _responseController.text));
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(AppLocalizations.of(context)!.copied),
+                            content: Text('copied'.tr),
                           ),
                         );
                       }
@@ -210,7 +209,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                     }
                     await fetchRandomDocument();
                   },
-                  text: AppLocalizations.of(context)!.random_generator,
+                  text: 'random_generator'.tr,
                 ),
               ],
             ),
@@ -220,6 +219,6 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
     );
     
   }
-    );
+   // );
 }
-}
+//}

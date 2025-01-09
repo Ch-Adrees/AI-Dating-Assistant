@@ -8,6 +8,7 @@ import 'package:rizzhub/screens/assistant.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
 import 'package:rizzhub/widgets/drawer.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../ads/ads_manager.dart';
 import '../controllers/views/offering_controller.dart';
@@ -21,67 +22,86 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    _setIsFirstLaunchFalse();
+  }
+
+
+
+  Future<void> _setIsFirstLaunchFalse() async {
+    final prefs = await SharedPreferences.getInstance();
+    final isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+    if (isFirstLaunch) {
+      await prefs.setBool('isFirstLaunch', false);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return BannerAd(
-      child: Scaffold(
-        appBar: PreferredSize(
-            preferredSize: const Size.fromHeight(50.0),
-            child: Builder(builder: (context) {
-              return CustomAppBar(
-                  whichScreen: "home",
-                  onTap: () {
-                    Scaffold.of(context).openDrawer();
-                  });
-            })),
-        drawer: const CustomDrawer(),
-        body: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              CustomButton(
+      child: PopScope(
+        canPop: false,
+        child: Scaffold(
+          appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(50.0),
+              child: Builder(builder: (context) {
+                return CustomAppBar(
+                    whichScreen: "home",
+                    onTap: () {
+                      Scaffold.of(context).openDrawer();
+                    });
+              })),
+          drawer: const CustomDrawer(),
+          body: SafeArea(
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomButton(
 
-                //text: "Ice Breaker",
+                  //text: "Ice Breaker",
 
-                text: AppLocalizations.of(context)!.ice_breaker,
-                onTap: () async {
-                  final AdManager adManager = AdManager(context);
-                  await adManager.showInterstitial();
-                  Get.to(
-                    () => const IceAndFirstMessage(toScreen: "ice"),
-                  );
-                },
-              ),
-              CustomButton(
-                text: AppLocalizations.of(context)!.need_assistance,
-                onTap: () async {
-                  final AdManager adManager = AdManager(context);
-                  await adManager.showInterstitial();
-                  Get.to(() => const AssistantScreen());
-                },
-              ),
-              CustomButton(
+                  text: 'ice_breaker'.tr,
+                  onTap: () async {
+                    final AdManager adManager = AdManager(context);
+                    await adManager.showInterstitial();
+                    Get.to(
+                      () => const IceAndFirstMessage(toScreen: "ice"),
+                    );
+                  },
+                ),
+                CustomButton(
+                  text: 'need_assistance'.tr,
+                  onTap: () async {
+                    final AdManager adManager = AdManager(context);
+                    await adManager.showInterstitial();
+                    Get.to(() => const AssistantScreen());
+                  },
+                ),
+                CustomButton(
 
-                text: AppLocalizations.of(context)!.generate_first_message,
-                onTap: () async {
-                  final AdManager adManager = AdManager(context);
-                  await adManager.showInterstitial();
-                  Get.to(
-                    () => const IceAndFirstMessage(toScreen: "first"),
-                  );
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
-        )),
+                  text: 'generate_first_message'.tr,
+                  onTap: () async {
+                    final AdManager adManager = AdManager(context);
+                    await adManager.showInterstitial();
+                    Get.to(
+                      () => const IceAndFirstMessage(toScreen: "first"),
+                    );
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          )),
+        ),
       ),
     );
   }

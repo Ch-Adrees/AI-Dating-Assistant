@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +25,8 @@ import '../components/custom_text_field.dart';
 import '../controllers/views/assistant_screen_controller.dart';
 import '../provider/locale_provider.dart';
 import '../widgets/custom_emojies_row.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+
 
 class AssistantScreen extends StatefulWidget {
   const AssistantScreen({super.key});
@@ -106,10 +110,11 @@ class _AssistantScreenState extends State<AssistantScreen> {
     }
   }
 
-  Future<String> _getUserSelectedLanguage(BuildContext context) async {
-    final locale = Provider.of<LocaleProvider>(context, listen: false).locale;
-    return locale?.languageCode ?? 'en'; // Default to English
-  }
+  Future<String> _getUserSelectedLanguage() async {
+  final locale = Get.find<LocaleController>().currentLocale;
+  return locale.value.languageCode; // Return the current language code
+}
+
 
   TranslateLanguage getTranslateLanguage(String userSelectedLanguage) {
     switch (userSelectedLanguage.toLowerCase()) {
@@ -159,6 +164,50 @@ class _AssistantScreenState extends State<AssistantScreen> {
     }
   }
 
+  Future<void> manageUserAndStorePrompts(String prompt) async {
+    try {
+      // Check if a user is currently signed in
+      User? currentUser = FirebaseAuth.instance.currentUser;
+
+      // If no user exists, sign in anonymously
+      if (currentUser == null) {
+        UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+        currentUser = userCredential.user;
+      }
+
+      if (currentUser != null) {
+        // Get the user's UID
+        String userId = currentUser.uid;
+
+        // Reference to the user's document in Firestore
+        DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
+
+        // Check if the user document exists
+        DocumentSnapshot userSnapshot = await userDoc.get();
+        if (!userSnapshot.exists) {
+          // Create a new user document
+          await userDoc.set({
+            'createdAt': FieldValue.serverTimestamp(),
+          });
+        }
+
+        // Store the prompt in the user's document (under a subcollection)
+        await userDoc.collection('prompts').add({
+          'prompt': prompt,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+
+        print("Prompt stored successfully for user ID: $userId");
+      } else {
+        print("Failed to retrieve user information.");
+      }
+    } catch (e) {
+      print("Error managing user and storing prompts: $e");
+    }
+  }
+
+
+
   Future<void> _generateResponse() async {
     String userInput =
         _recognizedText.isNotEmpty ? _recognizedText : _inputController.text;
@@ -178,6 +227,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
     }
     String prompt =
         "Respond to this message in a $selectedMood tone: \"$userInput\" and don't use emojis";
+    await manageUserAndStorePrompts(prompt);
 
     try {
       String apiKey =
@@ -196,7 +246,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
           ],
-          "max_tokens": 20,
+          "max_tokens": 50,
         }),
       );
 
@@ -205,7 +255,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
         String generatedResponse =
             responseData['choices'][0]['message']['content'];
 
-        String userSelectedLanguage = await _getUserSelectedLanguage(context);
+        String userSelectedLanguage = await _getUserSelectedLanguage();
         String translatedResponse =
             await translateText(generatedResponse, userSelectedLanguage);
 
@@ -272,7 +322,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                                     size: 60,
                                   ),
                                   Text(
-                                    AppLocalizations.of(context)!.drag_drop,
+                                    'drag_drop'.tr,
                                     style: TextStyle(
                                         color: Constants.primaryColor),
                                   )
@@ -286,7 +336,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Text(AppLocalizations.of(context)!.or,
+                  Text('or'.tr,
                       style: TextStyle(
                           color: Constants.primaryColor,
                           fontWeight: FontWeight.bold,
@@ -296,8 +346,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
                   ),
                   CustomTextfield(
                     controller: _inputController,
-                    hintText: AppLocalizations.of(context)!.paste_message,
-                    label: AppLocalizations.of(context)!.input_message,
+                    hintText: 'paste_message'.tr,
+                    label: 'input_message'.tr,
                     maxLines: 5,
                   ),
                   const SizedBox(
@@ -328,7 +378,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                         await _generateResponse();
                       }
                     },
-                    text: AppLocalizations.of(context)!.submit,
+                    text: 'submit'.tr,
                   ),
                   const SizedBox(
                     height: 25,
@@ -339,10 +389,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
                           child: CustomTextfield(
                               controller:
                                   TextEditingController(text: _responseMessage),
-                              label: AppLocalizations.of(context)!
-                                  .response_message,
-                              hintText: AppLocalizations.of(context)!
-                                  .response_of_input,
+                              label: 'response_message'.tr,
+                              hintText: 'response_of_input'.tr,
                               maxLines: 3,
                               readOnly: true)),
                       const SizedBox(width: 10),
@@ -357,7 +405,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content:
-                                    Text(AppLocalizations.of(context)!.copied),
+                                    Text('copied'.tr),
                               ),
                             );
                           }

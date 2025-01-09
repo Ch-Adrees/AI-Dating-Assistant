@@ -54,5 +54,11 @@
   "female": "Kadın",
   "other": "Diğer",
   "language_selected": "{languageName} seçildi",
-  "language_changed_to": "Dil {languageChangedto} olarak değiştirildi"
+  "language_changed_to": "Dil {languageChangedto} olarak değiştirildi",
+
+
+  "woo_rizz_premium_subscriptions": "✨Woo Rizz Premium Abonelikleri",
+  "rizz_subscription_catalog": "Rizz'in Abonelik Kataloğu",
+  "woo_rizz_offering_subscriptions": "Woo Rizz, çeşitli abonelikler sunuyor. Kendi seçiminize göre satın alın ve reklamlardan kurtulun."
+
 }
