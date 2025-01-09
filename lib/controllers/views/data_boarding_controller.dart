@@ -6,11 +6,16 @@ class DataBoardingController extends GetxController {
   final TextEditingController ageController = TextEditingController();
 
   //   // Variables to store selected gender and language
-  String? selectedGender;
-  String? selectedLanguage;
+   // Persist selectedGender
+ String? selectedGender;
 
-  void onChange(String value) {
-    selectedGender = value;
-    update();
+  // void onChange(String value) {
+  //   selectedGender = value;
+  //   update();
+  // }
+    @override
+  void onClose() {
+    ageController.dispose();
+    super.onClose();
   }
 }

@@ -34,10 +34,10 @@ class AdManager {
     await checkAndBlockAds();
     if(_isAdsBlocked) return;
     try {
-      bool isBannerLoaded = await Appodeal.isLoaded(Appodeal.BANNER_BOTTOM);
-      Appodeal.cache(Appodeal.BANNER_BOTTOM);
+      bool isBannerLoaded = await Appodeal.isLoaded(Appodeal.BANNER);
+      Appodeal.cache(Appodeal.BANNER);
       if (isBannerLoaded) {
-        Appodeal.show(Appodeal.BANNER_BOTTOM, 'BannerAds1');
+        Appodeal.show(Appodeal.BANNER, 'BannerAds1');
       } else {
 
         Future.delayed(const Duration(minutes: 1), () {

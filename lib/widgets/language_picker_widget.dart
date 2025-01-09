@@ -72,18 +72,18 @@ class LanguagePickerScreen extends StatelessWidget {
                   localeController.setLocale(locale);
 
                     // Show confirmation SnackBar
-                    final languageChangedMessage = 'hello';
+                   // final languageChangedMessage = 'hello';
                         // AppLocalizations.of(context)!
                         //     .language_changed_to(languageName);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          languageChangedMessage,
-                          style: TextStyle(color: Constants.primaryColor),
-                        ),
-                        backgroundColor: Constants.buttonBgColor,
-                      ),
-                    );
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   SnackBar(
+                    //     content: Text(
+                    //       languageChangedMessage,
+                    //       style: TextStyle(color: Constants.primaryColor),
+                    //     ),
+                    //     backgroundColor: Constants.buttonBgColor,
+                    //   ),
+                    // );
                     Navigator.of(context).pop();
                   },
                   icon: Text(
