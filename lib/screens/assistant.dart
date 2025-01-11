@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -20,9 +23,10 @@ import '../components/custom_button.dart';
 import '../components/custom_icon.dart';
 import '../components/custom_text_field.dart';
 import '../controllers/views/assistant_screen_controller.dart';
-import '../provider/locale_provider.dart';
+import '../controllers/locale_controller.dart';
 import '../widgets/custom_emojies_row.dart';
-//import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+
 
 class AssistantScreen extends StatefulWidget {
   const AssistantScreen({super.key});
@@ -160,6 +164,45 @@ class _AssistantScreenState extends State<AssistantScreen> {
     }
   }
 
+  Future<void> manageUserAndStorePrompts(String prompt) async {
+    try {
+      // Check if a user is currently signed in
+      User? currentUser = FirebaseAuth.instance.currentUser;
+
+      // If no user exists, sign in anonymously
+      if (currentUser == null) {
+        UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+        currentUser = userCredential.user;
+      }
+
+      if (currentUser != null) {
+        // Get the user's UID
+        String userId = currentUser.uid;
+
+        // Reference to the user's document in Firestore
+        DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
+
+        // Check if the user document exists
+        DocumentSnapshot userSnapshot = await userDoc.get();
+        if (!userSnapshot.exists) {
+          // Create a new user document
+          await userDoc.set({
+            'createdAt': FieldValue.serverTimestamp(),
+          });
+        }
+        // Store the prompt in the user's document (under a subcollection)
+        await userDoc.collection('prompts').add({
+          'prompt': prompt,
+          'timestamp': FieldValue.serverTimestamp(),
+        });
+      }
+    } catch (e) {
+      print("Error Storing Prompts: $e");
+    }
+  }
+
+
+
   Future<void> _generateResponse() async {
     String userInput =
         _recognizedText.isNotEmpty ? _recognizedText : _inputController.text;
@@ -179,6 +222,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
     }
     String prompt =
         "Respond to this message in a $selectedMood tone: \"$userInput\" and don't use emojis";
+    await manageUserAndStorePrompts(prompt);
 
     try {
       String apiKey =
@@ -197,7 +241,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
           ],
-          "max_tokens": 20,
+          "max_tokens": 50,
         }),
       );
 

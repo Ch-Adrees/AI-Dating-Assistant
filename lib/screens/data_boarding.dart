@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/controllers/views/data_boarding_controller.dart';
 import 'package:rizzhub/l10n/l10n.dart';
-import 'package:rizzhub/provider/locale_provider.dart';
+import 'package:rizzhub/controllers/locale_controller.dart';
 //import 'package:rizzhub/provider/locale_prodart';
 import 'package:rizzhub/screens/home.dart';
 
@@ -74,12 +74,7 @@ class DataBoardingScreen extends StatelessWidget {
                 const SizedBox(height: 30),
                GenderDropdown(),
                 const SizedBox(height: 18),
-                LanguageDropdown(
-                  onLanguageChanged: () {
-                    // Only rebuild the necessary parts of the app
-                    controller.update();
-                  },
-                ),
+                LanguageDropdown(),
                 const SizedBox(height: 30),
                 Container(
                   decoration: BoxDecoration(
@@ -169,9 +164,9 @@ class DataBoardingScreen extends StatelessWidget {
 
 // Add this code in the appropriate place in your data boarding screen
 class LanguageDropdown extends StatelessWidget {
-  final VoidCallback onLanguageChanged;
+  
 
-  const LanguageDropdown({required this.onLanguageChanged, Key? key})
+  const LanguageDropdown({Key? key})
       : super(key: key);
 
   @override
@@ -208,9 +203,6 @@ class LanguageDropdown extends StatelessWidget {
           if (selectedLocale != null) {
             Get.updateLocale(selectedLocale);
             localeController.setLocale(selectedLocale);
-
-            // Notify parent of the change
-            onLanguageChanged();
           }
         },
       ),
@@ -222,7 +214,7 @@ class GenderDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<DataBoardingController>(
       builder: (controller) {
-        final List<String> dropDownValues = ['male'.tr, 'female'.tr, 'other'.tr];
+        final List<String> genderValues = ['male'.tr, 'female'.tr, 'other'.tr];
         return DropdownMenu(
                       label: Text(
                         'select_gender'.tr,
@@ -237,12 +229,12 @@ class GenderDropdown extends StatelessWidget {
                         fontSize: 18,
                       ),
                       width: MediaQuery.of(context).size.width * 0.9,
-                      dropdownMenuEntries: dropDownValues.map((String gender) {
-                        return DropdownMenuEntry(value: gender, label: gender);
+                      dropdownMenuEntries: genderValues.map((String gender){
+                        return DropdownMenuEntry(value: controller.selectedGender, label: gender);
                       }).toList(),
                       onSelected: (value) {
                         controller.selectedGender = value;
-                        controller.update(); // Rebuild the widget
+                        //controller.update(); // Rebuild the widget
                       },
                       initialSelection: controller.selectedGender, // Persist value
                     );

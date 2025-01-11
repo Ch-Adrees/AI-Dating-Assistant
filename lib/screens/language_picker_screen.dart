@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_tile.dart';
-//import 'package:rizzhub/controllers/locale_controller.dart';
 import 'package:rizzhub/l10n/l10n.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:rizzhub/provider/locale_provider.dart';
+import 'package:rizzhub/controllers/locale_controller.dart';
 
 class LanguagePickerScreen extends StatelessWidget {
   @override

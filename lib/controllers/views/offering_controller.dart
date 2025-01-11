@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -47,7 +46,7 @@ class OfferingController extends GetxController {
                       color: Colors.red, size: 35)
                       : Paywall(
                       offering: offerings!
-                          .current!) // Set the height of your bottom sheet
+                          .current!)
               ),
             ),
             isScrollControlled:
