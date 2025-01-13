@@ -64,9 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 10,
                 ),
                 CustomButton(
-
+                    gradientColors: [Colors.red, Colors.brown],
                   //text: "Ice Breaker",
-
+                  color: Colors.transparent,
                   text: 'ice_breaker'.tr,
                   onTap: () async {
                     final AdManager adManager = AdManager(context);
@@ -77,6 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 CustomButton(
+                  color: Colors.transparent,
+                  gradientColors: [Colors.red, Colors.lightBlue],
                   text: 'need_assistance'.tr,
                   onTap: () async {
                     final AdManager adManager = AdManager(context);
@@ -85,7 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
                 CustomButton(
-
+                  gradientColors: [Colors.blue, Colors.white70],
+                  color: Colors.transparent,
                   text: 'generate_first_message'.tr,
                   onTap: () async {
                     final AdManager adManager = AdManager(context);
