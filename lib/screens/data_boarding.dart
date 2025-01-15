@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/controllers/views/data_boarding_controller.dart';
 import 'package:rizzhub/l10n/l10n.dart';
 import 'package:rizzhub/provider/locale_provider.dart';
-//import 'package:rizzhub/provider/locale_prodart';
-import 'package:rizzhub/screens/home.dart';
 
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+
+import 'package:rizzhub/screens/navigation_screen.dart';
+
 class DataBoardingScreen extends StatelessWidget {
   DataBoardingScreen({super.key});
 
@@ -111,7 +111,7 @@ class DataBoardingScreen extends StatelessWidget {
                           );
                           return;
                         }
-                        Get.to(() => const HomeScreen());
+                        Get.to(() => const NavigationScreen());
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

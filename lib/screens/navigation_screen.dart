@@ -1,0 +1,85 @@
+import 'package:flutter/material.dart';
+import 'package:rizzhub/components/custom_app_bar.dart';
+import 'package:rizzhub/screens/assistant.dart';
+import 'package:rizzhub/screens/ice_first_message.dart';
+import 'package:rizzhub/widgets/drawer.dart';
+
+class NavigationScreen extends StatefulWidget {
+  const NavigationScreen({super.key});
+
+  @override
+  State<NavigationScreen> createState() => _NavigationScreenState();
+}
+
+class _NavigationScreenState extends State<NavigationScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int selectedIndex = 1;
+  List<Widget> _screens = [
+    IceAndFirstMessage(toScreen: 'first'),
+    AssistantScreen(),
+    IceAndFirstMessage(toScreen: 'ice')
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50.0),
+          child: Builder(builder: (context) {
+            return CustomAppBar(onTap: () {
+              _scaffoldKey.currentState?.openDrawer();
+            });
+          })),
+      drawer: const CustomDrawer(),
+      body: _screens[selectedIndex],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color of the navigation bar
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0), // Top-left corner
+            topRight: Radius.circular(16.0), // Top-right corner
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12, // Shadow color
+              blurRadius: 10, // Softening the shadow
+              offset: Offset(0, -4), // Shadow position
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16.0),
+            topRight: Radius.circular(16.0),
+          ),
+          child: BottomNavigationBar(
+              onTap: (int index) {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              items: [
+                BottomNavigationBarItem(
+                  label: "Break Silence",
+                  icon: Icon(
+                    Icons.topic,
+                    color: selectedIndex == 0 ? Colors.red : Colors.black38,
+                  ),
+                ),
+                BottomNavigationBarItem(
+                  label: "Assistant Screen",
+                  icon: Icon(Icons.home,
+                      color: selectedIndex == 1 ? Colors.red : Colors.black38),
+                ),
+                BottomNavigationBarItem(
+                  label: "Random generator",
+                  icon: Icon(Icons.search,
+                      color: selectedIndex == 2 ? Colors.red : Colors.black38),
+                )
+              ]),
+        ),
+      ),
+    );
+  }
+}

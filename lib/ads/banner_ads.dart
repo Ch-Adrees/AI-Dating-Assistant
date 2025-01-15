@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
-
 import 'ads_manager.dart';
 
 class BannerAd extends StatelessWidget {

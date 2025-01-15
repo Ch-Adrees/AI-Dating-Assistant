@@ -9,7 +9,8 @@ import 'package:rizzhub/l10n/l10n.dart';
 import 'package:rizzhub/languages.dart';
 import 'package:rizzhub/provider/counter_provider.dart';
 import 'package:rizzhub/provider/locale_provider.dart';
-import 'package:rizzhub/screens/home.dart';
+import 'package:rizzhub/screens/navigation_screen.dart';
+
 import 'package:rizzhub/screens/onbaording.dart';
 import 'package:rizzhub/services/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -101,7 +102,7 @@ class MyApp extends StatelessWidget {
             final isFirstLaunch = snapshot.data ?? true;
             return isFirstLaunch
                 ? const OnboardingScreen()
-                : const HomeScreen();
+                : const NavigationScreen();
           },
         ),
       );

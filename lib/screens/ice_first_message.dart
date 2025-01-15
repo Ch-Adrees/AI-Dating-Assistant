@@ -7,12 +7,9 @@ import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 import 'package:provider/provider.dart';
 
 import 'package:rizzhub/components/constants.dart';
-import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:rizzhub/l10n/l10n.dart';
 import '../ads/ads_manager.dart';
 
 import '../provider/counter_provider.dart';
@@ -33,10 +30,10 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   List<String> _seenDocIds = [];
 
   // Get the user's selected language code
-Future<String> _getUserSelectedLanguage() async {
-  final locale = Get.find<LocaleController>().currentLocale;
-  return locale.value.languageCode; // Return the current language code
-}
+  Future<String> _getUserSelectedLanguage() async {
+    final locale = Get.find<LocaleController>().currentLocale;
+    return locale.value.languageCode; // Return the current language code
+  }
 
   // Map language codes to TranslateLanguage
   TranslateLanguage getTranslateLanguage(String userSelectedLanguage) {
@@ -142,83 +139,73 @@ Future<String> _getUserSelectedLanguage() async {
 
   @override
   Widget build(BuildContext context) {
-
-    final counterProvider = Provider.of<CounterProvider>(context, listen: false);
+    final counterProvider =
+        Provider.of<CounterProvider>(context, listen: false);
 
     //return Obx(() {
- // final userSelectedLanguage = Get.find<LocaleController>().currentLocale.value.languageCode;
-  return  Scaffold(
-      appBar: CustomAppBar(
-        onTap: () {
-          Get.back();
-        },
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(children: [
-                  IntrinsicHeight(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      child: CustomTextfield(
-                        readOnly: true,
-                        maxLines: 5,
-                        hintText: 'random_response'.tr,
-                        label: 'response'.tr,
-                        controller: _responseController,
-                      ),
+    // final userSelectedLanguage = Get.find<LocaleController>().currentLocale.value.languageCode;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(children: [
+                IntrinsicHeight(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: CustomTextfield(
+                      readOnly: true,
+                      maxLines: 5,
+                      hintText: 'random_response'.tr,
+                      label: 'response'.tr,
+                      controller: _responseController,
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  CustomIconButton(
-                    onTap: () {
-                      if (_responseController.text.isNotEmpty) {
-                        Clipboard.setData(
-                            ClipboardData(text: _responseController.text));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('copied'.tr),
-                          ),
-                        );
-                      }
-                    },
-                    height: 55,
-                    width: 55,
-                    icon: Icon(
-                      Icons.content_copy,
-                      color: Constants.primaryColor,
-                      size: 25,
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: 50),
-                CustomButton(
-                  onTap: () async {
-
-                    await counterProvider
-                        .incrementCounter(); // Increment counter
-                    if (counterProvider.counter >= counterProvider.threshold) {
-                      final AdManager adManager = AdManager(context);
-                      await adManager.showRewardedAd();
-                      counterProvider
-                          .resetCounter(); // Reset counter after showing the ad
-                    }
-                    await fetchRandomDocument();
-                  },
-                  text: 'random_generator'.tr,
                 ),
-              ],
-            ),
+                const SizedBox(width: 10),
+                CustomIconButton(
+                  onTap: () {
+                    if (_responseController.text.isNotEmpty) {
+                      Clipboard.setData(
+                          ClipboardData(text: _responseController.text));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('copied'.tr),
+                        ),
+                      );
+                    }
+                  },
+                  height: 55,
+                  width: 55,
+                  icon: Icon(
+                    Icons.content_copy,
+                    color: Constants.primaryColor,
+                    size: 25,
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 50),
+              CustomButton(
+                color: Colors.red,
+                onTap: () async {
+                  await counterProvider.incrementCounter(); // Increment counter
+                  if (counterProvider.counter >= counterProvider.threshold) {
+                    final AdManager adManager = AdManager(context);
+                    await adManager.showRewardedAd();
+                    counterProvider
+                        .resetCounter(); // Reset counter after showing the ad
+                  }
+                  await fetchRandomDocument();
+                },
+                text: 'random_generator'.tr,
+              ),
+            ],
           ),
         ),
       ),
     );
-    
   }
-   // );
+  
 }
-//}
