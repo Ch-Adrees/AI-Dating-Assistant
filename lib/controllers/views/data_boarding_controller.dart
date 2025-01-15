@@ -7,7 +7,8 @@ class DataBoardingController extends GetxController {
 
   //   // Variables to store selected gender and language
    // Persist selectedGender
- String? selectedGender;
+  String? selectedGender;
+  
 
   // void onChange(String value) {
   //   selectedGender = value;

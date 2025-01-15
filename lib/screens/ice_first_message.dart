@@ -4,20 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
-import 'package:provider/provider.dart';
 
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:rizzhub/l10n/l10n.dart';
+import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 import '../ads/ads_manager.dart';
 
-import '../provider/counter_provider.dart';
-
-import '../provider/locale_provider.dart';
+import '../controllers/ad_counter_controller.dart';
+import '../controllers/locale_controller.dart';
 
 class IceAndFirstMessage extends StatefulWidget {
   const IceAndFirstMessage({super.key, required this.toScreen});
@@ -30,43 +27,45 @@ class IceAndFirstMessage extends StatefulWidget {
 class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _responseController = TextEditingController();
+  
+  final CounterController counterController = Get.put(CounterController()); // Initialize CounterController
   List<String> _seenDocIds = [];
 
   // Get the user's selected language code
-Future<String> _getUserSelectedLanguage() async {
-  final locale = Get.find<LocaleController>().currentLocale;
-  return locale.value.languageCode; // Return the current language code
-}
+  Future<String> _getUserSelectedLanguage() async {
+    final locale = Get.find<LocaleController>().currentLocale;
+    return locale.value.languageCode; // Return the current language code
+  }
 
   // Map language codes to TranslateLanguage
   TranslateLanguage getTranslateLanguage(String userSelectedLanguage) {
     switch (userSelectedLanguage.toLowerCase()) {
-      case 'ar': // Arabic
+      case 'ar':
         return TranslateLanguage.arabic;
-      case 'de': // German
+      case 'de':
         return TranslateLanguage.german;
-      case 'el': // Turkish
+      case 'el':
         return TranslateLanguage.greek;
-      case 'es': // Spanish
+      case 'es':
         return TranslateLanguage.spanish;
-      case 'fr': // French
+      case 'fr':
         return TranslateLanguage.french;
-      case 'hi': // Hindi
+      case 'hi':
         return TranslateLanguage.hindi;
-      case 'it': // Italian
+      case 'it':
         return TranslateLanguage.italian;
-      case 'nl': // Dutch
+      case 'nl':
         return TranslateLanguage.dutch;
-      case 'pt': // Portuguese
+      case 'pt':
         return TranslateLanguage.portuguese;
-      case 'ru': // Russian
+      case 'ru':
         return TranslateLanguage.russian;
-      case 'tr': // Turkish
+      case 'tr':
         return TranslateLanguage.turkish;
-      case 'zh': // Chinese
+      case 'zh':
         return TranslateLanguage.chinese;
       default:
-        return TranslateLanguage.english; // Default to English
+        return TranslateLanguage.english;
     }
   }
 
@@ -142,12 +141,7 @@ Future<String> _getUserSelectedLanguage() async {
 
   @override
   Widget build(BuildContext context) {
-
-    final counterProvider = Provider.of<CounterProvider>(context, listen: false);
-
-    //return Obx(() {
- // final userSelectedLanguage = Get.find<LocaleController>().currentLocale.value.languageCode;
-  return  Scaffold(
+    return Scaffold(
       appBar: CustomAppBar(
         onTap: () {
           Get.back();
@@ -198,14 +192,16 @@ Future<String> _getUserSelectedLanguage() async {
                 const SizedBox(height: 50),
                 CustomButton(
                   onTap: () async {
+                    counterController.incrementCounter();
 
-                    await counterProvider
-                        .incrementCounter(); // Increment counter
-                    if (counterProvider.counter >= counterProvider.threshold) {
+                    int adCount = await counterController.counter;
+                    print(adCount);
+
+                    if (adCount == counterController.threshold) {
+                      //await Appodeal.show(AppodealAdType.RewardedVideo, 'RewardsAds1');
                       final AdManager adManager = AdManager(context);
                       await adManager.showRewardedAd();
-                      counterProvider
-                          .resetCounter(); // Reset counter after showing the ad
+                      counterController.resetCounter();
                     }
                     await fetchRandomDocument();
                   },
@@ -217,8 +213,5 @@ Future<String> _getUserSelectedLanguage() async {
         ),
       ),
     );
-    
   }
-   // );
 }
-//}

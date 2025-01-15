@@ -15,6 +15,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:image_cropper/image_cropper.dart';
 
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 import '../ads/ads_manager.dart';
 import '../components/constants.dart';
@@ -23,7 +24,7 @@ import '../components/custom_button.dart';
 import '../components/custom_icon.dart';
 import '../components/custom_text_field.dart';
 import '../controllers/views/assistant_screen_controller.dart';
-import '../provider/locale_provider.dart';
+import '../controllers/locale_controller.dart';
 import '../widgets/custom_emojies_row.dart';
 
 
@@ -368,6 +369,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                               content: Text("Please provide the Input")),
                         );
                       } else {
+                        //await Appodeal.show(AppodealAdType.RewardedVideo, 'RewardsAds1');
                         final AdManager adManager = AdManager(context);
                         await adManager.showRewardedAd();
                         await _generateResponse();
