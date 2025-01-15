@@ -32,22 +32,14 @@ class AdManager {
   // Show Banner Ads
   Future<void> showBannerAd() async {
     await checkAndBlockAds();
+    
     if(_isAdsBlocked) return;
-    try {
-      bool isBannerLoaded = await Appodeal.isLoaded(Appodeal.BANNER);
-      Appodeal.cache(Appodeal.BANNER);
-      if (isBannerLoaded) {
-        Appodeal.show(Appodeal.BANNER, 'BannerAds1');
-      } else {
-
-        Future.delayed(const Duration(minutes: 1), () {
-          showBannerAd();
-        });
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      bool isReady = await Appodeal.isLoaded(Appodeal.BANNER);
+      //Appodeal.cache(Appodeal.BANNER);
+      if (isReady) {
+      Appodeal.show(Appodeal.BANNER, 'BannerAds1');
+    }else {
+      Appodeal.show(Appodeal.BANNER, 'BannerAds1');
     }
   }
 

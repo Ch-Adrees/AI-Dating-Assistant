@@ -23,7 +23,7 @@ import '../components/custom_button.dart';
 import '../components/custom_icon.dart';
 import '../components/custom_text_field.dart';
 import '../controllers/views/assistant_screen_controller.dart';
-import '../provider/locale_provider.dart';
+import '../controllers/locale_controller.dart';
 import '../widgets/custom_emojies_row.dart';
 
 

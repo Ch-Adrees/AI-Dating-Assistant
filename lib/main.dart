@@ -1,35 +1,57 @@
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
+
 import 'package:rizzhub/components/theme.dart';
 import 'package:rizzhub/controllers/internet_controller.dart';
 import 'package:rizzhub/l10n/l10n.dart';
 import 'package:rizzhub/languages.dart';
-import 'package:rizzhub/provider/counter_provider.dart';
-import 'package:rizzhub/provider/locale_provider.dart';
+
+import 'package:rizzhub/controllers/locale_controller.dart';
 import 'package:rizzhub/screens/home.dart';
 import 'package:rizzhub/screens/onbaording.dart';
 import 'package:rizzhub/services/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
+//import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 import 'components/constants.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.updateRequestConfiguration(
+    RequestConfiguration(
+      testDeviceIds: ['85F0A91FF9C1E99B68214CC21246DCD5'],
+    ),
+  );
 
   // Initialize GetX controllers
   Get.put(InternetController());
   Get.put(LocaleController());
+  // Set the Appodeal app keys
+// Appodeal.setAppKeys(
+//   androidAppKey: 'edf0eeb97ff2d940bd1fc71234dc74d80f3eb7d06d96bf97',
+//   // iosAppKey: '<your-appodeal-ios-key>',
+// );
 
-  // Initialize Appodeal
+// Initialize Appodeal
+// await Appodeal.initialize(
+//   hasConsent: true,
+//   adTypes: [AdType.banner, AdType.interstitial, AdType.reward],
+//   testMode: true,
+//   verbose: true,
+// );
+
+//At this point you are ready to display ads
+  //Initialize Appodeal
   await Appodeal.initialize(
     appKey: 'edf0eeb97ff2d940bd1fc71234dc74d80f3eb7d06d96bf97',
     adTypes: [Appodeal.INTERSTITIAL, Appodeal.REWARDED_VIDEO, Appodeal.BANNER],
-    onInitializationFinished: (errors) {
+   onInitializationFinished: (errors) {
       if (errors != null) {
         print("Appodeal initialization errors: $errors");
       }
@@ -51,13 +73,7 @@ void main() async {
   Utils.configureRevenueCatWithApp();
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => CounterProvider()..initializeCounter()),
-        // Add other providers here if needed
-      ],
-      child: LocaleBlockingWrapper(child: const MyApp()),
-    ),
+      LocaleBlockingWrapper(child: const MyApp()),
   );
 }
 
@@ -95,7 +111,9 @@ class MyApp extends StatelessWidget {
                     child: CircularProgressIndicator(
                       color: Constants.buttonBgColor,
                     ),
-                  )));
+                  )
+                  )
+                  );
             }
 
             final isFirstLaunch = snapshot.data ?? true;
