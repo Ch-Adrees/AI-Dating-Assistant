@@ -10,6 +10,7 @@ import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
+import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 import '../ads/ads_manager.dart';
 
 import '../controllers/ad_counter_controller.dart';
@@ -193,9 +194,11 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                   onTap: () async {
                     counterController.incrementCounter();
 
-                    int adCount = await counterController.getCounter();
+                    int adCount = await counterController.counter;
+                    print(adCount);
 
                     if (adCount == counterController.threshold) {
+                      //await Appodeal.show(AppodealAdType.RewardedVideo, 'RewardsAds1');
                       final AdManager adManager = AdManager(context);
                       await adManager.showRewardedAd();
                       counterController.resetCounter();

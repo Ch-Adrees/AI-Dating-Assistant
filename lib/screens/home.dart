@@ -26,8 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
    
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
+    // await Appodeal.show(AppodealAdType.Banner, 'BannerAds1');
     AdManager _adManager=AdManager(context);
     _adManager.showBannerAd();
     _setIsFirstLaunchFalse();
@@ -72,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   text: 'ice_breaker'.tr,
                   onTap: () async {
+                   // await Appodeal.show(AppodealAdType.Interstitial, 'InterstitialAds1');
                     final AdManager adManager = AdManager(context);
                     await adManager.showInterstitial();
                    // await adManager.showBannerAd();
@@ -83,6 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 CustomButton(
                   text: 'need_assistance'.tr,
                   onTap: () async {
+                    //await Appodeal.show(AppodealAdType.RewardedVideo, 'RewardsAds1');
                     final AdManager adManager = AdManager(context);
                     await adManager.showInterstitial();
                     Get.to(() => const AssistantScreen());
@@ -92,6 +95,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   text: 'generate_first_message'.tr,
                   onTap: () async {
+
+                   // await Appodeal.show(AppodealAdType.Interstitial, 'InterstitialAds1');
                     final AdManager adManager = AdManager(context);
                     await adManager.showInterstitial();
                     Get.to(
@@ -102,11 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-//         AppodealBanner(
-//           placement: 'default',
-//   adSize: AppodealBannerSize.BANNER // Standard banner size
-// ),
-//Text('F', style: TextStyle(color: Colors.amber),),
+//  AppodealBanner(adSize: AppodealBannerSize.BANNER, placement: "BannerAds1"),
               ],
               
             ),
