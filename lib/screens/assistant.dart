@@ -241,7 +241,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
           ],
-          "max_tokens": 50,
+          "max_tokens": 500,
         }),
       );
 
