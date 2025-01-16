@@ -32,21 +32,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
             });
           })),
       drawer: const CustomDrawer(),
-      body: _screens[selectedIndex],
+       body: _screens[selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
+
           color: Colors.white, // Background color of the navigation bar
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.0), // Top-left corner
             topRight: Radius.circular(16.0), // Top-right corner
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12, // Shadow color
-              blurRadius: 10, // Softening the shadow
-              offset: Offset(0, -4), // Shadow position
-            ),
-          ],
+
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.only(
@@ -57,25 +52,27 @@ class _NavigationScreenState extends State<NavigationScreen> {
               onTap: (int index) {
                 setState(() {
                   selectedIndex = index;
+                  //New case has been Solved
                 });
               },
+              backgroundColor: Colors.red,
               items: [
                 BottomNavigationBarItem(
                   label: "Break Silence",
                   icon: Icon(
                     Icons.topic,
-                    color: selectedIndex == 0 ? Colors.red : Colors.black38,
+                    color: selectedIndex == 0 ? Colors.black : Colors.white,
                   ),
                 ),
                 BottomNavigationBarItem(
                   label: "Assistant Screen",
                   icon: Icon(Icons.home,
-                      color: selectedIndex == 1 ? Colors.red : Colors.black38),
+                      color: selectedIndex == 1 ? Colors.black : Colors.white,),
                 ),
                 BottomNavigationBarItem(
                   label: "Random generator",
                   icon: Icon(Icons.search,
-                      color: selectedIndex == 2 ? Colors.red : Colors.black38),
+                      color: selectedIndex == 2 ? Colors.black : Colors.white,),
                 )
               ]),
         ),
