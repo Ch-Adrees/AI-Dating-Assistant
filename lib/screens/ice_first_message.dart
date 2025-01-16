@@ -27,8 +27,9 @@ class IceAndFirstMessage extends StatefulWidget {
 class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _responseController = TextEditingController();
-  
-  final CounterController counterController = Get.put(CounterController()); // Initialize CounterController
+
+  final CounterController counterController =
+      Get.put(CounterController()); // Initialize CounterController
   List<String> _seenDocIds = [];
 
   // Get the user's selected language code
@@ -70,31 +71,30 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   }
 
   // Fetch a random document and translate it
-  Future<void> fetchRandomDocument() async {
+  DocumentSnapshot? _lastFetchedDoc; // Tracks the last fetched document
+
+  Future<void> fetchSequentialDocument() async {
     try {
       String userSelectedLanguage = await _getUserSelectedLanguage();
       String collectionName =
           widget.toScreen == 'first' ? 'conversationstarter' : 'randomtopic';
 
-      QuerySnapshot querySnapshot =
-          await _firestore.collection(collectionName).get();
+      Query query = _firestore
+          .collection(collectionName) // Explicit order to prevent excessive reads
+          .limit(1); // Fetch one document at a time
+
+      // Fetch the next document after the last fetched one
+      if (_lastFetchedDoc != null) {
+        query = query.startAfterDocument(_lastFetchedDoc!);
+      }
+
+      QuerySnapshot querySnapshot = await query.get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        List<DocumentSnapshot> unseenDocs = querySnapshot.docs
-            .where((doc) => !_seenDocIds.contains(doc.id))
-            .toList();
+        DocumentSnapshot nextDoc = querySnapshot.docs.first;
+        _lastFetchedDoc = nextDoc; // Update the last fetched document
 
-        if (unseenDocs.isEmpty) {
-          _seenDocIds.clear();
-          unseenDocs = querySnapshot.docs;
-          Get.snackbar('Information', 'All documents seen, starting over.');
-        }
-
-        int randomIndex = Random().nextInt(unseenDocs.length);
-        DocumentSnapshot randomDoc = unseenDocs[randomIndex];
-        _seenDocIds.add(randomDoc.id);
-
-        final data = randomDoc.data() as Map<String, dynamic>?;
+        final data = nextDoc.data() as Map<String, dynamic>?;
         String question = data?['question'] ?? 'No question available';
 
         String translatedText =
@@ -104,15 +104,18 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
           _responseController.text = translatedText;
         });
       } else {
+        // Reset if all documents have been fetched
+        _lastFetchedDoc = null;
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(
-                  'No documents found in the $collectionName collection.')),
+              content:
+                  Text('Information, All documents shown, starting over.')),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching random document: $e')),
+        SnackBar(content: Text('Error fetching document: $e')),
       );
     }
   }
@@ -203,7 +206,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                       await adManager.showRewardedAd();
                       counterController.resetCounter();
                     }
-                    await fetchRandomDocument();
+                    await fetchSequentialDocument();
                   },
                   text: 'random_generator'.tr,
                 ),
