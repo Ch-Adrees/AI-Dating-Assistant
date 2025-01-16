@@ -121,9 +121,9 @@ class CustomDrawer extends StatelessWidget {
                   onTap: () async {
                     final AdManager adManager = AdManager(context);
                     await adManager.showInterstitial();
-                     Get.to(
-                    () =>LanguagePickerScreen(),
-                  );
+                    Get.to(
+                          () =>LanguagePickerScreen(),
+                    );
                   },
                   icon: const Icon(Icons.language),
                   title: 'language'.tr),

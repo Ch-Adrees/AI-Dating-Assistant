@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 //import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:rizzhub/components/constants.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Paywall extends StatefulWidget {
   final Offering offering;

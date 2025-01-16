@@ -1,4 +1,3 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -11,6 +10,7 @@ import 'package:rizzhub/languages.dart';
 
 import 'package:rizzhub/controllers/locale_controller.dart';
 import 'package:rizzhub/screens/home.dart';
+import 'package:rizzhub/screens/navigation_screen.dart';
 import 'package:rizzhub/screens/onbaording.dart';
 import 'package:rizzhub/services/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,15 +49,15 @@ void main() async {
 //At this point you are ready to display ads
   //Initialize Appodeal
   Appodeal.initialize(
-    appKey: "edf0eeb97ff2d940bd1fc71234dc74d80f3eb7d06d96bf97",
-    adTypes: [
-      AppodealAdType.Interstitial,
-      AppodealAdType.RewardedVideo,
-      AppodealAdType.Banner,
-    ],
-    onInitializationFinished: (errors) => {});
-    Appodeal.setTabletBanners(true);
-    Appodeal.setSmartBanners(true);
+      appKey: "edf0eeb97ff2d940bd1fc71234dc74d80f3eb7d06d96bf97",
+      adTypes: [
+        AppodealAdType.Interstitial,
+        AppodealAdType.RewardedVideo,
+        AppodealAdType.Banner,
+      ],
+      onInitializationFinished: (errors) => {});
+  Appodeal.setTabletBanners(true);
+  Appodeal.setSmartBanners(true);
 
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -74,7 +74,7 @@ void main() async {
   Utils.configureRevenueCatWithApp();
 
   runApp(
-      LocaleBlockingWrapper(child: const MyApp()),
+    LocaleBlockingWrapper(child: const MyApp()),
   );
 }
 
@@ -109,18 +109,18 @@ class MyApp extends StatelessWidget {
                   theme: ThemeOfApp.appTheme,
                   home: Scaffold(
                       body: Center(
-                    child: CircularProgressIndicator(
-                      color: Constants.buttonBgColor,
-                    ),
+                        child: CircularProgressIndicator(
+                          color: Constants.buttonBgColor,
+                        ),
+                      )
                   )
-                  )
-                  );
+              );
             }
 
             final isFirstLaunch = snapshot.data ?? true;
             return isFirstLaunch
                 ? const OnboardingScreen()
-                : const HomeScreen();
+                : const NavigationScreen();
           },
         ),
       );

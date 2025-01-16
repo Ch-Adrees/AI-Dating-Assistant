@@ -9,13 +9,15 @@ import 'package:rizzhub/controllers/locale_controller.dart';
 import 'package:rizzhub/screens/home.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'navigation_screen.dart';
 class DataBoardingScreen extends StatelessWidget {
   DataBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final DataBoardingController controller = Get.put(DataBoardingController());
-  //  final List<String> dropDownValues = ['male'.tr, 'female'.tr, 'other'.tr];
+    //  final List<String> dropDownValues = ['male'.tr, 'female'.tr, 'other'.tr];
 
     return Scaffold(
       appBar: AppBar(),
@@ -72,7 +74,7 @@ class DataBoardingScreen extends StatelessWidget {
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 30),
-               GenderDropdown(),
+                GenderDropdown(),
                 const SizedBox(height: 18),
                 LanguageDropdown(),
                 const SizedBox(height: 30),
@@ -106,7 +108,7 @@ class DataBoardingScreen extends StatelessWidget {
                           );
                           return;
                         }
-                        Get.to(() => const HomeScreen());
+                        Get.to(() => const NavigationScreen());
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,7 +166,7 @@ class DataBoardingScreen extends StatelessWidget {
 
 // Add this code in the appropriate place in your data boarding screen
 class LanguageDropdown extends StatelessWidget {
-  
+
 
   const LanguageDropdown({Key? key})
       : super(key: key);
@@ -216,28 +218,28 @@ class GenderDropdown extends StatelessWidget {
       builder: (controller) {
         final List<String> genderValues = ['male'.tr, 'female'.tr, 'other'.tr];
         return DropdownMenu(
-                      label: Text(
-                        'select_gender'.tr,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Poppins",
-                        ),
-                      ),
-                      textStyle: const TextStyle(
-                        color: Colors.white,
-                        fontFamily: "Poppins",
-                        fontSize: 18,
-                      ),
-                      width: MediaQuery.of(context).size.width * 0.9,
-                      dropdownMenuEntries: genderValues.map((String gender){
-                        return DropdownMenuEntry(value: gender, label: gender);
-                      }).toList(),
-                      onSelected: (value) {
-                        controller.selectedGender = value;
-                        controller.update(); // Rebuild the widget
-                      },
-                      //initialSelection: controller.selectedGender, // Persist value
-                    );
+          label: Text(
+            'select_gender'.tr,
+            style: const TextStyle(
+              color: Colors.white,
+              fontFamily: "Poppins",
+            ),
+          ),
+          textStyle: const TextStyle(
+            color: Colors.white,
+            fontFamily: "Poppins",
+            fontSize: 18,
+          ),
+          width: MediaQuery.of(context).size.width * 0.9,
+          dropdownMenuEntries: genderValues.map((String gender){
+            return DropdownMenuEntry(value: gender, label: gender);
+          }).toList(),
+          onSelected: (value) {
+            controller.selectedGender = value;
+            controller.update(); // Rebuild the widget
+          },
+          //initialSelection: controller.selectedGender, // Persist value
+        );
       },
     );
   }

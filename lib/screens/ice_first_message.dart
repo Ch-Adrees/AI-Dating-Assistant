@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:provider/provider.dart';
 
 import 'package:rizzhub/components/constants.dart';
-import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
@@ -15,6 +15,7 @@ import '../ads/ads_manager.dart';
 
 import '../controllers/ad_counter_controller.dart';
 import '../controllers/locale_controller.dart';
+import '../provider/counter_provider.dart';
 
 class IceAndFirstMessage extends StatefulWidget {
   const IceAndFirstMessage({super.key, required this.toScreen});
@@ -144,77 +145,73 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        onTap: () {
-          Get.back();
-        },
-      ),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Row(children: [
-                  IntrinsicHeight(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      child: CustomTextfield(
-                        readOnly: true,
-                        maxLines: 5,
-                        hintText: 'random_response'.tr,
-                        label: 'response'.tr,
-                        controller: _responseController,
-                      ),
+    final counterProvider =
+        Provider.of<CounterProvider>(context, listen: false);
+
+    //return Obx(() {
+    // final userSelectedLanguage = Get.find<LocaleController>().currentLocale.value.languageCode;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(children: [
+                IntrinsicHeight(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: CustomTextfield(
+                      readOnly: true,
+                      maxLines: 5,
+                      hintText: 'random_response'.tr,
+                      label: 'response'.tr,
+                      controller: _responseController,
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  CustomIconButton(
-                    onTap: () {
-                      if (_responseController.text.isNotEmpty) {
-                        Clipboard.setData(
-                            ClipboardData(text: _responseController.text));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('copied'.tr),
-                          ),
-                        );
-                      }
-                    },
-                    height: 55,
-                    width: 55,
-                    icon: Icon(
-                      Icons.content_copy,
-                      color: Constants.primaryColor,
-                      size: 25,
-                    ),
-                  ),
-                ]),
-                const SizedBox(height: 50),
-                CustomButton(
-                  onTap: () async {
-                    counterController.incrementCounter();
-
-                    int adCount = await counterController.counter;
-                    print(adCount);
-
-                    if (adCount == counterController.threshold) {
-                      //await Appodeal.show(AppodealAdType.RewardedVideo, 'RewardsAds1');
-                      final AdManager adManager = AdManager(context);
-                      await adManager.showRewardedAd();
-                      counterController.resetCounter();
-                    }
-                    await fetchSequentialDocument();
-                  },
-                  text: 'random_generator'.tr,
                 ),
-              ],
-            ),
+                const SizedBox(width: 10),
+                CustomIconButton(
+                  onTap: () {
+                    if (_responseController.text.isNotEmpty) {
+                      Clipboard.setData(
+                          ClipboardData(text: _responseController.text));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('copied'.tr),
+                        ),
+                      );
+                    }
+                  },
+                  height: 55,
+                  width: 55,
+                  icon: Icon(
+                    Icons.content_copy,
+                    color: Constants.primaryColor,
+                    size: 25,
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 50),
+              CustomButton(
+                color: Colors.red,
+                onTap: () async {
+                  await counterProvider.incrementCounter(); // Increment counter
+                  if (counterProvider.counter >= counterProvider.threshold) {
+                    final AdManager adManager = AdManager(context);
+                    await adManager.showRewardedAd();
+                    counterProvider
+                        .resetCounter(); // Reset counter after showing the ad
+                  }
+                  await fetchSequentialDocument();
+                },
+                text: 'random_generator'.tr,
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+  
 }
