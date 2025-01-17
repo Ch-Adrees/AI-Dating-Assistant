@@ -8,10 +8,13 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rizzhub/controllers/views/offering_controller.dart';
+
 
 import '../ads/ads_manager.dart';
 import '../components/constants.dart';
@@ -236,7 +239,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
             {"role": "system", "content": "You are a helpful assistant."},
             {"role": "user", "content": prompt},
           ],
-          "max_tokens": 50,
+          "max_tokens": 500,
         }),
       );
 

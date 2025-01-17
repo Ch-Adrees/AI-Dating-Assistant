@@ -16,17 +16,19 @@ import '../controllers/ad_counter_controller.dart';
 import '../controllers/locale_controller.dart';
 import '../controllers/ad_counter_controller.dart';
 import '../controllers/locale_controller.dart';
+ import 'dart:math';
+
 //import '../provider/counter_provider.dart';
 
-class FirstMessage extends StatefulWidget {
-  const FirstMessage({super.key});
- // final String toScreen;
+class BreakSilence extends StatefulWidget {
+  const BreakSilence({super.key});
+  //final String toScreen;
 
   @override
-  State<FirstMessage> createState() => _IceAndFirstMessageState();
+  State<BreakSilence> createState() => _IceAndFirstMessageState();
 }
 
-class _IceAndFirstMessageState extends State<FirstMessage> {
+class _IceAndFirstMessageState extends State<BreakSilence> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _responseController = TextEditingController();
   
@@ -75,54 +77,61 @@ class _IceAndFirstMessageState extends State<FirstMessage> {
   // Fetch a random document and translate it
   DocumentSnapshot? _lastFetchedDoc; // Tracks the last fetched document
 
-  Future<void> fetchSequentialDocument() async {
-    try {
-      String userSelectedLanguage = await _getUserSelectedLanguage();
+ 
+List<String> _documentIds = []; // List to store all document IDs
+Set<String> _fetchedIds = {}; // Track fetched IDs to avoid repeats
 
-      String collectionName='conversationstarter';
-      // String collectionName =
-      //     widget.toScreen == 'first' ? 'conversationstarter' : 'randomtopic';
+Future<void> fetchRandomDocument() async {
+  try {
+    String userSelectedLanguage = await _getUserSelectedLanguage();
+    String collectionName = 'randomtopic';
 
-      Query query = _firestore
-          .collection(collectionName) // Explicit order to prevent excessive reads
-          .limit(1); // Fetch one document at a time
-
-      // Fetch the next document after the last fetched one
-      if (_lastFetchedDoc != null) {
-        query = query.startAfterDocument(_lastFetchedDoc!);
-      }
-
-      QuerySnapshot querySnapshot = await query.get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        DocumentSnapshot nextDoc = querySnapshot.docs.first;
-        _lastFetchedDoc = nextDoc; // Update the last fetched document
-
-        final data = nextDoc.data() as Map<String, dynamic>?;
-        String question = data?['question'] ?? 'No question available';
-
-        String translatedText =
-            await translateText(question, userSelectedLanguage);
-
-        setState(() {
-          _responseController.text = translatedText;
-        });
-      } else {
-        // Reset if all documents have been fetched
-        _lastFetchedDoc = null;
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content:
-                  Text('Information, All documents shown, starting over.')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching document: $e')),
-      );
+    // Load document IDs if not already loaded
+    if (_documentIds.isEmpty) {
+      QuerySnapshot snapshot =
+          await _firestore.collection(collectionName).get();
+      _documentIds = snapshot.docs.map((doc) => doc.id).toList();
     }
+
+    // Filter out already fetched IDs
+    List<String> availableIds =
+        _documentIds.where((id) => !_fetchedIds.contains(id)).toList();
+
+    if (availableIds.isEmpty) {
+      // Reset if all documents have been fetched
+      _fetchedIds.clear();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('All documents fetched, restarting.')),
+      );
+      return;
+    }
+
+    // Pick a random ID
+    String randomId = availableIds[Random().nextInt(availableIds.length)];
+
+    // Fetch the document with the random ID
+    DocumentSnapshot randomDoc =
+        await _firestore.collection(collectionName).doc(randomId).get();
+
+    _fetchedIds.add(randomId); // Mark this document as fetched
+
+    final data = randomDoc.data() as Map<String, dynamic>?;
+
+    String question = data?['question'] ?? 'No question available';
+
+    String translatedText =
+        await translateText(question, userSelectedLanguage);
+
+    setState(() {
+      _responseController.text = translatedText;
+    });
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error fetching document: $e')),
+    );
   }
+}
+
 
   // Translate text using MLKit
   Future<String> translateText(String text, String userSelectedLanguage) async {
@@ -205,7 +214,7 @@ class _IceAndFirstMessageState extends State<FirstMessage> {
                   //   counterProvider
                   //       .resetCounter(); // Reset counter after showing the ad
                   // }
-                  await fetchSequentialDocument();
+                  await fetchRandomDocument();
                 },
                 text: 'random_generator'.tr,
               ),

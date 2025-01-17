@@ -1,13 +1,16 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rizzhub/ads/banner_ads.dart';
 import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/screens/assistant.dart';
+import 'package:rizzhub/screens/break_silence.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
 import 'package:rizzhub/widgets/drawer.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 import '../ads/ads_manager.dart';
 
@@ -24,8 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
    
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
+    // await Appodeal.show(AppodealAdType.Banner, 'BannerAds1');
     AdManager _adManager=AdManager(context);
     _adManager.showBannerAd();
     _setIsFirstLaunchFalse();
@@ -70,16 +74,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   text: 'ice_breaker'.tr,
                   onTap: () async {
+                   // await Appodeal.show(AppodealAdType.Interstitial, 'InterstitialAds1');
                     final AdManager adManager = AdManager(context);
                     await adManager.showInterstitial();
+                   // await adManager.showBannerAd();
                     Get.to(
-                      () => const IceAndFirstMessage(toScreen: "ice"),
+                      () => const BreakSilence(),
                     );
                   },
                 ),
                 CustomButton(
                   text: 'need_assistance'.tr,
                   onTap: () async {
+                    //await Appodeal.show(AppodealAdType.RewardedVideo, 'RewardsAds1');
                     final AdManager adManager = AdManager(context);
                     await adManager.showInterstitial();
                     Get.to(() => const AssistantScreen());
@@ -89,18 +96,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   text: 'generate_first_message'.tr,
                   onTap: () async {
+
+                   // await Appodeal.show(AppodealAdType.Interstitial, 'InterstitialAds1');
                     final AdManager adManager = AdManager(context);
                     await adManager.showInterstitial();
                     Get.to(
-                      () => const IceAndFirstMessage(toScreen: "first"),
+                      () => const FirstMessage(),
                     );
                   },
                 ),
                 const SizedBox(
                   height: 10,
                 ),
+//  AppodealBanner(adSize: AppodealBannerSize.BANNER, placement: "BannerAds1"),
               ],
+              
             ),
+            
           )),
         ),
       );

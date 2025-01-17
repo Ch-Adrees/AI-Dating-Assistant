@@ -15,6 +15,13 @@ class L10n {
     const Locale('nl'),
     const Locale('it'),
     const Locale('zh'),
+    const Locale('id'),
+    const Locale('ms'),
+    const Locale('fil'),
+    const Locale('ja'),
+    const Locale('pl'),
+    const Locale('ko'),
+    const Locale('vi'),
   ];
 
   static String getFlag(String code) {
@@ -43,6 +50,20 @@ class L10n {
         return '🇮🇹';
       case 'zh':
         return '🇨🇳';
+      case 'id':
+        return '🇮🇩';
+      case 'ms':
+        return '🇲🇾';
+      case 'fil':
+        return '🇵🇭';
+      case 'ja':
+        return '🇯🇵';
+      case 'pl':
+        return '🇵🇱';
+     case 'ko':
+        return '🇰🇷';
+      case 'vi':
+        return '🇻🇳';
       case 'en':
       default:
         return '🇺🇸';
@@ -77,6 +98,21 @@ class L10n {
         return 'Italian';
       case 'zh':
         return 'Chinese';
+      case 'id':
+        return 'Indonesia';
+      case 'ms':
+        return 'Malaysia';
+      case 'fil':
+        return 'Philippines';
+      case 'ja':
+        return 'Japan';
+      case 'pl':
+        return 'Poland';
+      case 'ko':
+        return 'South Korea';
+      case 'vi':
+        return 'Vietnam';
+
       default:
         return 'Unknown';
     }

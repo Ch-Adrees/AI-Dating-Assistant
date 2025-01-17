@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+//import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
+
 import 'ads_manager.dart';
 
 class BannerAd extends StatelessWidget {
-  final Widget child; // Content of the page
+  // Content of the page
 
-  const BannerAd({required this.child, super.key});
+  const BannerAd({ super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,23 +15,14 @@ class BannerAd extends StatelessWidget {
     adManager.showBannerAd();
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(child: child), // Page content
-            ],
-          ),
-          // Display banner ad at the bottom
-          Align(
+      body: Align(
             alignment: Alignment.bottomCenter,
             child: Container(
               height: 100, // Set the height of the banner ad
               //child: Appodeal.show(Appodeal.BANNER_BOTTOM);
             ),
           ),
-        ],
-      ),
+      
     );
   }
 }

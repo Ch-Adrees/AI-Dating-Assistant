@@ -5,6 +5,7 @@ import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 class AdManager {
   final BuildContext context;
+  
 
   bool _isAdsBlocked = false; // Track if ads are blocked
 
@@ -19,12 +20,13 @@ class AdManager {
       // Check if the user has an active subscription entitlement
       if (customerInfo.entitlements.all['entl675436f09b'] != null &&
           customerInfo.entitlements.all['entl675436f09b']?.isActive == true) {
+            print('once entered in the entitlement loop');
         // User has an active subscription, block ads
         _isAdsBlocked = true;
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error checking subscription status')));
+          const SnackBar(content: Text('Error checking subscription status:')));
     }
   }
 
@@ -56,19 +58,20 @@ class AdManager {
   Future<void> showInterstitial() async {
     await checkAndBlockAds();
     if(_isAdsBlocked) return;
-    bool isReady = await Appodeal.isLoaded(Appodeal.INTERSTITIAL);
+    bool isReady = await Appodeal.isLoaded(AppodealAdType.Interstitial);
     if (isReady) {
-      Appodeal.show(Appodeal.INTERSTITIAL, 'InterstitialAds1');
+      Appodeal.show(AppodealAdType.Interstitial, 'InterstitialAds1');
     }
   }
 
   // Show Reward Ads
   Future<void> showRewardedAd() async {
     await checkAndBlockAds();
+    Appodeal.cache(AppodealAdType.RewardedVideo);
     if(_isAdsBlocked) return;
-    bool isReady = await Appodeal.isLoaded(Appodeal.REWARDED_VIDEO);
+    bool isReady = await Appodeal.isLoaded(AppodealAdType.RewardedVideo);
     if (isReady) {
-      Appodeal.show(Appodeal.REWARDED_VIDEO, 'RewardsAds1');
+      Appodeal.show(AppodealAdType.RewardedVideo,'RewardsAds1');
     }
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/screens/assistant.dart';
+import 'package:rizzhub/screens/break_silence.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
 import 'package:rizzhub/widgets/drawer.dart';
+
+import '../components/constants.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -15,9 +18,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedIndex = 1;
   List<Widget> _screens = [
-    IceAndFirstMessage(toScreen: 'first'),
+    BreakSilence(),
     AssistantScreen(),
-    IceAndFirstMessage(toScreen: 'ice')
+    FirstMessage()
   ];
 
   @override
@@ -70,7 +73,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
                       color: selectedIndex == 1 ? Colors.black : Colors.white,),
                 ),
                 BottomNavigationBarItem(
-                  label: "Random generator",
+                  label: "First Message",
                   icon: Icon(Icons.search,
                       color: selectedIndex == 2 ? Colors.black : Colors.white,),
                 )
