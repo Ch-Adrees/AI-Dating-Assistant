@@ -1,32 +1,26 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-
-import 'package:image_cropper/image_cropper.dart';
-
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:rizzhub/controllers/views/offering_controller.dart';
 
 import '../ads/ads_manager.dart';
 import '../components/constants.dart';
-import '../components/custom_app_bar.dart';
 import '../components/custom_button.dart';
 import '../components/custom_icon.dart';
 import '../components/custom_text_field.dart';
 import '../controllers/views/assistant_screen_controller.dart';
 import '../controllers/locale_controller.dart';
 import '../widgets/custom_emojies_row.dart';
-
-
 
 class AssistantScreen extends StatefulWidget {
   const AssistantScreen({super.key});
@@ -36,8 +30,11 @@ class AssistantScreen extends StatefulWidget {
 }
 
 class _AssistantScreenState extends State<AssistantScreen> {
+  // Navigation Controll
+
   final AssistantScreenController _assistantScreenController =
       Get.put(AssistantScreenController());
+  final OfferingController _offeringController = Get.put(OfferingController());
 
   File? _selectedImage; // To store the selected image
   String _recognizedText = '';
@@ -100,7 +97,6 @@ class _AssistantScreenState extends State<AssistantScreen> {
       setState(() {
         _recognizedText = recognizedText.text;
       });
-
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Failed to recognize text: $e")),
@@ -111,10 +107,9 @@ class _AssistantScreenState extends State<AssistantScreen> {
   }
 
   Future<String> _getUserSelectedLanguage() async {
-  final locale = Get.find<LocaleController>().currentLocale;
-  return locale.value.languageCode; // Return the current language code
-}
-
+    final locale = Get.find<LocaleController>().currentLocale;
+    return locale.value.languageCode; // Return the current language code
+  }
 
   TranslateLanguage getTranslateLanguage(String userSelectedLanguage) {
     switch (userSelectedLanguage.toLowerCase()) {
@@ -171,7 +166,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
 
       // If no user exists, sign in anonymously
       if (currentUser == null) {
-        UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+        UserCredential userCredential =
+            await FirebaseAuth.instance.signInAnonymously();
         currentUser = userCredential.user;
       }
 
@@ -180,7 +176,8 @@ class _AssistantScreenState extends State<AssistantScreen> {
         String userId = currentUser.uid;
 
         // Reference to the user's document in Firestore
-        DocumentReference userDoc = FirebaseFirestore.instance.collection('users').doc(userId);
+        DocumentReference userDoc =
+            FirebaseFirestore.instance.collection('users').doc(userId);
 
         // Check if the user document exists
         DocumentSnapshot userSnapshot = await userDoc.get();
@@ -200,8 +197,6 @@ class _AssistantScreenState extends State<AssistantScreen> {
       print("Error Storing Prompts: $e");
     }
   }
-
-
 
   Future<void> _generateResponse() async {
     String userInput =
@@ -282,142 +277,135 @@ class _AssistantScreenState extends State<AssistantScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        onTap: () {
-          Get.back();
-        },
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        child: ListView(
-          children: [
-            SafeArea(
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  InkWell(
-                    onTap: _pickImage,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Constants.primaryColor),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(12.0)),
-                      ),
-                      child: Center(
-                        child: _selectedImage == null
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.cloud_upload_outlined,
-                                    color: Constants.buttonBgColor,
-                                    size: 60,
-                                  ),
-                                  Text(
-                                    'drag_drop'.tr,
-                                    style: TextStyle(
-                                        color: Constants.primaryColor),
-                                  )
-                                ],
-                              )
-                            : Image.file(
-                                _selectedImage!,
-                                fit: BoxFit.cover,
-                              ),
-                      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      child: ListView(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                InkWell(
+                  onTap: _pickImage,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Constants.primaryColor),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(12.0)),
+                    ),
+                    child: Center(
+                      child: _selectedImage == null
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.cloud_upload_outlined,
+                                  color: Constants.buttonBgColor,
+                                  size: 60,
+                                ),
+                                Text(
+                                  'drag_drop'.tr,
+                                  style:
+                                      TextStyle(color: Constants.primaryColor),
+                                )
+                              ],
+                            )
+                          : Image.file(
+                              _selectedImage!,
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text('or'.tr,
-                      style: TextStyle(
-                          color: Constants.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20)),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  CustomTextfield(
-                    controller: _inputController,
-                    hintText: 'paste_message'.tr,
-                    label: 'input_message'.tr,
-                    maxLines: 5,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const CustomEmojiesRow(),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  CustomButton(
-                    onTap: () async {
-                      if (_selectedImage != null &&
-                          _inputController.text.isNotEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  "Please choose either an image or text input, not both.")),
-                        );
-                      } else if (_selectedImage == null &&
-                          _inputController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text("Please provide the Input")),
-                        );
-                      } else {
-                        final AdManager adManager = AdManager(context);
-                        await adManager.showRewardedAd();
-                        await _generateResponse();
-                      }
-                    },
-                    text: 'submit'.tr,
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: CustomTextfield(
-                              controller:
-                                  TextEditingController(text: _responseMessage),
-                              label: 'response_message'.tr,
-                              hintText: 'response_of_input'.tr,
-                              maxLines: 3,
-                              readOnly: true)),
-                      const SizedBox(width: 10),
-                      CustomIconButton(
-                        height: 55,
-                        width: 55,
-                        onTap: () {
-                          if (_responseMessage.isNotEmpty) {
-                            Clipboard.setData(
-                              ClipboardData(text: _responseMessage),
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content:
-                                    Text('copied'.tr),
-                              ),
-                            );
-                          }
-                        },
-                        icon: Icon(
-                          Icons.copy,
-                          color: Constants.primaryColor,
-                          size: 25,
-                        ),
+                ),
+                const SizedBox(height: 10),
+                Text('or'.tr,
+                    style: TextStyle(
+                        color: Constants.primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomTextfield(
+                  controller: _inputController,
+                  hintText: 'paste_message'.tr,
+                  label: 'input_message'.tr,
+                  maxLines: 5,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                const CustomEmojiesRow(),
+                const SizedBox(
+                  height: 15,
+                ),
+                CustomButton(
+                  onTap: () async {
+                    if (_selectedImage != null &&
+                        _inputController.text.isNotEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                "Please choose either an image or text input, not both.")),
+                      );
+                    } else if (_selectedImage == null &&
+                        _inputController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text("Please provide the Input")),
+                      );
+                    } else {
+                      final AdManager adManager = AdManager(context);
+                      await adManager.showRewardedAd();
+                      await _generateResponse();
+                    }
+                  },
+                  color: Colors.red,
+                  text: 'submit'.tr,
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                        child: CustomTextfield(
+                            controller:
+                                TextEditingController(text: _responseMessage),
+                            label: 'response_message'.tr,
+                            hintText: 'response_of_input'.tr,
+                            maxLines: 3,
+                            readOnly: true)),
+                    const SizedBox(width: 10),
+                    CustomIconButton(
+                      height: 55,
+                      width: 55,
+                      onTap: () {
+                        if (_responseMessage.isNotEmpty) {
+                          Clipboard.setData(
+                            ClipboardData(text: _responseMessage),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('copied'.tr),
+                            ),
+                          );
+                        }
+                      },
+                      icon: Icon(
+                        Icons.copy,
+                        color: Constants.primaryColor,
+                        size: 25,
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

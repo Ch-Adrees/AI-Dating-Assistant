@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 
 import 'package:rizzhub/components/constants.dart';
-import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
@@ -140,6 +139,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return Scaffold(
       appBar: CustomAppBar(
         onTap: () {
@@ -203,12 +203,79 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
                     await fetchRandomDocument();
                   },
                   text: 'random_generator'.tr,
+=======
+    final counterProvider =
+        Provider.of<CounterProvider>(context, listen: false);
+
+    //return Obx(() {
+    // final userSelectedLanguage = Get.find<LocaleController>().currentLocale.value.languageCode;
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(children: [
+                IntrinsicHeight(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.75,
+                    child: CustomTextfield(
+                      readOnly: true,
+                      maxLines: 5,
+                      hintText: 'random_response'.tr,
+                      label: 'response'.tr,
+                      controller: _responseController,
+                    ),
+                  ),
+>>>>>>> origin/hanan
                 ),
-              ],
-            ),
+                const SizedBox(width: 10),
+                CustomIconButton(
+                  onTap: () {
+                    if (_responseController.text.isNotEmpty) {
+                      Clipboard.setData(
+                          ClipboardData(text: _responseController.text));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('copied'.tr),
+                        ),
+                      );
+                    }
+                  },
+                  height: 55,
+                  width: 55,
+                  icon: Icon(
+                    Icons.content_copy,
+                    color: Constants.primaryColor,
+                    size: 25,
+                  ),
+                ),
+              ]),
+              const SizedBox(height: 50),
+              CustomButton(
+                color: Colors.red,
+                onTap: () async {
+                  await counterProvider.incrementCounter(); // Increment counter
+                  if (counterProvider.counter >= counterProvider.threshold) {
+                    final AdManager adManager = AdManager(context);
+                    await adManager.showRewardedAd();
+                    counterProvider
+                        .resetCounter(); // Reset counter after showing the ad
+                  }
+                  await fetchRandomDocument();
+                },
+                text: 'random_generator'.tr,
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+  
+}
+>>>>>>> origin/hanan

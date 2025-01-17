@@ -3,7 +3,11 @@ import 'package:get/get.dart';
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_tile.dart';
 import 'package:rizzhub/l10n/l10n.dart';
+<<<<<<< HEAD:lib/screens/language_picker_screen.dart
 import 'package:rizzhub/controllers/locale_controller.dart';
+=======
+import 'package:rizzhub/provider/locale_provider.dart';
+>>>>>>> origin/hanan:lib/widgets/language_picker_widget.dart
 
 class LanguagePickerScreen extends StatelessWidget {
   @override
