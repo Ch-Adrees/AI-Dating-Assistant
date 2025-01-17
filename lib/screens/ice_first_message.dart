@@ -75,54 +75,51 @@ class _IceAndFirstMessageState extends State<FirstMessage> {
   // Fetch a random document and translate it
   DocumentSnapshot? _lastFetchedDoc; // Tracks the last fetched document
 
-  Future<void> fetchSequentialDocument() async {
-    try {
-      String userSelectedLanguage = await _getUserSelectedLanguage();
+ Future<void> fetchSequentialDocument() async {
+  try {
+    String userSelectedLanguage = await _getUserSelectedLanguage();
+    String collectionName = 'conversationstarter';
 
-      String collectionName='conversationstarter';
-      // String collectionName =
-      //     widget.toScreen == 'first' ? 'conversationstarter' : 'randomtopic';
+    // Query the collection with explicit ordering by document ID
+    Query query = _firestore
+        .collection(collectionName)
+        .orderBy(FieldPath.documentId) // Order by Firestore's document ID
+        .limit(1);
 
-      Query query = _firestore
-          .collection(collectionName) // Explicit order to prevent excessive reads
-          .limit(1); // Fetch one document at a time
+    // If there's a previously fetched document, start after it
+    if (_lastFetchedDoc != null) {
+      query = query.startAfterDocument(_lastFetchedDoc!);
+    }
 
-      // Fetch the next document after the last fetched one
-      if (_lastFetchedDoc != null) {
-        query = query.startAfterDocument(_lastFetchedDoc!);
-      }
+    QuerySnapshot querySnapshot = await query.get();
 
-      QuerySnapshot querySnapshot = await query.get();
+    if (querySnapshot.docs.isNotEmpty) {
+      DocumentSnapshot nextDoc = querySnapshot.docs.first;
+      _lastFetchedDoc = nextDoc; // Update the last fetched document
 
-      if (querySnapshot.docs.isNotEmpty) {
-        DocumentSnapshot nextDoc = querySnapshot.docs.first;
-        _lastFetchedDoc = nextDoc; // Update the last fetched document
+      final data = nextDoc.data() as Map<String, dynamic>?;
 
-        final data = nextDoc.data() as Map<String, dynamic>?;
-        String question = data?['question'] ?? 'No question available';
+      String question = data?['question'] ?? 'No question available';
 
-        String translatedText =
-            await translateText(question, userSelectedLanguage);
+      String translatedText =
+          await translateText(question, userSelectedLanguage);
 
-        setState(() {
-          _responseController.text = translatedText;
-        });
-      } else {
-        // Reset if all documents have been fetched
-        _lastFetchedDoc = null;
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content:
-                  Text('Information, All documents shown, starting over.')),
-        );
-      }
-    } catch (e) {
+      setState(() {
+        _responseController.text = translatedText;
+      });
+    } else {
+      // Reset if all documents have been fetched
+      _lastFetchedDoc = null;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching document: $e')),
+        SnackBar(content: Text('All documents fetched, restarting.')),
       );
     }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error fetching document: $e')),
+    );
   }
+}
 
   // Translate text using MLKit
   Future<String> translateText(String text, String userSelectedLanguage) async {
@@ -198,13 +195,14 @@ class _IceAndFirstMessageState extends State<FirstMessage> {
               CustomButton(
                 color: Colors.red,
                 onTap: () async {
-                  // await counterProvider.incrementCounter(); // Increment counter
-                  // if (counterProvider.counter >= counterProvider.threshold) {
-                  //   final AdManager adManager = AdManager(context);
-                  //   await adManager.showRewardedAd();
-                  //   counterProvider
-                  //       .resetCounter(); // Reset counter after showing the ad
-                  // }
+                   counterController.incrementCounter();
+                   int adCount = await counterController.getCounter();
+
+                    if (adCount == counterController.threshold) {
+                      final AdManager adManager = AdManager(context);
+                      await adManager.showRewardedAd();
+                      counterController.resetCounter();
+                    }
                   await fetchSequentialDocument();
                 },
                 text: 'random_generator'.tr,

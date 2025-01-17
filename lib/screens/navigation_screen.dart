@@ -4,8 +4,10 @@ import 'package:rizzhub/screens/assistant.dart';
 import 'package:rizzhub/screens/break_silence.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
 import 'package:rizzhub/widgets/drawer.dart';
+import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 import '../components/constants.dart';
+import 'package:rizzhub/ads/ads_manager.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -20,7 +22,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
   List<Widget> _screens = [
     BreakSilence(),
     AssistantScreen(),
-    FirstMessage()
+    FirstMessage(),
+    
   ];
 
   @override
@@ -35,7 +38,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
             });
           })),
       drawer: const CustomDrawer(),
-       body: _screens[selectedIndex],
+       body: Column(
+
+        children: [_screens[selectedIndex],AppodealBanner(adSize: AppodealBannerSize.BANNER, placement: "BannerAds1"),],
+       ),
+       
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
 
@@ -52,7 +59,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
             topRight: Radius.circular(16.0),
           ),
           child: BottomNavigationBar(
-              onTap: (int index) {
+              onTap: (int index) async {
+                 final AdManager adManager = AdManager(context);
+                      await adManager.showInterstitial();
                 setState(() {
                   selectedIndex = index;
                   //New case has been Solved

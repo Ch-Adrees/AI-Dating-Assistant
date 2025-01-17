@@ -81,56 +81,52 @@ class _IceAndFirstMessageState extends State<BreakSilence> {
 List<String> _documentIds = []; // List to store all document IDs
 Set<String> _fetchedIds = {}; // Track fetched IDs to avoid repeats
 
-Future<void> fetchRandomDocument() async {
+Future<void> fetchSequentialDocument() async {
   try {
     String userSelectedLanguage = await _getUserSelectedLanguage();
     String collectionName = 'randomtopic';
 
-    // Load document IDs if not already loaded
-    if (_documentIds.isEmpty) {
-      QuerySnapshot snapshot =
-          await _firestore.collection(collectionName).get();
-      _documentIds = snapshot.docs.map((doc) => doc.id).toList();
+    // Query the collection with explicit ordering by document ID
+    Query query = _firestore
+        .collection(collectionName)
+        .orderBy(FieldPath.documentId) // Order by Firestore's document ID
+        .limit(1);
+
+    // If there's a previously fetched document, start after it
+    if (_lastFetchedDoc != null) {
+      query = query.startAfterDocument(_lastFetchedDoc!);
     }
 
-    // Filter out already fetched IDs
-    List<String> availableIds =
-        _documentIds.where((id) => !_fetchedIds.contains(id)).toList();
+    QuerySnapshot querySnapshot = await query.get();
 
-    if (availableIds.isEmpty) {
+    if (querySnapshot.docs.isNotEmpty) {
+      DocumentSnapshot nextDoc = querySnapshot.docs.first;
+      _lastFetchedDoc = nextDoc; // Update the last fetched document
+
+      final data = nextDoc.data() as Map<String, dynamic>?;
+
+      String question = data?['question'] ?? 'No question available';
+
+      String translatedText =
+          await translateText(question, userSelectedLanguage);
+
+      setState(() {
+        _responseController.text = translatedText;
+      });
+    } else {
       // Reset if all documents have been fetched
-      _fetchedIds.clear();
+      _lastFetchedDoc = null;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('All documents fetched, restarting.')),
       );
-      return;
     }
-
-    // Pick a random ID
-    String randomId = availableIds[Random().nextInt(availableIds.length)];
-
-    // Fetch the document with the random ID
-    DocumentSnapshot randomDoc =
-        await _firestore.collection(collectionName).doc(randomId).get();
-
-    _fetchedIds.add(randomId); // Mark this document as fetched
-
-    final data = randomDoc.data() as Map<String, dynamic>?;
-
-    String question = data?['question'] ?? 'No question available';
-
-    String translatedText =
-        await translateText(question, userSelectedLanguage);
-
-    setState(() {
-      _responseController.text = translatedText;
-    });
   } catch (e) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Error fetching document: $e')),
     );
   }
 }
+
 
 
   // Translate text using MLKit
@@ -207,14 +203,16 @@ Future<void> fetchRandomDocument() async {
               CustomButton(
                 color: Colors.red,
                 onTap: () async {
-                  // await counterProvider.incrementCounter(); // Increment counter
-                  // if (counterProvider.counter >= counterProvider.threshold) {
-                  //   final AdManager adManager = AdManager(context);
-                  //   await adManager.showRewardedAd();
-                  //   counterProvider
-                  //       .resetCounter(); // Reset counter after showing the ad
-                  // }
-                  await fetchRandomDocument();
+                  counterController.incrementCounter();
+                   int adCount = await counterController.getCounter();
+
+                    if (adCount == counterController.threshold) {
+                      final AdManager adManager = AdManager(context);
+                      await adManager.showRewardedAd();
+                      counterController.resetCounter();
+                    }
+                  
+                  await fetchSequentialDocument();
                 },
                 text: 'random_generator'.tr,
               ),
