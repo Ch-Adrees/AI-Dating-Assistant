@@ -34,17 +34,17 @@ class CustomDrawer extends StatelessWidget {
             children: [
               DrawerHeader(
                   child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 130,
-                    width: 130,
-                    child: ClipOval(
-                      child: Image.asset("assets/logos/WOO RIZZ.png"),
-                    ),
-                  ),
-                ],
-              )),
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: 130,
+                        width: 130,
+                        child: ClipOval(
+                          child: Image.asset("assets/logos/WOO RIZZ.png"),
+                        ),
+                      ),
+                    ],
+                  )),
               CustomListTile(
                   onTap: () async {
                     final AdManager adManager = AdManager(context);
@@ -56,7 +56,7 @@ class CustomDrawer extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                             content:
-                                Text(AppLocalizations.of(context)!.privacy_policy_error)),
+                            Text(AppLocalizations.of(context)!.privacy_policy_error)),
                       );
                     }
                   },
@@ -74,9 +74,9 @@ class CustomDrawer extends StatelessWidget {
                           mode: LaunchMode.externalApplication);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(
+                        SnackBar(
                             content:
-                                Text('play_store_error'.tr)),
+                            Text('play_store_error'.tr)),
                       );
                     }
                   },
@@ -95,7 +95,7 @@ class CustomDrawer extends StatelessWidget {
                           mode: LaunchMode.externalApplication);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(
+                        SnackBar(
                             content:
                             Text('google_form_error'.tr)),
                       );

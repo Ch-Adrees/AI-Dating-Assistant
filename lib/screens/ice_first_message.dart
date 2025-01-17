@@ -4,18 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_mlkit_translation/google_mlkit_translation.dart';
-import 'package:provider/provider.dart';
 
 import 'package:rizzhub/components/constants.dart';
+import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
-import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 import '../ads/ads_manager.dart';
 
 import '../controllers/ad_counter_controller.dart';
 import '../controllers/locale_controller.dart';
-import '../provider/counter_provider.dart';
 
 class IceAndFirstMessage extends StatefulWidget {
   const IceAndFirstMessage({super.key, required this.toScreen});
@@ -29,8 +27,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _responseController = TextEditingController();
 
-  final CounterController counterController =
-      Get.put(CounterController()); // Initialize CounterController
+  final CounterController counterController = Get.put(CounterController()); // Initialize CounterController
   List<String> _seenDocIds = [];
 
   // Get the user's selected language code
@@ -72,51 +69,49 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   }
 
   // Fetch a random document and translate it
-  DocumentSnapshot? _lastFetchedDoc; // Tracks the last fetched document
-
-  Future<void> fetchSequentialDocument() async {
+  Future<void> fetchRandomDocument() async {
     try {
       String userSelectedLanguage = await _getUserSelectedLanguage();
       String collectionName =
-          widget.toScreen == 'first' ? 'conversationstarter' : 'randomtopic';
+      widget.toScreen == 'first' ? 'conversationstarter' : 'randomtopic';
 
-      Query query = _firestore
-          .collection(collectionName) // Explicit order to prevent excessive reads
-          .limit(1); // Fetch one document at a time
-
-      // Fetch the next document after the last fetched one
-      if (_lastFetchedDoc != null) {
-        query = query.startAfterDocument(_lastFetchedDoc!);
-      }
-
-      QuerySnapshot querySnapshot = await query.get();
+      QuerySnapshot querySnapshot =
+      await _firestore.collection(collectionName).get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        DocumentSnapshot nextDoc = querySnapshot.docs.first;
-        _lastFetchedDoc = nextDoc; // Update the last fetched document
+        List<DocumentSnapshot> unseenDocs = querySnapshot.docs
+            .where((doc) => !_seenDocIds.contains(doc.id))
+            .toList();
 
-        final data = nextDoc.data() as Map<String, dynamic>?;
+        if (unseenDocs.isEmpty) {
+          _seenDocIds.clear();
+          unseenDocs = querySnapshot.docs;
+          Get.snackbar('Information', 'All documents seen, starting over.');
+        }
+
+        int randomIndex = Random().nextInt(unseenDocs.length);
+        DocumentSnapshot randomDoc = unseenDocs[randomIndex];
+        _seenDocIds.add(randomDoc.id);
+
+        final data = randomDoc.data() as Map<String, dynamic>?;
         String question = data?['question'] ?? 'No question available';
 
         String translatedText =
-            await translateText(question, userSelectedLanguage);
+        await translateText(question, userSelectedLanguage);
 
         setState(() {
           _responseController.text = translatedText;
         });
       } else {
-        // Reset if all documents have been fetched
-        _lastFetchedDoc = null;
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content:
-                  Text('Information, All documents shown, starting over.')),
+              content: Text(
+                  'No documents found in the $collectionName collection.')),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching document: $e')),
+        SnackBar(content: Text('Error fetching random document: $e')),
       );
     }
   }
@@ -124,7 +119,7 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
   // Translate text using MLKit
   Future<String> translateText(String text, String userSelectedLanguage) async {
     final TranslateLanguage targetLanguage =
-        getTranslateLanguage(userSelectedLanguage);
+    getTranslateLanguage(userSelectedLanguage);
     final onDeviceTranslator = OnDeviceTranslator(
       sourceLanguage: TranslateLanguage.english,
       targetLanguage: targetLanguage,
@@ -145,73 +140,75 @@ class _IceAndFirstMessageState extends State<IceAndFirstMessage> {
 
   @override
   Widget build(BuildContext context) {
-    final counterProvider =
-        Provider.of<CounterProvider>(context, listen: false);
-
-    //return Obx(() {
-    // final userSelectedLanguage = Get.find<LocaleController>().currentLocale.value.languageCode;
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(children: [
-                IntrinsicHeight(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.75,
-                    child: CustomTextfield(
-                      readOnly: true,
-                      maxLines: 5,
-                      hintText: 'random_response'.tr,
-                      label: 'response'.tr,
-                      controller: _responseController,
+    return Scaffold(
+      appBar: CustomAppBar(
+        onTap: () {
+          Get.back();
+        },
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(children: [
+                  IntrinsicHeight(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: CustomTextfield(
+                        readOnly: true,
+                        maxLines: 5,
+                        hintText: 'random_response'.tr,
+                        label: 'response'.tr,
+                        controller: _responseController,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                CustomIconButton(
-                  onTap: () {
-                    if (_responseController.text.isNotEmpty) {
-                      Clipboard.setData(
-                          ClipboardData(text: _responseController.text));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('copied'.tr),
-                        ),
-                      );
-                    }
-                  },
-                  height: 55,
-                  width: 55,
-                  icon: Icon(
-                    Icons.content_copy,
-                    color: Constants.primaryColor,
-                    size: 25,
+                  const SizedBox(width: 10),
+                  CustomIconButton(
+                    onTap: () {
+                      if (_responseController.text.isNotEmpty) {
+                        Clipboard.setData(
+                            ClipboardData(text: _responseController.text));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('copied'.tr),
+                          ),
+                        );
+                      }
+                    },
+                    height: 55,
+                    width: 55,
+                    icon: Icon(
+                      Icons.content_copy,
+                      color: Constants.primaryColor,
+                      size: 25,
+                    ),
                   ),
+                ]),
+                const SizedBox(height: 50),
+                CustomButton(
+                  onTap: () async {
+                    counterController.incrementCounter();
+
+                    int adCount = await counterController.getCounter();
+
+                    if (adCount == counterController.threshold) {
+                      final AdManager adManager = AdManager(context);
+                      await adManager.showRewardedAd();
+                      counterController.resetCounter();
+                    }
+                    await fetchRandomDocument();
+                  },
+                  text: 'random_generator'.tr,
                 ),
-              ]),
-              const SizedBox(height: 50),
-              CustomButton(
-                color: Colors.red,
-                onTap: () async {
-                  await counterProvider.incrementCounter(); // Increment counter
-                  if (counterProvider.counter >= counterProvider.threshold) {
-                    final AdManager adManager = AdManager(context);
-                    await adManager.showRewardedAd();
-                    counterProvider
-                        .resetCounter(); // Reset counter after showing the ad
-                  }
-                  await fetchSequentialDocument();
-                },
-                text: 'random_generator'.tr,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-  
 }
