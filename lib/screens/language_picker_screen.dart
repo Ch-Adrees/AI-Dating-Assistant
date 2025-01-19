@@ -3,7 +3,13 @@ import 'package:get/get.dart';
 import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_tile.dart';
 import 'package:rizzhub/l10n/l10n.dart';
+
 import 'package:rizzhub/controllers/locale_controller.dart';
+
+
+
+import 'package:rizzhub/controllers/locale_controller.dart';
+
 
 class LanguagePickerScreen extends StatelessWidget {
   @override
@@ -67,12 +73,12 @@ class LanguagePickerScreen extends StatelessWidget {
                   onTap: () {
                     Get.updateLocale(locale);
                     // Set locale using GetX controller
-                  localeController.setLocale(locale);
+                    localeController.setLocale(locale);
 
                     // Show confirmation SnackBar
-                   // final languageChangedMessage = 'hello';
-                        // AppLocalizations.of(context)!
-                        //     .language_changed_to(languageName);
+                    // final languageChangedMessage = 'hello';
+                    // AppLocalizations.of(context)!
+                    //     .language_changed_to(languageName);
                     // ScaffoldMessenger.of(context).showSnackBar(
                     //   SnackBar(
                     //     content: Text(

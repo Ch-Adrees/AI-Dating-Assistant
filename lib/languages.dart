@@ -13,7 +13,7 @@ class AppTranslations extends Translations {
           'copied': 'Copied: Response copied to clipboard',
           'generate_first_message': 'First Message',
           'need_assistance': 'AI Assistant',
-          'ice_breaker': 'Break the silence',
+          'ice_breaker': 'Break the Silence',
           'random_response': 'Randomly Generated Response',
           'response': 'Response',
           'random_generator': 'Random Generator',

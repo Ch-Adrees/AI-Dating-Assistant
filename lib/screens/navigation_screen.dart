@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:rizzhub/components/custom_app_bar.dart';
 import 'package:rizzhub/screens/assistant.dart';
+import 'package:rizzhub/screens/break_silence.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
 import 'package:rizzhub/widgets/drawer.dart';
 
@@ -17,9 +19,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int selectedIndex = 1;
   List<Widget> _screens = [
-    IceAndFirstMessage(toScreen: 'first'),
+    BreakSilence(),
     AssistantScreen(),
-    IceAndFirstMessage(toScreen: 'ice')
+    FirstMessage()
   ];
 
   @override
@@ -37,18 +39,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
       body: _screens[selectedIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Colors.deepOrange, // Background color of the navigation bar
+
+          //color: Colors.white, // Background color of the navigation bar
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.0), // Top-left corner
             topRight: Radius.circular(16.0), // Top-right corner
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12, // Shadow color
-              blurRadius: 10, // Softening the shadow
-              offset: Offset(0, -4), // Shadow position
-            ),
-          ],
+
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.only(
@@ -56,29 +53,35 @@ class _NavigationScreenState extends State<NavigationScreen> {
             topRight: Radius.circular(16.0),
           ),
           child: BottomNavigationBar(
+            currentIndex: selectedIndex,
               onTap: (int index) {
                 setState(() {
                   selectedIndex = index;
+                  //New case has been Solved
                 });
               },
+              backgroundColor: Constants.buttonBgColor,
+              selectedItemColor: Color(0xFF1B1B29), // Color for selected label and icon
+              unselectedItemColor: Colors.white,    // Color for unselected label and icon
               items: [
                 BottomNavigationBarItem(
-                  label: "Break Silence",
+
+                  label: "ice_breaker".tr,
                   icon: Icon(
                     Icons.topic,
-                    color: selectedIndex == 0 ? Colors.white : Colors.black38,
+                    //color: selectedIndex == 0 ? Color(0xFF1B1B29) : Colors.white,
                   ),
                 ),
                 BottomNavigationBarItem(
-                  label: "Assistant Screen",
-                  icon: Icon(Icons.home,
-                      color: selectedIndex == 1 ? Colors.white : Colors.black38),
-                ),
+                  label: "need_assistance".tr,
+                  icon: Icon(Icons.smart_toy,
+                    //color: selectedIndex == 1 ? Color(0xFF1B1B29) : Colors.white,),
+                ),),
                 BottomNavigationBarItem(
-                  label: "First Message",
-                  icon: Icon(Icons.search,
-                      color: selectedIndex == 2 ? Colors.white : Colors.black38),
-                )
+                  label: "generate_first_message".tr,
+                  icon: Icon(Icons.send,
+                   // color: selectedIndex == 2 ? Color(0xFF1B1B29) : Colors.white,),
+                ),),
               ]),
         ),
       ),

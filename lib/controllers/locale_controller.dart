@@ -32,3 +32,4 @@ class LocaleController extends GetxController {
     await prefs.setString('locale', locale.languageCode);
   }
 }
+

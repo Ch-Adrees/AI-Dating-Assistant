@@ -5,26 +5,37 @@ class CustomButton extends StatelessWidget {
   CustomButton({
     super.key,
     required this.onTap,
-    required this.text,
+    this.text,
+    this.icon,
     this.color,
     this.gradientColors,
   });
 
-  final String text;
+  final String? text;
   final VoidCallback onTap;
   final Color? color;
   final List<Color>? gradientColors;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: gradientColors != null
-            ? LinearGradient(colors: gradientColors!)
-            : null,
-        borderRadius: BorderRadius.circular(12), // Add rounded corners
-      ),
-      child: Center(
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.redAccent.withValues(alpha: 0.3), // Shadow color
+              spreadRadius: 9,                       // Spread radius
+              blurRadius: 5,                         // Blur radius
+              offset: Offset(2,2),                  // Shadow position (x, y)
+            ),
+          ],
+          gradient: gradientColors != null
+              ? LinearGradient(colors: gradientColors!)
+              : null,
+          borderRadius: BorderRadius.circular(12), // Add rounded corners
+        ),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 0,
@@ -36,8 +47,14 @@ class CustomButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
           ),
           onPressed: onTap,
-          child: Text(
-            text,
+          child: icon != null
+              ? Icon(
+            icon,
+            color: Constants.whiteSecondaryColor,
+            size: 28,
+          )
+              :Text(
+            text?? '',
             style: TextStyle(
               fontSize: 20,
               color: Constants.whiteSecondaryColor,

@@ -9,13 +9,15 @@ import 'package:rizzhub/controllers/locale_controller.dart';
 import 'package:rizzhub/screens/home.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import 'navigation_screen.dart';
 class DataBoardingScreen extends StatelessWidget {
   DataBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final DataBoardingController controller = Get.put(DataBoardingController());
-    // final List<String> dropDownValues = ['male'.tr, 'female'.tr, 'other'.tr];
+    //  final List<String> dropDownValues = ['male'.tr, 'female'.tr, 'other'.tr];
 
     return Scaffold(
       appBar: AppBar(),
@@ -106,7 +108,7 @@ class DataBoardingScreen extends StatelessWidget {
                           );
                           return;
                         }
-                        Get.to(() => const HomeScreen());
+                        Get.to(() => const NavigationScreen());
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -166,8 +168,7 @@ class DataBoardingScreen extends StatelessWidget {
 class LanguageDropdown extends StatelessWidget {
 
 
-  const LanguageDropdown({Key? key})
-      : super(key: key);
+  const LanguageDropdown({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -230,13 +231,13 @@ class GenderDropdown extends StatelessWidget {
           ),
           width: MediaQuery.of(context).size.width * 0.9,
           dropdownMenuEntries: genderValues.map((String gender){
-            return DropdownMenuEntry(value: controller.selectedGender, label: gender);
+            return DropdownMenuEntry(value: gender, label: gender);
           }).toList(),
           onSelected: (value) {
             controller.selectedGender = value;
-            //controller.update(); // Rebuild the widget
+            controller.update(); // Rebuild the widget
           },
-          initialSelection: controller.selectedGender, // Persist value
+          //initialSelection: controller.selectedGender, // Persist value
         );
       },
     );
