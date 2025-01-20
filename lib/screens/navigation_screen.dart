@@ -5,8 +5,10 @@ import 'package:rizzhub/screens/assistant.dart';
 import 'package:rizzhub/screens/break_silence.dart';
 import 'package:rizzhub/screens/ice_first_message.dart';
 import 'package:rizzhub/widgets/drawer.dart';
+import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 
 import '../components/constants.dart';
+import 'package:rizzhub/ads/ads_manager.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({super.key});
@@ -21,7 +23,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
   List<Widget> _screens = [
     BreakSilence(),
     AssistantScreen(),
-    FirstMessage()
+    FirstMessage(),
+
   ];
 
   @override
@@ -37,10 +40,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
           })),
       drawer: const CustomDrawer(),
       body: _screens[selectedIndex],
+      // body: Column(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [_screens[selectedIndex],AppodealBanner(adSize: AppodealBannerSize.BANNER, placement: "BannerAds1"),],
+      // ),
+
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-
-          //color: Colors.white, // Background color of the navigation bar
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(16.0), // Top-left corner
             topRight: Radius.circular(16.0), // Top-right corner
@@ -54,7 +60,9 @@ class _NavigationScreenState extends State<NavigationScreen> {
           ),
           child: BottomNavigationBar(
             currentIndex: selectedIndex,
-              onTap: (int index) {
+              onTap: (int index) async {
+                final AdManager adManager = AdManager(context);
+                await adManager.showInterstitial();
                 setState(() {
                   selectedIndex = index;
                   //New case has been Solved
@@ -65,7 +73,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
               unselectedItemColor: Colors.white,    // Color for unselected label and icon
               items: [
                 BottomNavigationBarItem(
-
                   label: "ice_breaker".tr,
                   icon: Icon(
                     Icons.topic,
@@ -76,12 +83,12 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   label: "need_assistance".tr,
                   icon: Icon(Icons.smart_toy,
                     //color: selectedIndex == 1 ? Color(0xFF1B1B29) : Colors.white,),
-                ),),
+                  ),),
                 BottomNavigationBarItem(
                   label: "generate_first_message".tr,
                   icon: Icon(Icons.send,
-                   // color: selectedIndex == 2 ? Color(0xFF1B1B29) : Colors.white,),
-                ),),
+                    // color: selectedIndex == 2 ? Color(0xFF1B1B29) : Colors.white,),
+                  ),),
               ]),
         ),
       ),

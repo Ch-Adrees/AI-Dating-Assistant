@@ -9,6 +9,7 @@ import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 import '../ads/ads_manager.dart';
 
@@ -31,8 +32,6 @@ class _IceAndFirstMessageState extends State<FirstMessage> {
   final TextEditingController _responseController = TextEditingController();
 
   final CounterController counterController = Get.put(CounterController()); // Initialize CounterController
-// Initialize CounterController
-  List<String> _seenDocIds = [];
 
   // Get the user's selected language code
   Future<String> _getUserSelectedLanguage() async {
@@ -72,58 +71,89 @@ class _IceAndFirstMessageState extends State<FirstMessage> {
     }
   }
 
-  List<String> _documentIds = []; // List to store all document IDs
-  Set<String> _fetchedIds = {}; // Track fetched IDs to avoid repeats
+  String? _lastFetchedDocIdFirst; // Stores the ID of the last fetched document
 
-  Future<void> fetchRandomDocument() async {
+  Future<void> fetchSequentialDocument() async {
     try {
       String userSelectedLanguage = await _getUserSelectedLanguage();
-      String collectionName = 'randomtopic';
+      String collectionName = 'conversationstarter';
 
-      // Load document IDs if not already loaded
-      if (_documentIds.isEmpty) {
-        QuerySnapshot snapshot =
-        await _firestore.collection(collectionName).get();
-        _documentIds = snapshot.docs.map((doc) => doc.id).toList();
+      // Query the collection with explicit ordering by document ID
+      Query query = _firestore
+          .collection(collectionName)
+          .orderBy(FieldPath.documentId) // Order by Firestore's document ID
+          .limit(1);
+
+      // If there's a previously fetched document ID, use it to start after
+      if (_lastFetchedDocIdFirst != null) {
+        DocumentSnapshot? lastDoc = await _getDocumentById(_lastFetchedDocIdFirst!);
+        if (lastDoc != null) {
+          query = query.startAfterDocument(lastDoc);
+        }
       }
 
-      // Filter out already fetched IDs
-      List<String> availableIds =
-      _documentIds.where((id) => !_fetchedIds.contains(id)).toList();
+      QuerySnapshot querySnapshot = await query.get();
 
-      if (availableIds.isEmpty) {
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot nextDoc = querySnapshot.docs.first;
+        _lastFetchedDocIdFirst = nextDoc.id; // Save the document ID
+        await _saveLastFetchedDocId(_lastFetchedDocIdFirst!); // Persist the document ID
+
+        final data = nextDoc.data() as Map<String, dynamic>?;
+
+        String question = data?['question'] ?? 'No question available';
+
+        String translatedText =
+        await translateText(question, userSelectedLanguage);
+
+        setState(() {
+          _responseController.text = translatedText;
+        });
+      } else {
         // Reset if all documents have been fetched
-        _fetchedIds.clear();
+        _lastFetchedDocIdFirst = null;
+        await _saveLastFetchedDocId(null); // Clear saved document ID
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('All documents fetched, restarting.')),
         );
-        return;
       }
-
-      // Pick a random ID
-      String randomId = availableIds[Random().nextInt(availableIds.length)];
-
-      // Fetch the document with the random ID
-      DocumentSnapshot randomDoc =
-      await _firestore.collection(collectionName).doc(randomId).get();
-
-      _fetchedIds.add(randomId); // Mark this document as fetched
-
-      final data = randomDoc.data() as Map<String, dynamic>?;
-
-      String question = data?['question'] ?? 'No question available';
-
-      String translatedText =
-      await translateText(question, userSelectedLanguage);
-
-      setState(() {
-        _responseController.text = translatedText;
-      });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error fetching document: $e')),
       );
     }
+  }
+
+  Future<void> _saveLastFetchedDocId(String? docId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (docId != null) {
+      await prefs.setString('lastFetchedDocIdFirst', docId);
+    } else {
+      await prefs.remove('lastFetchedDocIdFirst');
+    }
+  }
+
+  Future<String?> _getLastFetchedDocId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('lastFetchedDocIdFirst');
+  }
+
+  Future<DocumentSnapshot?> _getDocumentById(String documentId) async {
+    try {
+      DocumentSnapshot doc = await _firestore
+          .collection('conversationstarter')
+          .doc(documentId)
+          .get();
+      return doc.exists ? doc : null;
+    } catch (e) {
+      print('Error fetching document by ID: $e');
+      return null;
+    }
+  }
+
+// Call this method in initState or when loading the screen
+  Future<void> initializeLastFetchedDoc() async {
+    _lastFetchedDocIdFirst = await _getLastFetchedDocId();
   }
 
 
@@ -148,6 +178,14 @@ class _IceAndFirstMessageState extends State<FirstMessage> {
       onDeviceTranslator.close();
     }
   }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeLastFetchedDoc().then((_) {
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -201,18 +239,20 @@ class _IceAndFirstMessageState extends State<FirstMessage> {
               CustomButton(
                 color: Colors.red,
                 onTap: () async {
-                  // await counterProvider.incrementCounter(); // Increment counter
-                  // if (counterProvider.counter >= counterProvider.threshold) {
-                  //   final AdManager adManager = AdManager(context);
-                  //   await adManager.showRewardedAd();
-                  //   counterProvider
-                  //       .resetCounter(); // Reset counter after showing the ad
-                  // }
-                  await fetchRandomDocument();
+                   counterController.incrementCounter();
+                   int adCount = await counterController.getCounter();
+                    if (adCount == counterController.threshold) {
+                      final AdManager adManager = AdManager(context);
+                      await adManager.showRewardedAd();
+                      counterController.resetCounter();
+                    }
+                  await fetchSequentialDocument();
+
                 },
                 icon: Icons.search,
                 //text: 'random_generator'.tr,
               ),
+              AppodealBanner(adSize: AppodealBannerSize.BANNER, placement: "BannerAds1"),
             ],
           ),
         ),

@@ -23,30 +23,10 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // MobileAds.instance.updateRequestConfiguration(
-  //   RequestConfiguration(
-  //     testDeviceIds: ['85F0A91FF9C1E99B68214CC21246DCD5'],
-  //   ),
-  // );
 
   // Initialize GetX controllers
   Get.put(InternetController());
   Get.put(LocaleController());
-  // Set the Appodeal app keys
-// Appodeal.setAppKeys(
-//   androidAppKey: 'edf0eeb97ff2d940bd1fc71234dc74d80f3eb7d06d96bf97',
-//   // iosAppKey: '<your-appodeal-ios-key>',
-// );
-
-// Initialize Appodeal
-// await Appodeal.initialize(
-//   hasConsent: true,
-//   adTypes: [AdType.banner, AdType.interstitial, AdType.reward],
-//   testMode: true,
-//   verbose: true,
-// );
-
-//At this point you are ready to display ads
   //Initialize Appodeal
   Appodeal.initialize(
       appKey: "edf0eeb97ff2d940bd1fc71234dc74d80f3eb7d06d96bf97",

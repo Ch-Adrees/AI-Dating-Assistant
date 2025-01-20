@@ -9,6 +9,7 @@ import 'package:rizzhub/components/constants.dart';
 import 'package:rizzhub/components/custom_button.dart';
 import 'package:rizzhub/components/custom_icon.dart';
 import 'package:rizzhub/components/custom_text_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_appodeal_flutter/stack_appodeal_flutter.dart';
 import '../ads/ads_manager.dart';
 
@@ -16,7 +17,7 @@ import '../controllers/ad_counter_controller.dart';
 import '../controllers/locale_controller.dart';
 import '../controllers/ad_counter_controller.dart';
 import '../controllers/locale_controller.dart';
- import 'dart:math';
+import 'dart:math';
 
 //import '../provider/counter_provider.dart';
 
@@ -31,10 +32,9 @@ class BreakSilence extends StatefulWidget {
 class _IceAndFirstMessageState extends State<BreakSilence> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final TextEditingController _responseController = TextEditingController();
-  
-  final CounterController counterController = Get.put(CounterController()); // Initialize CounterController
-// Initialize CounterController
-  List<String> _seenDocIds = [];
+
+  final CounterController counterController =
+      Get.put(CounterController()); // Initialize CounterController
 
   // Get the user's selected language code
   Future<String> _getUserSelectedLanguage() async {
@@ -74,64 +74,90 @@ class _IceAndFirstMessageState extends State<BreakSilence> {
     }
   }
 
-  // Fetch a random document and translate it
-  // DocumentSnapshot? _lastFetchedDoc; // Tracks the last fetched document
+  String? _lastFetchedDocIdBreak; // Stores the ID of the last fetched document
 
- 
-List<String> _documentIds = []; // List to store all document IDs
-Set<String> _fetchedIds = {}; // Track fetched IDs to avoid repeats
+  Future<void> fetchSequentialDocument() async {
+    try {
+      String userSelectedLanguage = await _getUserSelectedLanguage();
+      String collectionName = 'randomtopic';
 
-Future<void> fetchRandomDocument() async {
-  try {
-    String userSelectedLanguage = await _getUserSelectedLanguage();
-    String collectionName = 'randomtopic';
+      // Query the collection with explicit ordering by document ID
+      Query query = _firestore
+          .collection(collectionName)
+          .orderBy(FieldPath.documentId) // Order by Firestore's document ID
+          .limit(1);
 
-    // Load document IDs if not already loaded
-    if (_documentIds.isEmpty) {
-      QuerySnapshot snapshot =
-          await _firestore.collection(collectionName).get();
-      _documentIds = snapshot.docs.map((doc) => doc.id).toList();
-    }
+      // If there's a previously fetched document ID, use it to start after
+      if (_lastFetchedDocIdBreak != null) {
+        DocumentSnapshot? lastDoc = await _getDocumentById(_lastFetchedDocIdBreak!);
+        if (lastDoc != null) {
+          query = query.startAfterDocument(lastDoc);
+        }
+      }
 
-    // Filter out already fetched IDs
-    List<String> availableIds =
-        _documentIds.where((id) => !_fetchedIds.contains(id)).toList();
+      QuerySnapshot querySnapshot = await query.get();
 
-    if (availableIds.isEmpty) {
-      // Reset if all documents have been fetched
-      _fetchedIds.clear();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('All documents fetched, restarting.')),
-      );
-      return;
-    }
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot nextDoc = querySnapshot.docs.first;
+        _lastFetchedDocIdBreak = nextDoc.id; // Save the document ID
+        await _saveLastFetchedDocId(_lastFetchedDocIdBreak!); // Persist the document ID
 
-    // Pick a random ID
-    String randomId = availableIds[Random().nextInt(availableIds.length)];
+        final data = nextDoc.data() as Map<String, dynamic>?;
 
-    // Fetch the document with the random ID
-    DocumentSnapshot randomDoc =
-        await _firestore.collection(collectionName).doc(randomId).get();
+        String question = data?['question'] ?? 'No question available';
 
-    _fetchedIds.add(randomId); // Mark this document as fetched
-
-    final data = randomDoc.data() as Map<String, dynamic>?;
-
-    String question = data?['question'] ?? 'No question available';
-
-    String translatedText =
+        String translatedText =
         await translateText(question, userSelectedLanguage);
 
-    setState(() {
-      _responseController.text = translatedText;
-    });
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error fetching document: $e')),
-    );
+        setState(() {
+          _responseController.text = translatedText;
+        });
+      } else {
+        // Reset if all documents have been fetched
+        _lastFetchedDocIdBreak = null;
+        await _saveLastFetchedDocId(null); // Clear saved document ID
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('All documents fetched, restarting.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching document: $e')),
+      );
+    }
   }
-}
 
+  Future<void> _saveLastFetchedDocId(String? docId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (docId != null) {
+      await prefs.setString('lastFetchedDocIdBreak', docId);
+    } else {
+      await prefs.remove('lastFetchedDocIdBreak');
+    }
+  }
+
+  Future<String?> _getLastFetchedDocId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('lastFetchedDocIdBreak');
+  }
+
+  Future<DocumentSnapshot?> _getDocumentById(String documentId) async {
+    try {
+      DocumentSnapshot doc = await _firestore
+          .collection('randomtopic')
+          .doc(documentId)
+          .get();
+      return doc.exists ? doc : null;
+    } catch (e) {
+      print('Error fetching document by ID: $e');
+      return null;
+    }
+  }
+
+// Call this method in initState or when loading the screen
+  Future<void> initializeLastFetchedDoc() async {
+    _lastFetchedDocIdBreak = await _getLastFetchedDocId();
+  }
 
   // Translate text using MLKit
   Future<String> translateText(String text, String userSelectedLanguage) async {
@@ -156,9 +182,14 @@ Future<void> fetchRandomDocument() async {
   }
 
   @override
-  Widget build(BuildContext context) {
-   
+  void initState() {
+    super.initState();
+    initializeLastFetchedDoc().then((_) {
+    });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     //return Obx(() {
     // final userSelectedLanguage = Get.find<LocaleController>().currentLocale.value.languageCode;
     return SafeArea(
@@ -207,18 +238,21 @@ Future<void> fetchRandomDocument() async {
               CustomButton(
                 color: Colors.red,
                 onTap: () async {
-                  // await counterProvider.incrementCounter(); // Increment counter
-                  // if (counterProvider.counter >= counterProvider.threshold) {
-                  //   final AdManager adManager = AdManager(context);
-                  //   await adManager.showRewardedAd();
-                  //   counterProvider
-                  //       .resetCounter(); // Reset counter after showing the ad
-                  // }
-                  await fetchRandomDocument();
+                  counterController.incrementCounter();
+                  int adCount = await counterController.getCounter();
+
+                  if (adCount == counterController.threshold) {
+                    final AdManager adManager = AdManager(context);
+                    await adManager.showRewardedAd();
+                    counterController.resetCounter();
+                  }
+
+                  await fetchSequentialDocument();
                 },
                 //text: 'random_generator'.tr,
                 icon: Icons.search,
               ),
+              AppodealBanner(adSize: AppodealBannerSize.BANNER, placement: "BannerAds1"),
             ],
           ),
         ),

@@ -64,6 +64,9 @@ flutter {
 }
 
 dependencies {
+
+    implementation 'com.google.firebase:firebase-analytics'
+    
     implementation 'com.google.mlkit:translate:17.0.3'
     implementation 'com.android.billingclient:billing:7.1.1'
 

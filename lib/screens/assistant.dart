@@ -15,7 +15,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rizzhub/controllers/views/offering_controller.dart';
 
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../ads/ads_manager.dart';
 import '../components/constants.dart';
 import '../components/custom_button.dart';
@@ -277,6 +277,19 @@ class _AssistantScreenState extends State<AssistantScreen> {
       );
     }
   }
+  Future<void> _setIsFirstLaunchFalse() async {
+    final prefs = await SharedPreferences.getInstance();
+    // final isFirstLaunch = prefs.getBool('isFirstLaunch') ?? true;
+    // if (isFirstLaunch) {
+    await prefs.setBool('isFirstLaunch', false);
+    // }
+  }
+
+  @override
+  void initState()  {
+    super.initState();
+    _setIsFirstLaunchFalse();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -405,6 +418,7 @@ class _AssistantScreenState extends State<AssistantScreen> {
                     ),
                   ],
                 ),
+                AppodealBanner(adSize: AppodealBannerSize.BANNER, placement: "BannerAds1"),
               ],
             ),
           ),
